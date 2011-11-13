@@ -1,0 +1,44 @@
+.answer{:data => {:game => game, :game_id => @game_id, :photo_id => photo_id, :other_photo_id => highlighted_photo.id}}
+  %a.yes_button.button &nbsp;
+  %a.no_button.button &nbsp;
+  %div{:style => "display: none;"}
+    .success_message.n_message
+      Saved. We won't show
+      = highlighted_photo.him_her
+      any more.
+    .success_message.y_message
+      Great. Saved.
+      %p
+        If our matchmakers agree or
+        = highlighted_photo.he_she
+        agrees, we'll introduce you to each other.
+      %p= next_message
+
+
+:javascript
+  $(function() {
+    $(".answer .button").click(function() {
+      var answerArea = $(this).closest(".answer");
+      var photoId = answerArea.attr("data-photo_id");
+      var otherPhotoId = answerArea.attr("data-other_photo_id");
+      var game = answerArea.attr("data-game");
+      var gameId = answerArea.attr("data-game_id");
+      var answer = $(this).hasClass("yes_button") ? "y" : "n";
+      var successMessage = answerArea.find("." + answer + "_message").html();
+      answerArea.html("Saving...")
+      $.ajax({
+        type: 'POST',
+        url: "/match_me/" + photoId + "/games/" + gameId + "/answers",
+        data: {
+          answer: {
+            other_photo_id: otherPhotoId,
+            answer: answer,
+            game: game
+          }
+        },
+        success: function() {
+          answerArea.html(successMessage);
+        }
+      });
+    });
+  })

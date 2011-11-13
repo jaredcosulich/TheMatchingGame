@@ -1,0 +1,49 @@
+%style
+  == .top_box { border: none; }
+  == .top_box .text_link { font-size: 14pt; padding-top: 6px; text-align: center; }
+
+.clear
+%br
+%br
+%br
+
+.top_navigation{:style => "background-color: #eee; border: 1px solid #ccc;"}
+  .top_box{:style => "margin: 0;"}
+    .top_box_content
+      %h3 Play Again
+      %p Help more people meet their perfect match! The more people you match, the more the system trusts your matches.
+      = link_to(image_tag("playagain.png"), root_path)
+
+  .top_box
+    .top_box_content
+      - if @current_player.photos.empty?
+        %h3 Get Matched
+        %p
+          Think you'd get matched with a cute girl or guy?
+          %br
+          &nbsp;
+          %br
+          Only one way to find out...
+        = link_to(image_tag("jointoday.png"), new_register_path(:ref => "game_footer"))
+  .top_box
+    .top_box_content
+      - if controller.action_name == "interests"
+        %h3 Discover Who
+        %p
+          From the labs:
+          %br
+          &nbsp;
+          %br
+          Discover who you might get matched with!
+        .text_link
+          = link_to("Discover Who >", profile_game_discover_path(:g => params[:g]))
+      - else
+        %h3 Interesting Interests
+        %p
+          From the labs:
+          %br
+          &nbsp;
+          %br
+          See who has the most interesting interests!
+        .text_link
+          = link_to("Interesting Interests >", profile_game_interests_path(:g => params[:g]))

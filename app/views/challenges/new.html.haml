@@ -1,0 +1,98 @@
+%style
+  == label { font-weight: bold; }
+  == #challenge_players th { text-align: left; }
+
+:javascript
+  $(function(){
+
+    function addPlayer() {
+      var index = $("#challenge_players tr").length;
+      $("<tr>").html($("#new_challenge_player_template").clone().html().replace(/_\d+_/g, "_" + index + "_").replace(/\[\d+\]/g, "[" + index + "]")).appendTo("#challenge_players")
+    }
+
+    if ($("#challenge_players tr").length <= 3) {
+      addPlayer();
+      addPlayer();
+    }
+
+    $("#add").click(addPlayer);
+
+    function clearDefaultValue(element) {
+      var defaultValue = $(this).attr('class').replace('default_valued ', '').replace(/_/g, ' ');
+      if ($(this).val() ==  defaultValue) $(this).val("");
+    }
+
+    $(".default_valued").focusin(clearDefaultValue).focusout(function() {
+      var defaultValue = $(this).attr('class').replace('default_valued ', '').replace(/_/g, ' ');
+      if ($(this).val() ==  "") $(this).val(defaultValue);
+    });
+
+    $(".challenge_form form").submit(function() {
+      $(".default_valued").each(clearDefaultValue);
+    });
+
+  });
+
+%h2 Create New Challenge
+
+%br
+
+.challenge_form
+  = form_for @challenge do |f|
+    = f.label :name, "Challenge Name"
+    = f.text_field :name
+    = f.error_messages
+
+    %br
+    %br
+
+    %table{:id => "challenge_players"}
+      %tr
+        %th Name
+        %th Email
+      - length = @challenge.challenge_players.length
+      - index = 0
+      = f.fields_for :challenge_players do |pf|
+        - if index == 0
+          %tr
+            - [:name, :email].each do |field|
+              %td
+                - if pf.object.send(field).blank?
+                  = pf.text_field field, :value => "Your #{field.to_s.titleize}", :class => "default_valued Your_#{field.to_s.titleize}"
+                  = pf.error_message_on field
+                - else
+                  = pf.object.send(field)
+                  = pf.hidden_field field
+        - elsif index == length - 1
+          %tr#new_challenge_player_template{:style => "display:none;"}
+            %td
+              = pf.text_field :name, :value => "Name of Friend/Challenger", :class => "default_valued Name_of_Friend/Challenger"
+              = pf.error_message_on :name
+            %td
+              = pf.text_field :email, :value => "Email of Friend/Challenger", :class => "default_valued Email_of_Friend/Challenger"
+              = pf.error_message_on :email
+        - else
+          %tr
+            %td
+              = pf.text_field :name
+              = pf.error_message_on :name
+            %td
+              = pf.text_field :email
+              = pf.error_message_on :email
+        - index += 1
+
+    %a#add + Add Another Challenger
+
+    %br
+    %br
+
+    = f.label :invitation_text, "Invitation Text <span class='explanation'>(will be emailed to all challengers)</span>".html_safe
+    = f.text_area :invitation_text
+
+    %br
+    %br
+
+    =f.submit "Start Challenge"
+%br
+%br
+%br  

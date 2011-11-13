@@ -1,0 +1,2 @@
+class InsufficientCredits < StandardError
+end

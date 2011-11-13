@@ -1,0 +1,42 @@
+%style
+  == th { padding: 6px; }
+  == td { text-align: center; }
+  == .summary .inactive { font-weight: bold; }
+  == .summary .good { color: green; }
+  == .summary .bad { color: red; }
+
+= link_to("Player Details", admin_player_path(@photo.player)) if @photo.player
+&nbsp;
+= link_to("PhotoPairs", photo_pairs_admin_photo_path(@photo))
+&nbsp;
+= link_to("Correlations", correlations_admin_photo_path(@photo))
+&nbsp;
+= link_to("Initial Photos", initial_admin_photo_path(@photo))
+&nbsp;
+= link_to("New Combos", new_combos_admin_photo_path(@photo))
+
+%br
+
+.state
+  %p
+    Photo State:
+    = @photo.current_state
+    %br
+    = @photo.rejected_reason
+  %p
+    Created:
+    = time_ago_in_words @photo.created_at
+    ago
+
+%p
+  = "#{@combos.length} Combos (#{@combos.reject { |c| c.active? }.length} inactive)"
+
+.summary
+  - @combos.each do |combo|
+    %span{:class => "#{combo.active? ? "active" : "inactive"} #{"good" if combo.verified_good?} #{"bad" if combo.verified_bad?}", :style => "font-size: #{20 - Math.log((Time.new - combo.created_at) / (60*24))}pt"}
+      = combo.yes_percent
+      &nbsp;&nbsp;&nbsp;
+
+%br
+
+= render :partial => "admin/combos/combos_table", :object => @combos

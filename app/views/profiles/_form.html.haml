@@ -1,0 +1,7 @@
+= form_for @current_player, :url => account_profile_path, :html => {:method => method} do |f|
+  = f.error_messages  
+  .info_box.wide.two
+    %h3 Edit Your Profile
+    = render :partial => "profiles/form_fields", :locals => {:f => f}
+    .info
+      = f.submit "Save"

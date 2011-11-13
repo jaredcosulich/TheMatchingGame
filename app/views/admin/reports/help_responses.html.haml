@@ -1,0 +1,5 @@
+%h2 Help Responses
+
+%ul
+  - @help_responses.each do |responses|
+    %li= "#{responses.code}: #{responses.feedback}" 

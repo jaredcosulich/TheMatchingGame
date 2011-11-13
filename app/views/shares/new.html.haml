@@ -1,0 +1,58 @@
+:javascript
+  $(function(){
+    $('.facebook_share').click(facebook_share);
+  });
+  trackEvent("facebook_share", "show", window.TMG_DATA.PLAYER_ID);
+
+%h2 Recommend The Matching Game To Your Friends
+
+%br
+
+%h3 Thanks for helping to spread the word!
+
+%br
+%br
+%br
+%h4 Share with your Facebook friends:
+
+%p
+  Share with your facebook friends:
+  = facebook_connect_button("Tell your friends", "facebook_share")
+
+%br
+%br
+
+%h4 ... or just email your friends:
+
+%p Fill in the information below and we will send one email to your friends, with a link to The Matching Game.
+
+= form_for @share do |f|
+  = f.hidden_field :type, :value => "email"
+  = f.label :emails, "Emails (comma-separated)"
+  = f.text_area :emails, :style => "width: 600px; height: 4em;"
+  %br
+  %br
+  = f.label :from, "Your Name"
+  = f.text_field :from, :style => "width: 600px;"
+  %br
+  %br
+  = f.label :message
+  = f.text_area :message, :style => "width: 600px; height: 12em;"
+  %div Your message will include a link to The Matching Game.
+  %p
+    = f.submit "Send Message"
+
+  %br
+  %br  
+/
+  .no_facebook
+    = facebook_connect_button("connect", "connect")
+  .with_facebook
+    %fb:serverFbml
+      %script{:type => "text/fbml"}
+        %fb:fbml
+          - host = "#{(Rails.env.production? ? 'www' : Rails.env)}.thematchinggame.com"
+          - host = "localhost:3000" if Rails.env.development?
+          %fb:request-form{:action => "http://#{host}" + shares_path,  :method => "POST", :invite => "true",  :type => "Matching Game", :content => "Hey, check out the Matching Game. <fb:req-choice url=\"http://www.thematchinggame.com/?r=fbs\" label=\"Try The Matching Game\"/>"}
+            %fb:multi-friend-selector{:cols => "3", :showborder => "false", :actiontext => "Invite your friends to use The Matching Game."}
+  

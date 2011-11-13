@@ -1,0 +1,30 @@
+%style
+  == .answers_container {overflow-x: scroll;  width: 400px; }
+  == .answers {width: 10000px;}
+  == .combo {float: left; padding: 3px; margin-right: 3px; overflow: hidden;}
+  == .combo.y {border: 1px solid green;}
+  == .combo.n {border: 1px solid red;}
+%table
+  %tr
+    %th Player
+    %th Game Answers
+    %th Answers
+  - @games.each do |game|
+    - player = game.player
+    %tr
+      %td
+        = link_to(player.first_name_or_anonymous, admin_player_path(player))
+        .age= "#{player.age}, #{player.location_name}"
+        .games= "#{player.games.count} games"
+      %td
+        %div= "#{game.answers.length}"
+        %div= "#{game.answers.select { |a| a.yes? }.length} Yes"
+      %td
+        .answers_container
+          .answers
+            - game.answers.sort{|a,b|a.id <=> b.id}.each do |answer|
+              .combo{:class => answer.answer}
+                = image_tag answer.combo.photo_one.image.url(:preview)
+                = image_tag answer.combo.photo_two.image.url(:preview)
+
+

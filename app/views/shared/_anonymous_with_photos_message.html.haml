@@ -1,0 +1,18 @@
+.anonymous_warning.anonymous
+  .anonymous_warning_text
+    %h4
+      You've added a photo, but are not registered
+    %p
+      As long as you keep this browser window open you'll be able to see your matches.
+    %p
+      If you close this window, though, you may lose your matches
+    %p
+      If you enter your email below you can sign back in with it or be notified of new matches.
+    %div
+      .anonymous_error{:style => "display:none;"}
+      Email:
+      = text_field_tag("email", "", :id => "email")
+      = submit_tag("Save Email", :id => "save_email")
+  .anonymous_warning_thankyou{:style => "display:none;"}
+    %p Thanks, and welcome to The Matching Game!
+

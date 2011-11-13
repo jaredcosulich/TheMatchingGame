@@ -1,0 +1,16 @@
+%h2 Reset Password
+= form_for :password_reset, :url => password_reset_path, :html => {:method => "put"} do |f|
+  %fieldset
+    %div
+      = f.error_messages
+      %table.layout
+        %tr
+          %th= f.label :password
+          %td= f.password_field :password
+
+        %tr
+          %th= f.label :password_confirmation
+          %td= f.password_field :password_confirmation
+      = hidden_field_tag(:token, @token)
+
+    = f.submit "Save Password"

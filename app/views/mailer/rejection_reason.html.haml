@@ -1,0 +1,14 @@
+%p Hi,
+
+%p
+  There is a problem with the photo you uploaded to the matching game.
+
+%p= "We are unable to approve it because #{@photo.rejected_reason}."
+
+%p= "You can resubmit your photo #{link_to("here >", @emailing.auto_login_path(photo_path(@photo)))}".html_safe
+
+%br
+%p
+  Thanks,
+  %br
+  The Matching Game Team

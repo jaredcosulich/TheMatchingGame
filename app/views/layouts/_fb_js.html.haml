@@ -1,0 +1,15 @@
+<!--see http://developers.facebook.com/docs/reference/javascript/FB.init -->
+#fb-root
+%script{:type => "text/javascript"}
+  window.fbAsyncInit = function() {
+  = "FB.init({appId: '#{FACEBOOK_APP_ID}',"
+  status: true,
+  cookie: true});
+  ="loadFbStatus(#{'true' unless @current_player.nil? || @current_player.facebook_profile});"
+  };
+  (function() {
+  var e = document.createElement('script');
+  e.async = true;
+  e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
+  document.getElementById('fb-root').appendChild(e);
+  }());

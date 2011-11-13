@@ -1,0 +1,73 @@
+- player = nil if player.nil? || player.new_record?
+
+- correct_start = (params.include?(:top_leader) || player.nil?) ?  0 : Player.leaderboard(player).count(:conditions => ["correct_count > ?", player.correct_count]) - 2
+- correct_start = 0 if correct_start < 0
+- correct = Player.leaderboard(player).find(:all, :order => "correct_count desc#{", players.id = #{player.id} desc" if player.present?}", :limit => 5, :offset => correct_start)
+
+- accurate_start = (params.include?(:top_leader) || player.nil?) ? 0 : Player.leaderboard(player).count(:conditions => ["answer_count > 35 and accuracy > ?", player.accuracy]) - 2
+- accurate_start = 0 if accurate_start < 0
+- accurate = Player.leaderboard(player).find(:all, :conditions => "answer_count > 35 and accuracy is not null", :order => "accuracy desc#{", players.id = #{player.id} desc" if player.present?}", :limit => 5, :offset => accurate_start)
+
+- score_start = (params.include?(:top_leader) || player.nil?) ? 0 : Player.leaderboard(player).count(:conditions => ["answer_weight > ?", player.answer_weight]) - 2
+- score_start = 0 if score_start < 0
+- score = Player.leaderboard(player).find(:all, :conditions => "answer_weight is not null", :order => "answer_weight desc#{", players.id = #{player.id} desc" if player.present?}", :limit => 5, :offset => score_start)
+
+
+%style
+  == .leaderboard { width: 100%; margin: 12px 0 30px 0; }
+  == .leaderboard th { text-align: left; padding: 6px 0; }
+  == .leaderboard th, .leaderboard td { padding: 3px 6px; }
+  == .leaderboard .alt_column { background-color: #ddd; }
+
+%h2
+  Matchmaking Leaderboard
+  - if player.present?
+    %span.explanation
+      &nbsp; &nbsp; &nbsp;
+      = link_to_if(params.include?(:top_leader), "Leaderboard Around Me", params.merge(:top_leader => nil))
+      &nbsp; | &nbsp;
+      = link_to_unless(params.include?(:top_leader), "Top of the Leaderboard", params.merge(:top_leader => 1))
+
+
+%table.leaderboard{:cellpadding => 0, :cellspacing => 0}
+  %th{:colspan => 3}
+    Most Accurate Matcher
+  %th.alt_column{:colspan => 3}
+    Most Correct Matches
+  %th{:colspan => 3}
+    Highest Score *
+  - if player.present?
+    %th &nbsp;&nbsp
+    %th.alt_column Your Stats
+    %th.alt_column &nbsp;&nbsp;
+  - correct.length.times do |i|
+    %tr
+      %td= (accurate_start + i + 1).ordinalize
+      %td{:style => "#{'font-weight: bold;' if accurate[i] == player}"}= accurate[i].visible_name(player) if accurate[i].present?
+      %td= "#{accurate[i].player_stat.accuracy}%" if accurate[i].present?
+      %td.alt_column= (correct_start + i + 1).ordinalize
+      %td.alt_column{:style => "#{'font-weight: bold;' if correct[i] == player}"}= correct[i].visible_name(player) if correct[i].present?
+      %td.alt_column= correct[i].player_stat.correct_count if correct[i].present?
+      %td= (score_start + i + 1).ordinalize
+      %td{:style => "#{'font-weight: bold;' if score[i] == player}"}= score[i].visible_name(player) if score[i].present?
+      %td= score[i].player_stat.points if score[i].present?
+      - if player.present?
+        %td &nbsp;&nbsp;
+        - if i == 0
+          %td.alt_column
+            - if player.games.length > 1 && player.anonymous?
+              %a.save_score Save Your Score
+            - else
+              %b= player.visible_name(player)
+        - if i == 1
+          %td.alt_column= "#{player.correct_count} Correct"
+        - if i == 2
+          %td.alt_column= "#{player.incorrect_count} Incorrect"
+        - if i == 3
+          %td.alt_column= "#{player.accuracy}% Accurate"
+        - if i == 4
+          %td.alt_column= "#{player.points} Points"
+        %td.alt_column &nbsp;&nbsp;
+  %tr.explanation
+    %td{:colspan => 12}
+      * Scores are a combination of the number of correct answers and the accuracy of a player.

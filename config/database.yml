@@ -1,0 +1,15 @@
+development:
+  database: matchinggame__dev
+  adapter: postgresql
+  min_messages: warning
+
+performance:
+  database: matchinggame__performance
+  adapter: postgresql
+  min_messages: warning
+
+test:
+  database: matchinggame_test<%= ENV['TEST_ENV_NUMBER'] %>
+  adapter: postgresql
+  min_messages: warning
+

@@ -1,0 +1,102 @@
+:javascript
+  $(function(){
+    function getClass(element, genericClass) {
+      return $.trim($(element).attr('class').replace(genericClass, ''));
+    };
+
+    function respond(element, response) {
+      var container = $(element).closest('.match_answers');
+      var statsContainer = container.closest(".photo_row").find(".community_stats");
+      var comboId = container.attr('id').split('_')[1];
+      $.ajax({
+        type: 'POST',
+        url: "/combos/" + comboId + "/response",
+        data: {response: response},
+        success: function(response) {
+          showStats(statsContainer, response.cresults, response.choco);
+        }
+      });
+      container.addClass("answered_" + response);
+      statsContainer.html("<p>Loading results...</p>");
+    };
+
+    function showStats(statsContainer, results, choco) {
+      statsContainer.html("");
+      statsContainer.append(
+        $("<div/>").addClass("scores").append(
+          $("<div/>").addClass("good_score").width("0%").html("&nbsp;")
+        ).append(
+          $("<div/>").addClass("bad_score").width("0%").html("&nbsp;")
+        )
+      );
+      var yesPercent = 100 * results.yes / (results.yes + results.no);
+      setTimeout(function() {
+        statsContainer.find(".good_score").animate({width: (yesPercent + choco) + "%"}, 1000);
+        statsContainer.find(".bad_score").animate({width: (100 - yesPercent - choco) + "%"}, 1000);
+      }, 50);
+    }
+
+    $('.photos_table .answer').click(function(){
+      respond(this, getClass(this, 'answer'));
+    });
+  });
+
+.tacked_paper
+  .tack.left_tack= link_to(image_tag("college/blue_tack.png"))
+  .tack.right_tack= link_to(image_tag("college/blue_tack.png"))
+
+  %h1.text_center.uppercase Matches for you.
+
+  - if @matches.empty?
+    %p We don't have any matches ready for you right now.
+    %p Check back in a little bit and we should have more matches for you.
+    %p We'll also email you when some matches are ready.
+    %p In the meantime, you can help match other people up.
+    %p= link_to("Play the game some more >", college_root_path)
+    
+  - else
+    %table.photos_table.lightboxed{:cellpadding => 0, :cellspacing => 0}
+      %th &nbsp;
+      %th What do you think?
+      %th How people voted
+      %th &nbsp;
+
+      - @matches.each_with_index do |combo, index|
+        - photo = combo.photo_for(@current_player)
+        - other_photo = combo.other_photo(photo)
+        %tr.photo_row
+          %td.photo_container
+            .tacked_photo{:class => "rotate_#{index % 4}"}
+              %h3= other_photo.visible_name
+              = light_box(other_photo)
+              .tack= link_to(image_tag("college/blue_tack.png"))
+
+          %td.match_answers{:id => dom_id(combo)}
+            .not_answered
+              = image_tag("college/good_match_button.png", :size => "75x75", :class => "answer good")
+              &nbsp;
+              = image_tag("college/bad_match_button.png", :size => "75x75", :class => "answer bad")
+            .answered_good
+              %p You said "Good Match"
+              %p
+                %a Change Answer
+            .answered_bad
+              %p You said "Good Match"
+              %p
+                %a Change Answer
+
+          %td.community_stats
+            - if combo.response_state(@current_player) == "unanswered"
+              %p.small{:style => "width: 14em; padding: 0 12px;"}
+                Click "good match" or "bad match" to
+                reveal how people voted on this match.
+            - else
+              %div{:id => "photo_profile_#{other_photo.id}", :style => "display: none; width: 660px;"}
+                = render :partial => "college/photos/profile", :locals => {:photo => other_photo}
+              .small= link_to "learn more", "#photo_profile_#{other_photo.id}", :class => "small more_info"
+
+              .scores
+                .good_score{:style => "width: #{combo.yes_choco}%"} &nbsp;
+                .bad_score{:style => "width: #{combo.no_choco}%"} &nbsp;
+
+          %td &nbsp;

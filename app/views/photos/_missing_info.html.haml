@@ -1,0 +1,42 @@
+:javascript
+  var missingInfos = $("#missing_infos .missing_info");
+  if (missingInfos.length > 0) {
+    $.facebox({div: "#missing_infos"});
+    $($("#facebox").find("#" + missingInfos[0].id)).show();
+  }
+
+
+#missing_infos{:style => "display: none;"}
+  - if flash[:notice].present?
+    #flash
+      = flash[:notice]
+
+  = form_for @current_player, :url => update_player_photo_path(@photo) do |f|
+    = f.error_messages
+    = hidden_field_tag :from_matches, @photo.to_param
+    - if @current_player.blank_email?
+      #missing_email.missing_info
+        %h2 Missing Email
+        %p We do not have a valid email address on file for you.
+        %p Without an email address we can not notify you of matches or messages.
+        %p Please enter a valid email address below before continuing:
+        = f.fields_for(:user) do |uf|
+          .account_info
+            %table.layout
+              %tr
+                %th= uf.label :email, "Email #{uf.error_message_on :email}".html_safe
+                %td= uf.text_field :email, :value => ""
+                %td= f.submit "Save Email Address"
+
+    - if @photo.player.interests.length == 0
+      #missing_interests.missing_info
+        %h2 Interests, Activities, etc.
+        = render "profiles/interests"
+        = f.submit "Save Interests"
+
+    - if @photo.connectable? && @photo.player.about.blank?
+      #missing_about.missing_info
+        %h2 "About" Description
+        = f.fields_for(:profile) do |pf|
+          = render "profiles/about", :form => pf
+          = f.submit "Save About Description"

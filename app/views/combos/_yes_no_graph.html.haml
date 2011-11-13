@@ -1,0 +1,13 @@
+.combo_result_chart.combo_result_section
+  - chart_height = 60.0
+  - yes_percent = combo.yes_choco
+  - no_percent = combo.no_choco
+  - yes_height = (chart_height / 100.0) * yes_percent.to_f
+  - no_height = (chart_height / 100.0) * no_percent.to_f
+  - unless yes_height == 0
+    .chart_bar.yes_chart{:style => "height: #{yes_height}px; margin-top: #{chart_height - yes_height}px" }
+  - unless no_height == 0
+    .chart_bar.no_chart{:style => "height: #{no_height}px; margin-top: #{chart_height - no_height}px" }
+.combo_result_stats.combo_result_section
+  .yes_percent= "Yes"
+  .no_percent= "No"

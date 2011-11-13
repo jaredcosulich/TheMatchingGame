@@ -1,0 +1,19 @@
+#completed{:style => "display:none;", :class => (@current_player.gender.blank? ? 'blank_gender' : '')}
+  %h2 Matches Complete
+  %h3 Someday, somewhere, your matches may become a reality!
+  -if @current_player.gender.blank?
+    %br
+    %h3 Help us make better use of your matches
+    .inline_forms
+      I am a
+      = form_for(@current_player, :url => player_path) do |form|
+        = form.hidden_field(:gender, :value => 'm')
+        = form.submit("Male")
+      = form_for(@current_player, :url => player_path) do |form|
+        = form.hidden_field(:gender, :value => 'f')
+        = form.submit("Female")
+    %p
+      = "... or, if you've already registered, #{link_to('log in here', new_session_path)}"
+  #saving_results
+    %p Saving results...
+    %p=image_tag("loading.gif")

@@ -1,0 +1,25 @@
+- combo = answer.combo
+
+%tr
+  %td
+    = image_tag(combo.photo_one.image.url(:preview), :alt => "#{combo.photo_one.his_her.camelize} Photo")
+
+  %td
+    = image_tag(combo.photo_two.image.url(:preview), :alt => "#{combo.photo_two.his_her.camelize} Photo")
+
+  %td{:style => "font-size: 10pt; width: 12em;"}
+    = combo.status_string
+
+  %td{:style => "text-align: center;"}
+    - if answer.correct?
+      =image_tag("http://#{Emailing.host}/images/famfam/accept.png", :alt => "")
+      %br
+      You Were
+      %br
+      %b Correct!
+    - elsif answer.incorrect?
+      =image_tag("http://#{Emailing.host}/images/famfam/cancel.png", :alt => "")
+      %br
+      Sorry
+      %br
+      Charlie

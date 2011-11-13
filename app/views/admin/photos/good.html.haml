@@ -1,0 +1,20 @@
+%h2 Best Photos
+
+%table
+  %th Photo
+  %th Total
+  %th Good
+  %th Uninterested
+  %th Interested
+  - @best_photos.to_a.sort { |a,b| b[1][:total] <=> a[1][:total] }[0..10].each do |info|
+    %tr
+      %td
+        = link_to(image_tag(info[0].image.url(:preview)), admin_cluster_path(info[0].id))
+      %td
+        = info[1][:total]
+      %td
+        = info[1]["good"]
+      %td
+        = info[1]["uninterested"]
+      %td
+        = info[1]["interested"]

@@ -1,0 +1,4 @@
+#completed{:style => "display:none;", 'x-data-post-game-location' => match_me_game_path(@game, :match_me_id => @target_photo.id.to_obfuscated)}
+  #saving_results
+    %p Saving results...
+    %p=image_tag("loading.gif")

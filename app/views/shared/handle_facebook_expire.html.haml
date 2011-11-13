@@ -1,0 +1,7 @@
+%script{:type => "text/javascript"}
+  if (window != window.top) {
+  = "var loc = '#{url_for(Facebooker::Rails::Publisher.default_url_options)}';"
+  window.top.location = loc;
+  } else {
+  = "window.location = '#{root_path}';"
+  }

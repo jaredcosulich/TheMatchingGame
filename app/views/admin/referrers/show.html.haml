@@ -1,0 +1,41 @@
+= render :partial => "form"
+
+%br
+%br
+
+%h3 Referrals
+
+%br
+
+%h3 Go To:
+= link_to("All", admin_referrer_path(@referrer))
+&nbsp; | &nbsp;
+= link_to("Today", admin_referrer_path(@referrer, :d => 'today'))
+&nbsp; | &nbsp;
+= link_to("Yesterday", admin_referrer_path(@referrer, :d => 'yesterday'))
+&nbsp; | &nbsp;
+= link_to("Same Day Last Week", admin_referrer_path(@referrer, :d => 'same_day_last_week'))
+&nbsp; | &nbsp;
+= link_to("This Week", admin_referrer_path(@referrer, :d => 'this_week'))
+&nbsp; | &nbsp;
+= link_to("Last Week", admin_referrer_path(@referrer, :d => 'last_week'))
+
+%br
+  
+%ul
+  %li
+    Referral Count:
+    = @player_ids.length unless @player_ids.blank?
+  %li
+    Game Count:
+    = @games.length unless @games.blank?
+  %li
+    Answer Count:
+    = @answer_count unless @answer_count.nil?
+  %li
+    User Count:
+    = @user_count unless @user_count.nil?
+  %li
+    Photo Count:
+    = @photo_count unless @photo_count.nil?
+    = "(#{@approved_photo_count} approved)" unless @approved_photo_count.nil?

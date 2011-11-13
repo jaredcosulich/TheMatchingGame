@@ -1,0 +1,167 @@
+%style{:type => "text/css"}
+  == .matches_explanation { display: none; }
+  == .awaiting .awaiting, .good_match .good_match, .bad_match .bad_match, .possible_match .possible_match { display: block; border-bottom: none; background-color: white; }
+  == .good_bad_bar { margin: auto; margin-top: 12px; }
+  == .good_bad_bar th { text-align: center; padding-bottom: 6px; }
+  == .good_bad_bar label { display: block; width: 36px; cursor: pointer; }
+  == .good_bad_bar input { margin: 0; cursor: pointer; }
+  == .good_bad_bar .good_bad_4, .good_bad_bar .bad_header { border-right: 1px solid #ccc; }
+  == .interests { margin-bottom: 12px; width: 336px; }
+
+:javascript
+  $(function(){
+    var delay = 'fast';
+    function getClass(element, genericClass) {
+      return $.trim($(element).attr('class').replace(genericClass, ''));
+    };
+
+    function respond(element, response){
+      var comboId = $(element).closest('.response').attr('id').split('_')[1];
+      $.ajax({
+        type: 'POST',
+        url: "/combos/" + comboId + "/response",
+        data: {response: response}
+      });
+    };
+
+    function setState(element, response, nextQuestion) {
+      if (nextQuestion) var next = $(element).closest('.section').next('.section').addClass('offscreen').css('left', '600px');
+      $(element)
+        .closest('.section').fadeOut(delay)
+        .closest('.questions').animate({className: response + " questions"}, delay)
+        .end().fadeIn(delay).queue(function() {
+          if (next) next.animate({left: 0}, 1000).animate({className: (next.attr('class') || "").replace(/offscreen/ig, '')}, 0);
+          $(this).dequeue();
+        });
+      respond(element, response);
+    }
+
+    $('.facebox_answer').live('click', function() {
+      var facebox_answer = $(this);
+      $("#" + facebox_answer.attr('x-data-combo') + " .answer." + facebox_answer.attr('x-data-answer')).click();
+      $.facebox.close();
+    });
+
+    $('.questions .answer').click(function(){
+      var element = this;
+      setTimeout(function() {
+        setState(element, getClass(element, 'answer'), true);
+      }, 175);
+    });
+
+    $('.questions .change').click(function(){
+      setState(this, getClass(this, 'change'), false);
+    });
+  });
+
+- if params[:t].present?
+  = render "photos/#{params[:t]}"
+- else
+  %h3 Matches Awaiting Your Response
+  - if @matches.empty?
+    %p You don't have any matches awaiting your response.
+    %p
+      You may have matches
+      = link_to("in progress >", params.merge(:t => "progress"))
+
+    %br
+    %h4 Previous Matches
+    %p
+      All previous matches can be found in your
+      = link_to("good", params.merge(:t => "good"))
+      or
+      = link_to("bad", params.merge(:t => "bad"))
+      matches tabs above.
+    %p
+      Any mutually good matches can be found in your
+      = link_to("connections", connections_path)
+      tab.
+
+    -#
+      %br  
+      %h4 Priority Matching
+      %p
+        You can speed up the matching process with
+        = link_to("priority matching >", priorities_path)
+
+    %br
+
+    %h4 Have Your Friends Match You
+    %p
+      Your friends know you best.
+      = link_to("Have them match you up >", match_me_index_path)
+
+
+- @matches.each do |combo|
+  .response{:id => dom_id(combo)}
+    - photo = combo.photo_for(@current_player)
+    - other_photo = combo.other_photo(photo)
+    - next if other_photo.player.nil?
+    - photo_title = other_photo.title
+    %h3&= photo_title
+    = render :partial => "combos/combo", :locals => {:combo => combo, :exclude_photo => photo}
+    .questions_container{:class => other_photo.connectable? ? "connectable" : "not_connectable"}
+      .questions{:class => "#{combo.response_state(@current_player)}"}
+        .good_bad.section
+          .question
+            - if combo.active?
+              This match is still being voted on.
+              .explanation
+                We'll send you an email if people think it's a good match.
+              .explanation
+                You can stop the voting if you think it is a bad match.
+
+            - else
+              What do you think?
+
+            %div
+              %div{:id => "photo_profile_#{other_photo.id}", :style => "display: none; width: 720px;"}
+                = render :partial => "photos/profile", :locals => {:photo => other_photo}
+              = link_to "Learn more about #{other_photo.visible_name}", "#photo_profile_#{other_photo.id}", :class => "small more_info"
+
+            %table.good_bad_bar{:cellpadding => 0, :cellspacing => 0}
+              %th.bad_header{:colspan => 5} Bad Match
+              %th{:colspan => 5} Good Match
+              %tr
+                - 10.times do |i|
+                  %td{:class => "good_bad_#{i}"}
+                    %label
+                      %input.answer{:type => "radio", :name => "good_bad_#{combo.id}", :class => "rating_#{i + 1} #{(i < 5 ? "bad" : "good")}"}
+                      %br
+                      = i + 1
+
+          .answer_yes
+            You said "Good Match" &nbsp;
+            %a.change.unanswered change
+          .answer_no
+            You said "Bad Match" &nbsp;
+            %a.change.unanswered change
+
+        .interested_uninterested.section
+          .question
+            - if combo.status == :match
+              %p= "You and #{other_photo.visible_name} both thought<br/>you were a good match for each other!".html_safe
+            %p= link_to "Send a message to #{other_photo.visible_name}", connection_path(combo), :class => "more_info"
+
+        .thanks.section
+          .final_response
+            Thanks for answering, it helps us find you better matches.
+
+        .not_connectable.section
+          .final_response
+            = "Unfortunately #{other_photo.he_she} is not available to connect with,"
+            but your answer does help improve our matches for you.
+
+        .me_not_connectable.section
+          .final_response
+            Thank you for rating this match.
+
+%br
+%br
+
+- if params[:t] =~ /(good|bad)/
+  - if @page > 0
+    = link_to("< Previous Page", params.merge(:page => @page - 1))
+    &nbsp; &nbsp; 
+  - if @matches.length == 10
+    = link_to("Next Page >", params.merge(:page => @page + 1))

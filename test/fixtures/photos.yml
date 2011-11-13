@@ -1,0 +1,30 @@
+one:
+  id: 1
+  image_file_name: i
+  approved: true
+  gender: f
+
+two:
+  id: 2
+  image_file_name: i
+  approved: true
+  gender: m
+
+three:
+  id: 3
+  image_file_name: i
+  approved: true
+  gender: f
+
+four:
+  id: 4
+  image_file_name: i
+  approved: true
+  gender: m
+
+five:
+  id: 5
+  image_file_name: i
+  approved: true
+  gender: m
+

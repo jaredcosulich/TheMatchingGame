@@ -1,0 +1,119 @@
+:javascript
+  $(function() {
+    startCollegeGame(#{@game.id}, #{@combos.to_json}, #{@badges.map(&:icon).to_json});
+  });
+
+
+#photos
+  #photo_cache
+  .photo.left_photo
+    .image
+    .interests
+    .tack= link_to(image_tag("college/tack.png"))
+  .photo.right_photo
+    .image
+    .interests
+    .tack= link_to(image_tag("college/tack.png"))
+  .clear
+
+#buttons
+  .share_or_next{:style => "display: none;"}
+    %p
+      %a.share_badge Share your badge on Facebook >
+    %p
+      %a.continue_playing Continue to play The Matching Game >
+  .vote_buttons
+    = image_tag("college/bad_match_button.png", :class => "match_button bad_match")
+    = image_tag("college/good_match_button.png", :class => "match_button good_match")
+    .click_text
+      Click a button
+      %br
+      to vote:
+      %br
+      "Good Match"
+      %br
+      or
+      %br
+      "Bad Match"
+  .good_bad_votes{:style => "display: none;"}
+    %h4.votes_header Last Couple
+    .your_vote.small
+      You said "
+      %span.last_vote
+      Match"
+    .last_couple_photos
+      .photo_one
+      .photo_two
+    .unverified_results
+      .votes.small
+        .good_votes
+        .bad_votes
+      .votes_text.uppercase
+        .good_text Good:
+        .bad_text Bad:
+    .verified_results.small
+      .result_message.true_true
+        You're right!
+        %br
+        We already matched them up and
+        %br
+        they thought it was a good match!
+      .result_message.true_false
+        Actually, no...
+        %br
+        We already matched them up and
+        %br
+        they thought it was a good match!
+      .result_message.false_false
+        Yea, good call.
+        %br
+        We tried to match them up, but
+        %br
+        they thought it was a bad match...
+      .result_message.false_true
+        Actually, no.
+        %br
+        We tried to match them up, but
+        %br
+        they thought it was a bad match...
+  .player_stats
+    %h4 Your Stats
+    %b Verified Streak:
+    %span.streak_count 0
+    in a row
+    %br
+    %b Verified:
+    %span.red
+      %span.incorrect_count= @current_player.player_stat.incorrect_count
+      wrong,
+    %span.green
+      %span.correct_count= @current_player.player_stat.correct_count
+      correct
+      = "(<span class='accuracy'>#{@current_player.player_stat.accuracy}</span>%)".html_safe
+    %br
+    %b Totals:
+    - ps = @current_player.current_stat
+    %span.vote_count= ps.answer_count
+    votes,
+    %span.verified_count= ps.incorrect_count + ps.correct_count
+    verified
+
+#badges
+
+
+
+- if @current_player.college.try(:verified?)
+  #matching_status_preview
+    .matching_status_message.small
+      - if (college_photo = @current_player.college_photo).present?
+        = image_tag(college_photo.image.url(:preview))
+        %p
+          Your photo is currently being matched with
+          = "#{college_photo.matched_with.downcase}."
+        %p= link_to("Edit Settings >", college_users_path)
+        %p
+          %b Make sure your photo shows only you.
+      - else
+        You are not currently being matched at all.
+        %p Add a photo to start getting matched.
+        %p= link_to("Add your photo >", college_users_path)

@@ -1,0 +1,70 @@
+%style
+  == td { text-align: right; padding: 6px; }
+  == tr.section { background-color: lightgrey; }
+  == tr.section td { text-align: left; }
+  == tr.groups th { text-align: center; }
+
+%table
+  %thead
+    %tr.groups
+      %th &nbsp;
+      %th(colspan=3)= "Rolling #{params[:hours] || 24}hrs"
+      %th(colspan=3) Rolling Week
+    %tr
+      %th Stat
+      %th Current
+      %th Last Week
+      %th Last Month
+      %th Current
+      %th Last Week
+      %th Last Month
+  %tbody
+    %tr.section
+      %td(colspan=7) Player Stats
+    %tr= row "Total", :players, :total
+    %tr= row "5+ answers", :players, :five_answer_percent, :percent
+    %tr= row "10+ answers", :players, :ten_answer_percent, :percent
+    %tr= row "15+ answers", :players, :fifteen_answer_percent, :percent
+    %tr= row "New", :players, :new
+    %tr= row "No Referral", :players, :no_referral_percent, :percent
+    %tr.bounce
+      %td Bounce Rate
+      %td(colspan=6) &nbsp;
+    %tr.section
+      %td(colspan=7) Dater Stats
+    %tr= row "New", :daters, :new
+    %tr= row "% of Players", :daters, :percent_of_players, :percent
+    %tr= row "Female", :daters, :female_percent, :percent
+    %tr.section
+      %td(colspan=7) Answer Stats
+    %tr= row "Total", :answers, :total
+    %tr= row "Average", :answers, :average
+    %tr= row "Yes", :answers, :yes_percent, :percent
+    %tr.section
+      %td(colspan=7) Combo Stats
+    %tr= row "Inactivated", :combos, :total
+    %tr= row "Good", :combos, :good_percent, :percent
+    %tr.section
+      %td(colspan=7) Responses
+    %tr= row "Total", :responses, :total
+    %tr= row "Good", :responses, :good_percent, :percent
+    %tr= row "Good-Good", :responses, :good_good, :percent
+    %tr.section
+      %td(colspan=7) Messages
+    %tr= row "New Connections", :messages, :connections
+    %tr= row "Replied", :messages, :replied
+    %tr= row "Messages", :messages, :messages
+    %tr= row "Players", :messages, :players
+    %tr.section
+      %td(colspan=7) Transactions
+    %tr= row "Activations", :transactions, :subscription_activated
+    %tr= row "Cancellations", :transactions, :subscription_cancelled
+    %tr= row "Payments", :transactions, :payment_success
+    %tr= row "One Off", :transactions, :bought_currency
+
+:javascript
+  $(function(){
+    $.get("/admin/dashboards/analytics", function(data){
+      $("tr.bounce").replaceWith(data);
+    })
+  })

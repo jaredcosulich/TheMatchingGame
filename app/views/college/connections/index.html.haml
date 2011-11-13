@@ -1,0 +1,61 @@
+:javascript
+  $(function() {
+    function submitMessage(form) {
+      $.ajax({
+        type: 'POST',
+        url: $(form).attr("action"),
+        data: $(form).serialize(),
+        success: function(response) {
+          $(form).find(".message_input").val("");
+          var content = $(form).closest(".messages").find(".messages_content");
+          content.prepend(response);
+          content.attr("scrollTop", 0);
+        }
+      });
+    };
+
+    $(".new_message form").submit(function() {
+      submitMessage(this);
+      return false;
+    });
+  })
+
+.tacked_paper
+  .tack.left_tack= link_to(image_tag("college/blue_tack.png"))
+  .tack.right_tack= link_to(image_tag("college/blue_tack.png"))
+
+  %h1.text_center.uppercase Your Connections
+
+  - if @connections.empty?
+    %p When you find a mutual match you can chat with them here.
+    %p For now, though, you can help other people meet their match.
+    %p We'll keep looking for a great match for you.
+    %p= link_to("Play the game some more >", college_root_path)
+  - else
+    %table.photos_table.lightboxed{:cellpadding => 0, :cellspacing => 0}
+      %tbody
+        - @connections.sort_by { |combo| combo.unread_messages(@current_player).count }.sort_by { |combo| (last = combo.combo_actions.last).nil? ? combo.created_at : last.created_at }.reverse.each_with_index do |combo, index|
+          %tr.connection
+            %td.photo_container
+              .tacked_photo{:class => "rotate_#{index % 4}"}
+                = light_box(combo.other_photo(combo.photo_for(@current_player)))
+                .tack= link_to(image_tag("college/blue_tack.png"))
+
+            %td
+              .messages
+                .messages_header
+                  %h4= "Chat with #{combo.other_actor(@current_player).visible_name}"
+                .messages_content
+                  - combo.combo_actions.connects_and_messages.sort_by(&:created_at).reverse.each do |combo_action|
+                    = render "college/connections/message", :combo_action => combo_action
+                .new_message
+                  = form_for :combo_action, :url => action_college_connection_path(combo) do |f|
+                    = f.hidden_field :action, :value => "message"
+                    = f.text_field :message, :class => "message_input"
+                    = f.submit "Send"
+
+
+            %td
+              -#%p= link_to("Visit Connection Page >", connection_path(combo))
+              %p= link_to(params.include?(:archived) ? "Unarchive" : "Archive", archive_connection_path(combo, :archived_at => params.include?(:archived) ? nil : Time.new), :method => :put, :confirm => "Are you sure you want to #{"un " if params.include?(:archived)}archive this connection?")
+

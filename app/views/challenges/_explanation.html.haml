@@ -1,0 +1,16 @@
+%style
+  == .challenge_explanation { float: right; width: 345px; margin-top: 30px; border: 1px solid #ccc; padding: 12px; }
+
+.challenge_explanation
+  %h3 The Matchmaking Challenge
+  .explanation
+    %p Think you're a better matchmaker than your friends?
+    %p Challenge your friends to find out!
+  %h4 How The Matchmaking Challenge Works
+  .explanation
+    %p
+      Each of you will see a set of photos showing potential matches and
+      you'll need to correctly identify which couples are good matches.
+    %p The person who identifies the most good matches wins.
+  .explanation
+    %p= link_to("Challenge your friends >", new_challenge_path)

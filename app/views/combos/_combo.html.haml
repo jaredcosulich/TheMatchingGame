@@ -1,0 +1,21 @@
+- answer ||= nil
+- exclude_photo ||= nil
+
+.combo_result{:class => (exclude_photo.nil? ? "" : "one_photo")}
+  - unless combo.photo_one == exclude_photo
+    .left_photo= light_box(combo.photo_one)
+  - unless combo.photo_two == exclude_photo
+    .right_photo= light_box(combo.photo_two)
+  .combo_result_info
+    = render :partial => "combos/yes_no_graph", :locals => {:combo => combo} unless params[:t] == "possible_match"
+    %p{:style => "text-align: center;"}= image_tag(exclude_photo.image.url(:preview)) unless exclude_photo.nil?
+    - unless answer.nil?
+      .combo_result_section
+        You said:
+        = answer.full_answer
+    /
+      .combo_result_section
+        = link_to("Detailed Results >", "")
+  .status
+    %h4.inline Status:
+    = combo.status_string

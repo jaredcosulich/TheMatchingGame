@@ -1,0 +1,15 @@
+%div{:style => "clear:both"}
+%br
+%br
+
+= render :partial => "shared/anonymous_fb_message"
+
+%p{:style => "text-align: center;"}
+  - links = []
+  - if @target_photo.present?
+    - links << link_to("Find more matches for #{name_for(@target_photo)} >", play_match_me_path(@target_photo))  
+  - else
+    - links << link_to("Play another game >", root_path)
+    - links << link_to("Play a long game >", root_path(:c => 'e'))
+  - links << link_to("Get matched yourself >", new_register_path(:ref => "answers_footer")) if @current_player.photos.empty?
+  = links.join("&nbsp; &nbsp;|&nbsp; &nbsp;").html_safe

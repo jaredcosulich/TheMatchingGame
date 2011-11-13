@@ -1,0 +1,63 @@
+%style
+  == .other_info { width: 330px; }
+  == .also_clubs { width: 330px; }
+  == .photos { width: 300px; overflow: hidden; padding-top: 18px; }
+  == .photos .photo { float: left; margin: 0 30px 60px 0; height: 120px; width: 120px; line-height: 120px; text-align: center; }
+
+.right
+  = link_to("Back to clubs home >", clubs_path)
+
+%h2= "The \"#{@club.title.capitalize}\" Club"
+
+%br
+  
+.right.other_info
+  %h4= "#{@match_against_photo.gender == "f" ? "Handsome gentlemen" : "Lovely ladies"} in this club"
+  %p
+    There are
+    = pluralize(@gender_count, (@match_against_photo.gender == "f" ? "handsome gentleman" : "lovely lady"), (@match_against_photo.gender == "f" ? "handsome gentlemen" : "lovely ladies"))
+    in this club
+  %p Click a photo to learn more about the person.
+  .photos
+    - @photos.each do |photo|
+      .photo= link_to(image_tag(photo.image.url(:thumbnail)), photo_club_path(@club, :selected => photo.to_param))
+
+    - if @photos.empty?
+      %p
+        Whoops, looks like you've already seen all of the
+        = @match_against_photo.gender == "f" ? "handsome gentlemen" : "lovely ladies"
+        that belong to this group.
+      %p
+        = link_to("Return to clubs home >", clubs_path)
+
+.also_clubs
+  %h4
+    Join the
+    = "\"#{@club.title}\""
+    club:
+  %p
+    It will make it easier for
+    = @match_against_photo.gender == "f" ? "handsome gentlemen" : "lovely ladies"
+    who share this interest to find you and for you to find them.
+  %p= link_to("Join this club >", join_club_path(@club), :method => :post)
+
+  %br
+
+  %h4= "#{@match_against_photo.gender == "f" ? "Lovely ladies" : "Handsome gentlemen"} in this club"
+  %p
+    There are also
+    =pluralize(@other_gender_count, (@match_against_photo.gender == "f" ? "lovely lady" : "handsome gentleman"), (@match_against_photo.gender == "f" ? "lovely ladies" : "handsome gentlemen"))
+    in this club.
+
+  %br
+  - if @other_clubs.present?
+    %h4 People in this club also liked these clubs:
+    %table.also_clubs
+      - @other_clubs.each_with_index do |club_info, index|
+        = "<tr>".html_safe if index %2 == 0
+        - club = club_info[0]
+        %td= link_to(club.title_with_count, club_path(club))
+        = "</tr>".html_safe if index %2 == 1
+
+.clear
+

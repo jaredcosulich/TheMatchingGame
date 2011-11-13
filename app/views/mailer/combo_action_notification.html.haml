@@ -1,0 +1,17 @@
+%p= "Hi#{" #{@name}" unless @name.blank?},"
+%p= "You have a new message from #{@action_from.first_name_or_anonymous}."
+
+.div{:style => "padding: 12px; border: 1px solid #ccc;"}
+  = image_tag(@action.photo.image.url(:thumbnail), :style => "float: left; margin-right: 12px;")
+  %h4{:style=> "margin-top: 0;padding-top: 0;"}= @action_from.first_name_or_anonymous
+  - if @show_message
+    %div{:style => "overflow: hidden;"}
+      = simple_format(h(@action.message))
+
+
+%p
+  - if @show_message
+    = "You can reply to #{@action_from.him_her} from"
+  - else
+    = "You can view #{@action_from.his_her} message from"
+  = "#{link_to "your connection page", @emailing.facebook_if(@action.combo, connection_path(@action.combo), college_connections_path(@action.combo))} >".html_safe

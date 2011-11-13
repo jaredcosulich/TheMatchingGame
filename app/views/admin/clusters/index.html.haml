@@ -1,0 +1,25 @@
+%style{:type => "text/css"}
+  == td { padding: 30px 12px 30px 0; border-bottom: 1px solid #ccc; }
+
+%h1 All Correlations
+
+%table{:cellspacing => 0, :cellpadding => 0, :class => "clusters"}
+  %th Photo
+  %th Correlations
+  %th Seen Recs
+  %th Unseen Recs
+  - @correlated_photos.each do |photo|
+    %tr
+      %td
+        =link_to(image_tag(photo.image.url(:thumbnail)), admin_cluster_path(photo.id))
+      %td
+        -photo.correlated_photo_ids.each do |photo_id|
+          =link_to(image_tag(@photo_map[photo_id].image.url(:preview)), admin_cluster_path(photo_id)) unless @photo_map[photo_id].nil?
+      - existing_suggestions, not_existing_suggestions = photo.partitioned_suggestions
+      %td
+        - existing_suggestions.each do |photo_id|
+          =link_to(other_photo_tag(@combo_finder.find_combo(photo.id, photo_id), @photo_map[photo_id], :preview), admin_cluster_path(photo_id)) unless @photo_map[photo_id].nil?
+      %td
+        - not_existing_suggestions.each do |photo_id|
+          =link_to(image_tag(@photo_map[photo_id].image.url(:preview)), admin_cluster_path(photo_id)) unless @photo_map[photo_id].nil?
+

@@ -1,0 +1,31 @@
+%h2 Best Words
+
+%p Find out what words people's friends would use to describe them.
+
+%p The one rule is you've got to get your friends to describe you as well.
+
+- if true || @current_player.best_words_slug.blank?
+  = form_for :player, :url => best_words_path do |f|
+    %ol
+      %li
+        Create a
+        = link_to("BestWords.Me page >", "http://bestwords.me")
+      %li Share it with your friends and have them fill it out.
+      %li You need to have at least 2 friends contribute to your page
+      %li
+        Enter your page here (e.g. bestwords.me/RsnP):
+        %br
+        = f.label :best_words_slug, "Best Words Page:"
+        = f.text_field :best_words_slug
+        = f.submit("Save")
+      %li Check out other people's pages.
+
+    %p P.S. I made the site separate from The Matching Game so you don't have to let people know it's for a dating site, just ask them to fill it out. It works even without The Matching Game.
+
+
+.clear
+
+
+%br
+%br
+= render :partial => "shared/labs"

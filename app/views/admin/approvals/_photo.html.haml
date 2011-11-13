@@ -1,0 +1,34 @@
+.photo_container{:style => "width: 172px; #{'background-color: #ccc;' unless photo.player.sexual_orientation != 'g'} #{'background-color: red;' if photo.gender == 'u'}"}
+  .photo{:id => photo.id, :class => "#{photo.approved? ? "approved" : ""}"}
+    .photo_links
+      = link_to(image_tag(photo.image.url(:thumbnail)), crop_admin_photo_path(photo))
+    .rotation
+      = radio_button_tag("rotation_#{photo.id}", 270)
+      = radio_button_tag("rotation_#{photo.id}", 0, :checked => true)
+      = radio_button_tag("rotation_#{photo.id}", 90)
+    .profile
+      = photo.couple_combo_id.nil? ? photo.gender : "Couple"
+      &nbsp;
+      = photo.player.age
+      - if photo.player.user
+        &nbsp;
+        = photo.player.user.email
+      %br
+      &= photo.title
+    .yes_no_buttons
+      - unless photo.approved?
+        = image_tag("yes_button.jpg")
+        = image_tag("no_button.jpg")
+      %table.bucket
+        %tr
+          - 5.times do |i|
+            %td= i + 1
+        %tr
+          - 5.times do |i|
+            %td= radio_button_tag("bucket_#{photo.id}", i + 1)
+    .undo{:style => "display: none"}
+      %p
+        %span.approved Approved
+        %span.rejected Rejected
+        %span.rejected.reason= text_field_tag("reason", "")
+        %a{:href => "javascript: void(0);"} Undo

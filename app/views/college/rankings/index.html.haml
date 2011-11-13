@@ -1,0 +1,62 @@
+.tacked_paper
+  .tack.left_tack= link_to(image_tag("college/blue_tack.png"))
+  .tack.right_tack= link_to(image_tag("college/blue_tack.png"))
+
+  %h1.text_center.uppercase Your Stats
+  %p.text_center
+    You've voted on
+    = pluralize(@current_player_stat.answer_count, "match.", "matches.")
+    = pluralize(@current_player_stat.correct_count + @current_player.incorrect_count, "has", "have")
+    been verified so far.
+
+  %table.ranking_stats
+    %tr
+      %td.ranking_stat_text Overall Ranking
+      %td.ranking_stat_number= @ranking.ordinalize
+
+      %td.ranking_stat_text Correct Matches
+      %td.ranking_stat_number= @current_player_stat.correct_count
+
+      %td.ranking_stat_text Correct Percent
+      %td.ranking_stat_number= "#{@current_player_stat.accuracy}%"
+
+  %h1.text_center.uppercase Top Matchmakers
+  .text_center
+    = link_to("Top of the Leaderboard", params.merge(:top => 1, :page => nil))
+    &nbsp; &nbsp; &nbsp;
+    = link_to("Leaderboard Around Me", params.merge(:top => nil, :page => nil))
+  %table.photos_table{:cellpadding => 0, :cellspacing => 0, :style => "margin: 12px 0 0 -45px; width: 112%"}
+    %tbody
+      - @leaders.each_with_index do |leader, index|
+        %tr.ranking
+          %td.photo_container
+            .tacked_photo{:class => "rotate_#{index % 4}"}
+              - photo = (leader.college_photo || leader.primary_photo)
+              = image_tag(photo.image.url(:thumbnail)) unless photo.nil?
+              .tack= link_to(image_tag("college/blue_tack.png"))
+
+          %td
+            .ranking_stat_number
+              = "#{((@page * College::RankingsController::LEADERS_PER_PAGE) + index + 1)}:"
+              = leader.visible_name if leader.present?
+            .badges
+              - badges = leader.all_badge_icons
+              - size = badges.length > 2 ? (badges.length > 6 ? "30x30" : "45x45") : nil
+              - badges.each do |badge|
+                = image_tag("badges/#{badge}.png", :size => size)
+          %td
+            .leader_stat
+              .ranking_stat_number= leader.player_stat.correct_count
+              correct matches
+
+          %td
+            .leader_stat
+              .ranking_stat_number= "#{leader.player_stat.accuracy}%"
+              correct
+
+  .pagination
+    - unless @leaders.length < College::RankingsController::LEADERS_PER_PAGE
+      %p.right= link_to("Next Page >", params.merge(:page => @page + 1))
+
+    - unless @page <= 0
+      %p= link_to("< Previous Page", params.merge(:page => @page - 1))

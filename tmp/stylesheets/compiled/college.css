@@ -1,0 +1,486 @@
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "Gloria Hallelujah", cursive;
+  width: 760px;
+  color: #333333;
+  font-size: 10pt;
+  line-height: 1.25em; }
+  body a {
+    text-decoration: none;
+    cursor: pointer; }
+    body a:visited {
+      text-decoration: none;
+      cursor: pointer; }
+    body a img {
+      border: none; }
+  body h1, body a, body a:visited {
+    color: #486791; }
+  body h1 {
+    font-size: 22pt;
+    font-family: "Kranky", cursive;
+    padding: 12px 0;
+    margin: 0; }
+  body h2 {
+    font-size: 15pt;
+    margin: 0;
+    padding: 0; }
+  body h3 {
+    font-size: 13pt;
+    font-weight: normal;
+    margin: 0;
+    padding: 0; }
+  body h4 {
+    margin: 0;
+    padding: 0; }
+  body .text_center {
+    text-align: center; }
+  body .uppercase {
+    text-transform: uppercase; }
+  body .left {
+    float: left; }
+  body .right {
+    float: right; }
+  body .clear {
+    clear: both; }
+  body .explanation {
+    font-weight: normal;
+    font-size: 10pt; }
+  body .small {
+    font-weight: normal;
+    font-size: 8.5pt; }
+  body .lightbox .lightbox_text {
+    display: none; }
+  body .lightboxed .lightbox {
+    display: block;
+    text-align: center;
+    font-size: 8pt; }
+    body .lightboxed .lightbox .lightbox_text {
+      display: block; }
+  body .cork {
+    height: 1472px;
+    width: 760px;
+    background: white url("/images/college/frame.jpg"); }
+    body .cork .top_frame {
+      height: 36px; }
+    body .cork .bottom_frame {
+      height: 35px; }
+    body .cork .frame_buffer {
+      height: 95px; }
+    body .cork .left_frame, body .cork .right_frame {
+      width: 38px; }
+    body .cork .tacked_logo {
+      z-index: 20;
+      position: absolute;
+      top: 0px;
+      left: 12px; }
+      body .cork .tacked_logo .logo {
+        -webkit-transform: rotate(-8deg);
+        -moz-transform: rotate(-8deg);
+        -o-transform: rotate(-8deg);
+        transform: rotate(-8deg); }
+      body .cork .tacked_logo .tack {
+        position: absolute;
+        top: 6px;
+        left: 57px; }
+    body .cork .tacked_college_logo {
+      z-index: 20;
+      position: absolute;
+      top: 18px;
+      left: 528px; }
+      body .cork .tacked_college_logo .logo {
+        -webkit-transform: rotate(6deg);
+        -moz-transform: rotate(6deg);
+        -o-transform: rotate(6deg);
+        transform: rotate(6deg); }
+      body .cork .tacked_college_logo .tack {
+        position: absolute; }
+        body .cork .tacked_college_logo .tack img {
+          width: 18px;
+          height: 21px; }
+      body .cork .tacked_college_logo .left_tack {
+        top: -18px;
+        left: 3px; }
+      body .cork .tacked_college_logo .right_tack {
+        top: 6px;
+        left: 204px; }
+    body .cork .navigation {
+      background: transparent url("/images/college/navigation.png") no-repeat;
+      width: 582px;
+      height: 38px;
+      position: absolute;
+      z-index: 30;
+      top: 80px;
+      left: 160px;
+      padding-left: 9px; }
+      body .cork .navigation a {
+        line-height: 30px;
+        font-size: 9pt;
+        padding: 0 9px; }
+        body .cork .navigation a.selected_navigation {
+          background-color: #90ff35; }
+    body .cork .content {
+      vertical-align: top; }
+  body.home_index #photos {
+    width: 78%;
+    margin: auto;
+    z-index: 10;
+    padding-left: 12px;
+    position: relative; }
+    body.home_index #photos .congratulations {
+      background-color: white;
+      height: 220px; }
+      body.home_index #photos .congratulations h3 {
+        padding: 12px 0; }
+      body.home_index #photos .congratulations p {
+        margin: 12px 6px; }
+    body.home_index #photos .photo {
+      height: 300px;
+      width: 240px;
+      background-color: #f6f1ea;
+      position: relative;
+      -webkit-box-shadow: -2px 2px 6px #333333;
+      -moz-box-shadow: -2px 2px 6px #333333;
+      -o-box-shadow: -2px 2px 6px #333333;
+      box-shadow: -2px 2px 6px #333333;
+      text-align: center; }
+      body.home_index #photos .photo .image {
+        margin: 10px;
+        background-color: black;
+        height: 220px; }
+      body.home_index #photos .photo .interests {
+        height: 50px;
+        background-color: white;
+        margin: 0 10px 10px 10px;
+        overflow: auto; }
+    body.home_index #photos .left_photo {
+      float: right;
+      -webkit-transform: rotate(7deg);
+      -moz-transform: rotate(7deg);
+      -o-transform: rotate(7deg);
+      transform: rotate(7deg); }
+    body.home_index #photos .right_photo {
+      -webkit-transform: rotate(-3deg);
+      -moz-transform: rotate(-3deg);
+      -o-transform: rotate(-3deg);
+      transform: rotate(-3deg);
+      float: left; }
+    body.home_index #photos .tack {
+      position: absolute;
+      top: -9px;
+      left: 114px; }
+    body.home_index #photos #photo_cache {
+      height: 1px;
+      width: 1px;
+      overflow: hidden;
+      position: absolute;
+      top: -1000px;
+      left: -1000px; }
+  body.home_index #buttons {
+    -webkit-transform: rotate(-4deg);
+    -moz-transform: rotate(-4deg);
+    -o-transform: rotate(-4deg);
+    transform: rotate(-4deg);
+    -webkit-box-shadow: -2px 2px 6px #333333;
+    -moz-box-shadow: -2px 2px 6px #333333;
+    -o-box-shadow: -2px 2px 6px #333333;
+    box-shadow: -2px 2px 6px #333333;
+    margin: -99px 0 0 182px;
+    background: transparent url("/images/college/paper.png") center no-repeat;
+    height: 402px;
+    width: 334px; }
+    body.home_index #buttons .share_or_next {
+      padding-top: 99px;
+      text-align: center; }
+    body.home_index #buttons .vote_buttons .match_button {
+      margin-top: 15px;
+      cursor: pointer; }
+    body.home_index #buttons .vote_buttons .bad_match {
+      float: left;
+      margin-left: 21px; }
+    body.home_index #buttons .vote_buttons .good_match {
+      float: right;
+      margin-right: 21px; }
+    body.home_index #buttons .vote_buttons .click_text {
+      width: 99px;
+      margin: 18px 0 0 6px;
+      float: left;
+      text-align: center; }
+    body.home_index #buttons .good_bad_votes {
+      clear: both;
+      width: 334px;
+      margin-left: 6px;
+      padding-top: 12px; }
+      body.home_index #buttons .good_bad_votes .votes_header {
+        padding: 0 0 6px 118px; }
+      body.home_index #buttons .good_bad_votes .your_vote {
+        padding: 0 0 6px 102px; }
+      body.home_index #buttons .good_bad_votes .last_couple_photos {
+        float: left;
+        width: 99px; }
+        body.home_index #buttons .good_bad_votes .last_couple_photos .photo_one, body.home_index #buttons .good_bad_votes .last_couple_photos .photo_two {
+          width: 45px;
+          height: 45px;
+          float: right; }
+        body.home_index #buttons .good_bad_votes .last_couple_photos .photo_one {
+          -webkit-transform: rotate(-2deg);
+          -moz-transform: rotate(-2deg);
+          -o-transform: rotate(-2deg);
+          transform: rotate(-2deg);
+          text-align: left;
+          margin-right: 6px; }
+        body.home_index #buttons .good_bad_votes .last_couple_photos .photo_two {
+          -webkit-transform: rotate(3deg);
+          -moz-transform: rotate(3deg);
+          -o-transform: rotate(3deg);
+          transform: rotate(3deg);
+          text-align: right; }
+      body.home_index #buttons .good_bad_votes .votes_text {
+        float: left;
+        font-family: "Kranky", cursive;
+        color: #486791;
+        text-align: right;
+        width: 54px;
+        font-weight: bold; }
+        body.home_index #buttons .good_bad_votes .votes_text .good_text {
+          -webkit-transform: rotate(-1deg);
+          -moz-transform: rotate(-1deg);
+          -o-transform: rotate(-1deg);
+          transform: rotate(-1deg);
+          margin-bottom: 6px; }
+        body.home_index #buttons .good_bad_votes .votes_text .bad_text {
+          -webkit-transform: rotate(1deg);
+          -moz-transform: rotate(1deg);
+          -o-transform: rotate(1deg);
+          transform: rotate(1deg); }
+      body.home_index #buttons .good_bad_votes .votes {
+        float: right;
+        width: 162px; }
+        body.home_index #buttons .good_bad_votes .votes .good_votes {
+          -webkit-transform: rotate(-1deg);
+          -moz-transform: rotate(-1deg);
+          -o-transform: rotate(-1deg);
+          transform: rotate(-1deg);
+          background-color: #90ff35;
+          margin-bottom: 6px;
+          border-top: 17px solid #90ff35;
+          border-right: 3px solid white;
+          height: 1px; }
+        body.home_index #buttons .good_bad_votes .votes .bad_votes {
+          -webkit-transform: rotate(1deg);
+          -moz-transform: rotate(1deg);
+          -o-transform: rotate(1deg);
+          transform: rotate(1deg);
+          background-color: #c90045;
+          border-bottom: 17px solid #c90045;
+          border-left: 1px solid white;
+          border-right: 2px solid white;
+          height: 1px; }
+      body.home_index #buttons .good_bad_votes .verified_results {
+        padding-left: 12px;
+        overflow: hidden; }
+    body.home_index #buttons .player_stats {
+      clear: both;
+      padding: 12px 12px 0 12px;
+      line-height: 1.5em; }
+      body.home_index #buttons .player_stats .red {
+        color: #c90045; }
+      body.home_index #buttons .player_stats .green {
+        color: #2f6800; }
+  body.home_index #badges {
+    position: absolute;
+    left: 622px;
+    top: 455px;
+    width: 102px; }
+  body.home_index #matching_status_preview {
+    -webkit-transform: rotate(3deg);
+    -moz-transform: rotate(3deg);
+    -o-transform: rotate(3deg);
+    transform: rotate(3deg);
+    -webkit-box-shadow: -2px 2px 6px #333333;
+    -moz-box-shadow: -2px 2px 6px #333333;
+    -o-box-shadow: -2px 2px 6px #333333;
+    box-shadow: -2px 2px 6px #333333;
+    background: transparent url("/images/college/small_paper.png") center no-repeat;
+    height: 212px;
+    width: 172px;
+    position: absolute;
+    top: 510px;
+    left: 12px; }
+    body.home_index #matching_status_preview .matching_status_message {
+      padding: 30px 12px; }
+      body.home_index #matching_status_preview .matching_status_message img {
+        margin: auto;
+        display: block; }
+  body .critical_error {
+    background-color: white;
+    -webkit-transform: rotate(-2deg);
+    -moz-transform: rotate(-2deg);
+    -o-transform: rotate(-2deg);
+    transform: rotate(-2deg);
+    -webkit-box-shadow: -2px 2px 6px #333333;
+    -moz-box-shadow: -2px 2px 6px #333333;
+    -o-box-shadow: -2px 2px 6px #333333;
+    box-shadow: -2px 2px 6px #333333;
+    padding: 12px;
+    width: 90%;
+    margin-left: 5%;
+    margin-top: 30px; }
+  body .tacked_paper {
+    background-color: #f4f2f3;
+    -webkit-transform: rotate(-2deg);
+    -moz-transform: rotate(-2deg);
+    -o-transform: rotate(-2deg);
+    transform: rotate(-2deg);
+    -webkit-box-shadow: -2px 2px 6px #333333;
+    -moz-box-shadow: -2px 2px 6px #333333;
+    -o-box-shadow: -2px 2px 6px #333333;
+    box-shadow: -2px 2px 6px #333333;
+    padding: 12px;
+    width: 70%;
+    margin-left: 18%;
+    position: relative; }
+    body .tacked_paper .tack {
+      position: absolute; }
+    body .tacked_paper .left_tack {
+      top: 4px;
+      left: 3px; }
+    body .tacked_paper .right_tack {
+      top: 0;
+      left: 465px; }
+    body .tacked_paper .photos_table {
+      margin-top: 12px;
+      margin-left: -108px;
+      text-align: center; }
+      body .tacked_paper .photos_table th {
+        padding: 6px 12px; }
+      body .tacked_paper .photos_table td {
+        padding-bottom: 12px; }
+        body .tacked_paper .photos_table td.match_answers .answered_good, body .tacked_paper .photos_table td.match_answers .answered_bad {
+          display: none; }
+        body .tacked_paper .photos_table td.match_answers.answered_good .answered_good {
+          display: block; }
+        body .tacked_paper .photos_table td.match_answers.answered_good .not_answered {
+          display: none; }
+        body .tacked_paper .photos_table td.match_answers.answered_bad .answered_bad {
+          display: block; }
+        body .tacked_paper .photos_table td.match_answers.answered_bad .not_answered {
+          display: none; }
+        body .tacked_paper .photos_table td.match_answers .answer {
+          cursor: pointer; }
+        body .tacked_paper .photos_table td .messages {
+          background-color: #ece5ce;
+          text-align: left;
+          -webkit-box-shadow: -1px 1px 3px #333333;
+          -moz-box-shadow: -1px 1px 3px #333333;
+          -o-box-shadow: -1px 1px 3px #333333;
+          box-shadow: -1px 1px 3px #333333; }
+          body .tacked_paper .photos_table td .messages .messages_header {
+            border-bottom: 1px solid #e9ccbe;
+            padding: 6px 12px 3px 12px; }
+          body .tacked_paper .photos_table td .messages .messages_content {
+            padding: 6px 0;
+            width: 300px;
+            overflow: auto;
+            height: 120px;
+            background: url("/images/college/notecard.gif") top left; }
+          body .tacked_paper .photos_table td .messages .message {
+            padding: 3px 12px; }
+            body .tacked_paper .photos_table td .messages .message p {
+              margin: 0;
+              padding: 0; }
+          body .tacked_paper .photos_table td .messages .them {
+            color: #8087f3; }
+          body .tacked_paper .photos_table td .messages .you {
+            color: #ec574a; }
+          body .tacked_paper .photos_table td .messages .new_message {
+            padding: 6px;
+            text-align: center; }
+            body .tacked_paper .photos_table td .messages .new_message .message_input {
+              width: 210px; }
+        body .tacked_paper .photos_table td .scores {
+          padding-left: 12px; }
+          body .tacked_paper .photos_table td .scores .good_score, body .tacked_paper .photos_table td .scores .bad_score {
+            margin-top: 12px;
+            height: 18px; }
+          body .tacked_paper .photos_table td .scores .good_score {
+            background-color: #90ff35; }
+          body .tacked_paper .photos_table td .scores .bad_score {
+            background-color: #c90045; }
+    body .tacked_paper .ranking .leader_stat {
+      background-color: #90ff35;
+      width: 90px;
+      text-align: center;
+      margin: 0 12px;
+      padding-bottom: 12px; }
+    body .tacked_paper .ranking_stats {
+      width: 100%;
+      margin-bottom: 30px; }
+      body .tacked_paper .ranking_stats .ranking_stat_text {
+        text-align: right;
+        width: 60px;
+        padding: 6px 6px 6px 12px; }
+      body .tacked_paper .ranking_stats .ranking_stat_number {
+        background-color: #ecfc54;
+        text-align: center;
+        padding: 18px 12px; }
+    body .tacked_paper .ranking_stat_number {
+      font-size: 18pt;
+      padding: 12px 0 6px 0; }
+    body .tacked_paper .tacked_photo {
+      margin-right: 12px;
+      padding: 9px 6px 6px 6px;
+      background-color: #d9d8d7;
+      text-align: center;
+      position: relative;
+      -webkit-box-shadow: -2px 1px 6px #333333;
+      -moz-box-shadow: -2px 1px 6px #333333;
+      -o-box-shadow: -2px 1px 6px #333333;
+      box-shadow: -2px 1px 6px #333333; }
+      body .tacked_paper .tacked_photo.rotate_0 {
+        -webkit-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg); }
+      body .tacked_paper .tacked_photo.rotate_1 {
+        -webkit-transform: rotate(4deg);
+        -moz-transform: rotate(4deg);
+        -o-transform: rotate(4deg);
+        transform: rotate(4deg); }
+      body .tacked_paper .tacked_photo.rotate_2 {
+        -webkit-transform: rotate(1deg);
+        -moz-transform: rotate(1deg);
+        -o-transform: rotate(1deg);
+        transform: rotate(1deg); }
+      body .tacked_paper .tacked_photo.rotate_3 {
+        -webkit-transform: rotate(5deg);
+        -moz-transform: rotate(5deg);
+        -o-transform: rotate(5deg);
+        transform: rotate(5deg); }
+      body .tacked_paper .tacked_photo .tack {
+        position: absolute;
+        top: -12px;
+        left: 42%; }
+        body .tacked_paper .tacked_photo .tack img {
+          width: 16px;
+          height: 23px; }
+      body .tacked_paper .tacked_photo p {
+        margin: 6px 12px; }
+    body .tacked_paper .change_photo {
+      padding: 0 12px 30px 0;
+      float: left; }
+    body .tacked_paper .settings_section {
+      padding: 12px 0 12px 12px;
+      overflow: hidden;
+      border-left: 1px solid #486791;
+      border-bottom: 1px solid #486791; }
+      body .tacked_paper .settings_section .explanation {
+        font-size: 8pt;
+        float: right;
+        width: 150px; }
+      body .tacked_paper .settings_section p {
+        margin-top: 0; }
+    body .tacked_paper .pagination {
+      width: 60%;
+      margin: auto;
+      overflow: hidden; }

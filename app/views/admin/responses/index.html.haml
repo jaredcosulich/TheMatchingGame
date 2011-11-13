@@ -1,0 +1,22 @@
+%style{:type => "text/css"}
+  == table { margin-top: 30px; }
+
+%h3 Go To:
+= link_to("All", admin_responses_path(:a1 => params[:a1], :a2 => params[:a2]))
+&nbsp; | &nbsp;
+= link_to("Today", admin_responses_path(:d => 'today', :a1 => params[:a1], :a2 => params[:a2]))
+&nbsp; | &nbsp;
+= link_to("Yesterday", admin_responses_path(:d => 'yesterday', :a1 => params[:a1], :a2 => params[:a2]))
+&nbsp; | &nbsp;
+= link_to("Same Day Last Week", admin_responses_path(:d => 'same_day_last_week', :a1 => params[:a1], :a2 => params[:a2]))
+&nbsp; | &nbsp;
+= link_to("This Week", admin_responses_path(:d => 'this_week', :a1 => params[:a1], :a2 => params[:a2]))
+&nbsp; | &nbsp;
+= link_to("Last Week", admin_responses_path(:d => 'last_week', :a1 => params[:a1], :a2 => params[:a2]))
+
+%br
+%br
+
+%h3= "Total #{@response_combos.length} #{params[:a]}"
+ 
+= render :partial => "admin/combos/combos_table", :object => @response_combos

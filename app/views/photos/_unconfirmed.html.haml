@@ -1,0 +1,81 @@
+- @no_sidebar = true
+= javascript_include_tag("jquery.Jcrop.min")
+= stylesheet_link_tag("jquery.Jcrop")
+
+%style{:type => "text/css"}
+  == #photo_container { float: left; background-color: #ccc; width: 330px; text-align: center; margin-right: 30px; }
+  == #photo { margin: 15px; }
+  == #submits { overflow: hidden; }
+
+:javascript
+  function onSelect(crop){
+    $("#x").val(crop.x);
+    $("#y").val(crop.y);
+    $("#h").val(crop.h);
+    $("#w").val(crop.w);
+  }
+  $(function(){
+    cropLoaded = false;
+
+    function loadCrop() {
+      if (cropLoaded) return;
+      var photo = $('#photo img');
+      photo.Jcrop({
+        setSelect: [0, 0, photo.width(), photo.height()],
+        onSelect: onSelect
+      });
+      cropLoaded = true;
+    }
+
+    $('#photo img').not('.processed_group_loading').load(loadCrop);
+
+    setTimeout(loadCrop, 1000)
+  });
+
+<!-- Google Code for Photo Added Conversion Page -->
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 1022832703;
+var google_conversion_language = "en";
+var google_conversion_format = "3";
+var google_conversion_color = "ffffff";
+var google_conversion_label = "W0ARCJGmiAIQv-Dc5wM";
+var google_conversion_value = 0;
+if (1) {
+google_conversion_value = 1;
+}
+/* ]]> */
+</script>
+<script type="text/javascript" src="http://www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="http://www.googleadservices.com/pagead/conversion/1022832703/?value=1&amp;label=W0ARCJGmiAIQv-Dc5wM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+
+
+%h2 Confirm photo
+%br
+#photo_container
+  #photo= processed_image_group(@photo, :normal)
+
+= form_for @photo, :url => confirm_photo_path do |f|
+  = hidden_field_tag("crop_spec[x]", "", {:id => "x"})
+  = hidden_field_tag("crop_spec[y]", "", {:id => "y"})
+  = hidden_field_tag("crop_spec[w]", "", {:id => "w"})
+  = hidden_field_tag("crop_spec[h]", "", {:id => "h"})
+  #submits
+    %p
+      Crop your photo to ensure that it shows only you.
+    %p
+      Then click "Confirm Photo" to save your cropped photo and let the matchmaking begin.
+    %br
+    = image_submit_tag("confirmphoto.png")
+    %br
+    %p
+      Or,
+      = link_to("select a different photo >", edit_photo_path(@photo))
+
+
+%iframe{:src => "http://t.ads.pof.com/cc.aspx?a=eHl5eX5kZGhnZm1ubWlpY2xrb2Y=", :style => "display:none"}

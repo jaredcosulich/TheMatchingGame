@@ -1,0 +1,10 @@
+%div{:style => "width: 50%; float: left;"}
+  = render :partial => "admin/combos/combos_table", :object => @great_combos
+
+.clear
+  
+%br
+%br
+%br
+
+= link_to("Next Page", params.merge(:page => @page + 1))

@@ -1,0 +1,60 @@
+%style
+  == .top_ad { margin-bottom: 24px; }
+  == .ad { width: 200px }
+  == .highlighted_photo img { float: left; margin-right: 12px; }
+  == .highlighted_photo .profile { float: left; width: 150px; overflow: hidden; }
+  == .highlighted_photo .profile .interests { margin-top: 12px; }
+  == .section { clear: both; overflow: hidden; padding-top: 24px; }
+  == .section table { width: 100%; }
+  == .section table td { width: 20%; text-align: center; padding: 0 6px; }
+  == .meet { float: left; width: 200px; margin-left: 30px; }
+  == .right { float: right; margin-right: 12px; padding-top: 6px; }
+  == .answer .yes_button { background: url("/images/buttons.png") no-repeat scroll -194px -38px transparent; }
+  == .answer .no_button { background: url("/images/buttons.png") no-repeat scroll -20px -38px transparent; }
+
+%h2 Discover Who Is On The Matching Game
+
+.section
+  %h4 Jump to a different photo:
+  - @other_photos.each do |photo|
+    %div{:style => "display: block; float: left; height: 126px; width: 138px; text-align: center; line-height: 126px;"}
+      = link_to(image_tag(photo.image.url(:thumbnail), :style => "vertical-align: middle;"), profile_game_discover_path(:highlighted => photo.id.to_obfuscated, :game_id => @game_id))
+
+.section
+  %h4 Jump to a different interest:
+  %table{:cellpadding => 0, :cellspacing => 0}
+    %tr
+      - @interests.each do |interest|
+        %td= link_to(interest.title, profile_game_discover_path(:highlighted => interest.player.photos.not_coupled.sort_by { |p| p.bucket || 0 }.last.id.to_obfuscated, :game_id => @game_id))
+
+.section
+  .highlighted_photo
+    %h4 Selected person:
+    - player = @highlighted_photo.player
+    = image_tag(@highlighted_photo.image.url)
+    .profile
+      %h3= @highlighted_photo.first_name
+      .interests
+        %b My Interests:
+        - if @highlighted_photo.interests.empty?
+          %p
+            = @highlighted_photo.first_name.blank? ? @highlighted_photo.he_she.capitalize : @highlighted_photo.first_name.capitalize
+            hasn't filled out any interests yet.
+        - else
+          %ul
+            - @highlighted_photo.interests.sort_by { |interest| interest.title.split(/\s/).first.length }.each do |interest|
+              %li= link_to_unless(interest.club.nil?, interest.title, club_path(interest.club))
+    .meet
+      %h3
+        A Good Match?
+
+      %div{:id => "photo_profile_#{@highlighted_photo.id}", :style => "display: none; width: 720px;"}
+        = render :partial => "photos/profile", :locals => {:photo => @highlighted_photo}
+      %p= link_to "Learn more about #{@highlighted_photo.visible_name}", "#photo_profile_#{@highlighted_photo.id}", :class => "more_info"
+
+      %p
+        Do you think you and
+        = player.first_name.blank? ? (player.him_her) : player.first_name
+        might be a good match?
+      = render :partial => "profile_game/answer", :locals => {:game => "discover", :highlighted_photo => @highlighted_photo, :photo_id => @current_player.photos.approved_or_confirmed.first.id, :next_message => "Now discover someone else above."}
+

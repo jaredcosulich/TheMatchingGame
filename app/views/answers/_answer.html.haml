@@ -1,0 +1,29 @@
+- combo = answer.combo
+.combo_result
+  .left_photo.photo
+    = image_tag(combo.photo_one.image.url(:thumbnail))
+  .right_photo.photo
+    = image_tag(combo.photo_two.image.url(:thumbnail))
+  .right_or_wrong
+    - if answer.correct? && !combo.fake_predicted?
+      You Were
+      %br
+      =image_tag("famfam/accept.png")
+      %br
+      %b Correct!
+    - elsif answer.incorrect? && !combo.fake_predicted?
+      You Were
+      %br
+      =image_tag("famfam/cancel.png")
+      %br
+      %b Wrong
+  .combo_result_info
+    = render :partial => "combos/yes_no_graph", :locals => {:combo => combo}
+    .combo_result_section
+      You said:
+      = answer.full_answer
+  .status{:style => "line-height: 18px;"}
+    %div{:style => "float: right;"}= "New" if controller.action_name == 'query' && answer.viewed_at && combo.state_changed_at && answer.viewed_at < combo.state_changed_at
+    = image_tag(combo.status_image, :style => "vertical-align: -3px;")
+    %b= "#{combo.status_string.split(' - ')[0]}:"
+    = combo.status_string.split('-')[1]

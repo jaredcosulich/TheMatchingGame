@@ -1,0 +1,38 @@
+.match_me_promo
+  %h4
+    Have Your Friends Match You
+
+  .intro_photo
+    .your_photo
+      = processed_image_group(@photo, :thumbnail)
+    = image_tag("question_match.png", :style => "vertical-align: -12px;")
+
+  %p
+    Your friends know you best.
+    %br
+    Send them this link and they can be your personal matchmaker.
+    
+  %p
+    %b Your Personal Matching Link:
+    %br
+    = link_to(match_me_url(@photo), match_me_path(@photo))
+
+  %p
+    Or you can can start matching yourself.
+    %br
+    %span.small (though it's not quite as much fun as seeing who your friends match you with)
+
+  %p.small{:style => "text-align:center;"}
+    = link_to(image_tag("match_me.png"), match_me_url(@photo))
+    %br
+    (our matchmakers will continue to match you as well)
+
+    
+  %p
+    %b See The Results:
+    %br
+    Check out all the matches your friends have found for you:
+    %br
+    = link_to("Matches from your friends >", friends_match_me_path(@photo))
+
+%br

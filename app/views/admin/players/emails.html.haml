@@ -1,0 +1,9 @@
+%h3&= "Player #{@player.id} - #{@player.name_age_and_place}"
+
+%ul
+  - User.unscoped.where("player_id = ?", @player.id).map(&:emailings).flatten.sort_by(&:created_at).reverse.each do |emailing|
+    %li
+      = link_to(emailing.email_name, admin_emailing_path(emailing))
+      = "(#{(emailing.created_at - 8.hours).strftime('%b %d, %Y, %T')})"
+      - if (clicks = emailing.links.map(&:clicks).flatten).length > 0
+        = "(#{pluralize(clicks.length, "click")})"

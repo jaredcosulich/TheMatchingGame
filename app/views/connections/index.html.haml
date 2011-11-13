@@ -1,0 +1,28 @@
+- connections = params.include?(:archived) ? @archived_connections : @connections
+- other_connections = params.include?(:archived) ? @connections : @archived_connections
+
+%style
+  == .connections .connection { overflow: hidden; padding: 6px 0; float: left; width: 345px; height: 150px; }
+  == .connections .connection .details { overflow: hidden; }
+
+%h2 Your Connections
+
+%p The following people have either messaged you or you've messaged them or both.
+%p If you don't want to see someone on the list any more just click to archive them.
+- if other_connections.length > 0
+  %p
+    You also have
+    = pluralize(other_connections.length, "#{"archived " unless params.include?(:archived)}connection.", "#{"archived " unless params.include?(:archived)}connections.")
+    = link_to("View them >", connections_path(:archived => params.include?(:archived) ? nil : 1))
+
+.connections
+  - connections.sort_by { |combo| combo.unread_messages(@current_player).count }.sort_by { |combo| (last = combo.combo_actions.last).nil? ? combo.created_at : last.created_at }.reverse.each do |combo|
+    .connection
+      = image_tag(combo.other_photo(combo.photo_for(@current_player)).image.url(:thumbnail), :style => "float: left; margin-right: 12px;")
+      .details
+        %h4= "Connection with #{combo.other_actor(@current_player).visible_name}"
+        %p
+          = pluralize(combo.combo_actions.length, "message", "messages")
+          = "(#{pluralize(combo.unread_messages(@current_player).count, "unread", "unread")})"
+        %p= link_to("Visit Connection Page >", connection_path(combo))
+        %p= link_to(params.include?(:archived) ? "Unarchive" : "Archive", archive_connection_path(combo, :archived_at => params.include?(:archived) ? nil : Time.new), :method => :put, :confirm => "Are you sure you want to #{"un " if params.include?(:archived)}archive this connection?")

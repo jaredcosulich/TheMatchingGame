@@ -1,0 +1,96 @@
+%style
+  == .labs { border-top: 1px solid #ccc; border-bottom: 1px solid #ccc; padding-top: 6px; overflow: hidden; margin-bottom: 30px; }
+  == .lab_item { float: left; text-align: center; width: 174px; margin-top: 6px; }
+  == .lab_item a { display: block; }
+  == .labs a.link { padding: 0 15px; font-size: 10pt; line-height: 2em; }
+
+- if controller.locale_subdomain.nil?
+  -#
+    .latest_news
+      .explanation
+        %b Latest News:
+        Sorry to bother everyone, but I need your help. I really don't want to turn the site in to a pay site, but
+        if I can't find a way to grow the site without a huge advertising budget, I might have to. So
+        = link_to("please tell people you know about the site,", spread_the_word_path)
+        it's a huge help.
+        %br
+        As always, let me know if you have problems or suggestions
+        using the feedback link at the bottom of the page.
+        %br
+        &nbsp; &nbsp; - Thanks, Jared
+
+  .labs
+    %h2
+      The Labs
+      %span.explanation
+        (I've got a bunch of other stuff in the works as well - let me know what you think)
+
+    .lab_item
+      %b Discover Who
+      = link_to(image_tag("discover_game.gif"), profile_game_discover_path)
+
+    .lab_item
+      %b Questions & Answers
+      = link_to(image_tag("q_and_a.jpg"), questions_path)
+
+    .lab_item
+      %b Priority Matching
+      = link_to(image_tag("priority_matching.jpg"), priorities_path)
+
+    .lab_item
+      %b The Map
+      = link_to(image_tag("map.jpg"), map_path)
+
+    = link_to("Speed Dating (through a partner)", "http://www.speeddate.com/index.php?page=signup&action=join&afid=#{@current_player.id}&asid=&pid=8419", :class => "link", :target => "_blank")
+
+    = link_to("Interesting Interests", profile_game_interests_path, :class => "link")
+
+    = link_to("Discounts", dating_discounts_path, :class => "link")
+
+    = link_to("Go Clubbing", clubs_path, :class => "link")
+
+    = link_to("Best Words", best_words_path, :class => "link")
+
+- else
+  .latest_news
+    .explanation
+      %b= "Welcome to #{controller.locale_subdomain_area} edition of The Matching Game:"
+      %br
+      = controller.locale_subdomain_area.capitalize
+      edition is new, so you will likely
+      get matched with people outside of
+      = controller.locale_subdomain_area
+      as well, at least to start, but hopefully not for long.
+
+
+  .labs
+    %h2
+      The Labs
+      %span.explanation
+        = "(fyi: these features are not yet limited to just #{controller.locale_subdomain_area})"
+
+    .lab_item
+      %b Discover Who
+      = link_to(image_tag("discover_game.gif"), profile_game_discover_path)
+
+    .lab_item
+      %b Questions & Answers
+      = link_to(image_tag("q_and_a.jpg"), questions_path)
+
+    .lab_item
+      %b Priority Matching
+      = link_to(image_tag("priority_matching.jpg"), priorities_path)
+
+    .lab_item
+      %b The Map
+      = link_to(image_tag("map.jpg"), map_path)
+
+    = link_to("Speed Dating (through a partner)", "http://www.speeddate.com/index.php?page=signup&action=join&afid=#{@current_player.id}&asid=&pid=8419", :target => "_blank", :class => "link")
+
+    = link_to("Interesting Interests", profile_game_interests_path, :class => "link")
+
+    = link_to("Discounts", dating_discounts_path, :class => "link")
+
+    = link_to("Go Clubbing", clubs_path, :class => "link")
+
+    = link_to("Best Words", best_words_path, :class => "link")

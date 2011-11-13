@@ -1,0 +1,10 @@
+- @shares.each do |share|
+  %p= share.from
+  %p= share.emails
+  %p= share.message
+  %p
+    = link_to("REJECT", reject_admin_share_path(share), :method => "POST", :style => "float: right;")
+    = link_to("APPROVE", approve_admin_share_path(share), :method => "POST")
+  %br
+  %br
+  %br

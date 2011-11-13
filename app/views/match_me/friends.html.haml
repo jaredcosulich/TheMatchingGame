@@ -1,0 +1,80 @@
+%style
+  == .instructions { float: right; width: 330px; }
+  == .friend_suggestion { float: left; height: 210px; width: 174px; text-align: center; }
+
+.instructions
+  - if @friend_suggestions.empty?
+    %p Your friends have not yet found any potential matches for this photo.
+    %p Send them the link below to let them match you up. They'll probably have a lot of fun doing so :)
+  - else
+    %p Check out the potential matches your friends found for this photo below.
+    %p If our match makers agree on a match (or you guys both match each other) then we'll introduce the two of you.
+    %p If you want to get some more matches from your friends, send them this link:
+    %p= link_to(match_me_url(@target_photo), match_me_path(@target_photo))
+
+= processed_image_group(@target_photo, :normal)
+
+.clear
+%br
+%br
+
+- if @friend_suggestions.empty?
+  %p When your friends find a potential match for you it will appear here.
+  %p Send them this link to let them match you up:
+  %p= link_to(match_me_url(@target_photo), match_me_path(@target_photo))
+- @friend_suggestions.each do |suggestion|
+  .friend_suggestion
+    = light_box(suggestion[:photo])
+    %br
+    Matched by
+    = pluralize(suggestion[:count], "friend")
+    .answer
+      - if suggestion[:answer].nil?
+        Do you agree?
+        %br
+        %a.yes_no_buttons{:href => "javascript: void(0);", :data => {:id => @target_photo.id, :other_photo_id => suggestion[:photo].id, :answer => "y"}} Yes
+        &nbsp; &nbsp;
+        %a.yes_no_buttons{:href => "javascript: void(0);", :data => {:id => @target_photo.id, :other_photo_id => suggestion[:photo].id, :answer => "n"}} No
+      - elsif suggestion[:answer] == 'y'
+        You agreed!
+      - else suggestion[:answer] == 'n'
+        You disagreed...
+
+.clear
+
+- if @friend_suggestions.select { |suggestion| suggestion[:answer].nil? }.length == 12
+  %p{:style => "text-align: center;"}
+    You may have more matches from your friends to review.
+    %br
+    Answer the above matches and then
+    = link_to("click here to view them >", params)
+- elsif @friend_suggestions.length == 12
+  = link_to("Next Page >", friends_match_me_path(@target_photo, :page => @page + 1), :style => "float: right;")
+
+= link_to("< Previous Page", friends_match_me_path(@target_photo, :page => @page - 1)) if @page > 0
+
+%br
+%br
+
+:javascript
+  $(function(){
+    $('.yes_no_buttons').click(
+      function() {
+        var self = $(this);
+        $.ajax({
+          type: 'POST',
+          url: "/match_me/" + self.attr("data-id") + "/games/0/answers",
+          data: {
+            answer: {
+              other_photo_id: self.attr("data-other_photo_id"),
+              answer: self.attr("data-answer")
+            }
+          },
+          success: function() {
+            var response = self.attr("data-answer") == "y" ? "You agreed!" : "You disagreed...";
+            self.closest('.answer')[0].innerHTML = response;
+          }
+        });
+      }
+    );
+  });

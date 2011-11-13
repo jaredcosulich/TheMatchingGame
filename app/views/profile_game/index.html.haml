@@ -1,0 +1,54 @@
+<script type="text/javascript">
+window.google_analytics_uacct = "UA-15570848-1";
+</script>
+
+%style
+  == .reveal .question {opacity: 0; transition: opacity .5s linear; -webkit-transition: opacity .5s linear;}
+  == .dating_photo {position: relative; cursor: pointer;}
+  == .dating_photo .question {position: absolute; left: 0; top: 0;}
+  == .dating_photo .thumbnail {max-height: 103px; max-width: 96px;}
+:javascript
+  $(function() {
+    $(".dating img").click(function () {
+      var datingPhoto = $(this).closest(".dating_photo");
+      datingPhoto.addClass("reveal");
+    })
+  });
+
+- @title = "Match the Dater to the Profile"
+= link_to(image_tag("playagain.png"), params, :style => "float: right;")
+%h1 Guess The Dating Profile
+
+%p= "Which dating profile did #{@photo.he_she} write?"
+.clear
+
+%div{:style => "float: left; width: 200px;"}
+  = image_tag(@photo.image.url(:normal), :style => "max-width: 200px")
+  - if params.include?(:g)
+    %p
+      %h3= "Think you'd be a good match for #{@photo.him_her}?"
+      %p= link_to("Join The Matching Game >", new_register_path(:ref => "profile_game"), :style => "display: block; margin-bottom: 6px;")
+  - else
+    %p= link_to("Show only girls >", profile_game_path(:g => "f"))
+    %p= link_to("Show only guys >", profile_game_path(:g => "m"))
+
+
+%div{:style => "float: right; width: 468px;"}
+  - @profiles.shuffle.each do |profile|
+    - correct = profile.player == @photo.player
+    .dating{:style => "border: 1px solid #ccc; padding: 12px; height: 103px; overflow: auto;"}
+      .dating_photo{:style => "float:left; margin-right: 6px; width: 96px; height: 103px; text-align: center;", :class => correct ? "correct":""}
+        = image_tag((correct ? @photo : profile.player.photos.first).image.url(:thumbnail), :class => "thumbnail")
+        = image_tag("question_match.png", :class => "question")
+      = profile.about
+
+    %div{:style => "padding: 12px 0;"}
+      <script type="text/javascript"><!--
+      google_ad_client = "ca-pub-1657370723332984";
+      /* MG - banner */
+      google_ad_slot = "8891541780";
+      google_ad_width = 468;
+      google_ad_height = 60;
+      //-->
+      </script>
+      <script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"> </script>

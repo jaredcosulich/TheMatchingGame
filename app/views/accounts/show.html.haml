@@ -1,0 +1,62 @@
+- @selected_tab = "account"
+
+%style
+  == .left .info_box { width: 48%; }
+
+.info_box{:style => "float: right;"}
+  %h3
+    =link_to("Add A Photo >", new_photo_path)
+    Your Photos
+  .info
+    %p
+      = link_to("View matches >", photos_path)
+      &nbsp; &nbsp;
+      = link_to("View matching in progress >", photos_path(:t => "progress"))
+    - unless @current_player.has_matching_photos?
+      %p
+        You don't have any photos yet.
+        =link_to("Add A Photo >", new_photo_path)
+    - else
+      = render :partial => 'photos/photo', :collection => @current_player.photos.not_college.not_coupled.sort{ |a,b| b.id <=> a.id }
+    %br
+    = link_to("Add A Photo >", new_photo_path)
+
+.info_box{:style => "float: right; clear: right;"}
+  %h3
+    = link_to("Edit Profile >", edit_account_profile_path) if @current_player.preferred_profile
+    Your Profile
+  .info
+    - if @current_player.preferred_profile.nil?
+      %p You have not filled out a profile.
+      %p= link_to("Fill out your profile >", edit_account_profile_path)
+    - else
+      %p How your information appears to others:
+      %p&= @current_player.name_age_and_place
+    = link_to("Edit Profile >", edit_account_profile_path) if @current_player.preferred_profile
+
+.left
+  - if @current_player.subscribed?
+    .info_box
+      %h3 Your Membership
+      .info
+        - if @current_player.subscribed?
+          %p Unlimited Messaging Membership
+          %p= link_to("Change / Cancel Membership >", SocialGoldTransaction.subscribe_url(@current_player.user), :class => "more_info upgrade_button", "data-width" => "480", "data-height" => "420")
+        - else
+          %p Upgrade your membership to read incoming messages from all of your matches.
+          %p= link_to("Upgrade to Unlimited Messaging >", SocialGoldTransaction.subscribe_url(@current_player.user), :class => "more_info upgrade_button", "data-width" => "480", "data-height" => "420")
+
+  .info_box.no_facebook_iframe
+    %h3
+      = link_to("Edit Account >", edit_account_path) if @current_player.user.present?
+      Your Account
+    .info
+      - if @current_player.user.nil?
+        %p You have not registered yet.
+        %p= link_to('Register or Log In >', new_account_path)
+      - else
+        &= "Email: #{@current_player.email}" unless @current_player.anonymous?
+        %p= "Connected Through Facebook" if @current_player.fb_id
+        %p= "Awaiting Response Email: #{@current_player.user.email_preference.awaiting_response? ? 'On' : 'Off'}"
+        %p= "Predicted Matches Progress Email: #{@current_player.user.email_preference.prediction_progress? ? 'On' : 'Off'}"
+        = link_to("Edit Account >", edit_account_path) if @current_player.user.present?

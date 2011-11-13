@@ -1,0 +1,81 @@
+%style
+  == li { paddingz-left: 30px; }
+
+= render :partial => "shared/register_actions", :locals => {:ref => "games_header"}
+
+%br
+
+%h2= "Review Your Matches For #{name_for(@target_photo)}"
+%br
+%br
+
+.next_options
+
+  .next_option
+    %h3
+      Keep Matching
+
+    %p= "Help find more potential matches for #{name_for(@target_photo)}."
+
+    %div{:style => "text-align: center;"}
+      = link_to(image_tag("playagain.png"), play_match_me_path(@target_photo), :style => "display: block; margin-bottom: 6px;")
+
+  - if @current_player.photos.empty?
+    .next_option
+      %h3
+        Get Matched
+      %p Curious to see who you would be matched with?
+
+      %p Only one way to find out...
+
+      %div{:style => "text-align: center;"}
+        = link_to(image_tag("jointoday.png"), new_register_path(:ref => "next_options"), :style => "display: block; margin-bottom: 6px;")
+        = link_to("Already in a relationship?", new_couple_path)
+
+  .next_option
+    %h3
+      Challenge Friends
+
+    %p Think you can matchmake better than your friends?
+    %p Challenge your friends to a Matchmaker Challenge.
+
+    %div{:style => "text-align: center;"}
+      = link_to(image_tag("challenge.png"), challenges_path)
+
+
+%div{:style => "float: left; margin-right: 12px;"}
+  = processed_image_group(@target_photo, :normal)
+%div{:style => "overflow: hidden;"}
+  %p
+    = "So far you've found for #{name_for(@target_photo)}:"
+  %ul
+    - opposite_sex = @target_photo.redundant_gender == 'm' ? 'women' : "men"
+    %li= "#{@good_matches_count} #{opposite_sex} that are potential matches"
+    %li= "#{@bad_matches_count} #{opposite_sex} that are not a good match"
+
+%div{:style => "clear: left; padding-top: 30px;"}
+  %h3 In Your Last Round You Said
+  %br
+  %h4= "The following #{opposite_sex} would be a good potential match:"
+  %br
+  %div{:style => "overflow: hidden;"}
+    - @last_game_good_matches.each do |match|
+      = image_tag(match.other_photo.image.url(:thumbnail))
+
+  %br
+  %br
+
+  %h4= "The following #{opposite_sex} would not be a good match:"
+  %br
+  %div{:style => "overflow: hidden;"}
+    - @last_game_bad_matches.each do |match|
+      = image_tag(match.other_photo.image.url(:thumbnail))
+
+  %br
+  %br
+  %h4 You also helped match the following people:
+  %br
+  = render :partial => "answers/answer", :collection => @answers
+
+= render :partial =>"answers/footer"
+

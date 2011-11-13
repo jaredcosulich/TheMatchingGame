@@ -1,0 +1,66 @@
+- verified_good = @responded_tos.select { |a| a.combo.verified_good? }
+- verified_bad = @responded_tos.select { |a| a.combo.verified_bad? }
+- good_verified_good = verified_good.select { |a| a.answer == 'y' }
+- good_verified_bad = verified_bad.select { |a| a.answer == 'y' }
+- bad_verified_bad = verified_bad.select { |a| a.answer == 'n' }
+- bad_verified_good = verified_good.select { |a| a.answer == 'n' }
+
+%p= "Hi#{" #{@name}" unless @name.blank?},"
+
+%p
+  Here's an update on some recently confirmed matches you made:
+
+- unless good_verified_good.empty? && good_verified_bad.empty?
+  %h3 You Said "Good Match"
+  %p You thought the following matches were good.
+  - unless good_verified_good.empty?
+    %p
+      Looks like you were correct on
+      = good_verified_good.length
+      of them:
+    %table{:style => "width: 100%;"}
+      = render :partial => "answer", :collection => good_verified_good
+
+  - unless good_verified_bad.empty?
+    - if good_verified_good.empty?
+      %p
+        Looks like you were wrong on
+        = good_verified_bad.length > 1 ? "all" : "this one"
+        of them:
+    - else
+      %p
+        But you were wrong on
+        = good_verified_bad.length
+        of them as well:
+    %table{:style => "width: 100%;"}
+      = render :partial => "answer", :collection => good_verified_bad
+
+  %br
+
+- unless bad_verified_bad.empty? && bad_verified_good.empty?
+  %h3 You Said "Bad Match"
+  %p You thought the following matches were bad.
+  - unless bad_verified_bad.empty?
+    %p
+      Looks like you were correct on
+      = bad_verified_bad.length
+      of them:
+    %table{:style => "width: 100%;"}
+      = render :partial => "answer", :collection => bad_verified_bad
+
+  - unless bad_verified_good.empty?
+    - if bad_verified_bad.empty?
+      %p Looks like you were wrong on all of them:
+    - else
+      %p
+        But you were wrong on
+        = bad_verified_good.length
+        of them as well:
+    %table{:style => "width: 100%;"}
+      = render :partial => "answer", :collection => bad_verified_good
+
+%p
+  = "#{link_to("Review all of your matches", @emailing.auto_login_path(answers_path))} >".html_safe
+%p
+  = "#{link_to "Predict more matches, play again", @emailing.auto_login_path(root_path)} >".html_safe
+

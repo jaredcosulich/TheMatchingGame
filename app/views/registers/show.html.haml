@@ -1,0 +1,69 @@
+%style{:type => "text/css"}
+  == td { padding: 0 6px 18px 0; }
+
+%h2 Welcome To The Matching Game
+
+%p The online dating site that requires no time and no effort!
+
+%div{:style => "float: right; margin: 30px 60px 0 0; text-align: center;"}
+  %h3 Get Started
+  %br
+  = link_to(image_tag("createyourprofile.png"), new_register_path(:ref => "register_button"))
+
+%table
+  %tr
+    %td
+      = image_tag("step1.gif")
+    %td
+      Create a free profile (takes about 30 seconds)
+  %tr
+    %td
+      = image_tag("step2.gif")
+    %td
+      Sit back and let the matches come to you.
+  %tr
+    %td
+      = image_tag("step3.gif")
+    %td
+      Connect with and meet your best matches.
+
+%br
+
+%h3{:style => "float: right; margin-top: 108px;"}
+  Who will you get
+  %br
+  matched with?
+  %br
+  %br
+  = link_to("Get started >", new_register_path(:ref => "register_link"))
+
+
+%table.examples
+  - @examples.each do |example|
+    %tr
+      %td
+        = example[0][1]
+        %br
+        = image_tag("http://photos.thematchinggame.com/production/#{example[0][0]}/thumbnail?1272522634")
+      %td
+        got
+        %br
+        matched
+        %br
+        with
+      - example[1][0].each_with_index do |photo, index|
+        %td
+          ="... and " if index > 0
+          = example[1][1]
+          %br
+          = image_tag("http://photos.thematchinggame.com/production/#{photo}/thumbnail?1272522634")
+
+
+%br
+%br
+%br
+%br
+%br
+%br
+%br
+%br

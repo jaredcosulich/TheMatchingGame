@@ -1,0 +1,53 @@
+- player_photo = @combo.photo_for(@current_player)
+
+%style
+  == #other_actor { overflow: hidden; margin: 12px 0 30px 0; }
+  == .combo_action { overflow: hidden; padding: 12px; border: 1px solid #ccc; }
+  == .combo_action .profile_image, #other_actor .profile_image { float: left; margin-right: 12px; text-align: center; }
+  == .message {height: 120px; max-height: 300px; overflow: auto; resize: none; width: 660px;}
+
+.right
+  = link_to("View all connections >", connections_path, :target => "_top")
+
+%h2= "Connection with #{@other_actor.visible_name}"
+
+#other_actor
+  - other_photo = @combo.photo_for(@other_actor)
+  = link_to(image_tag(other_photo.image.url(:thumbnail)), "#photo_connect_info_#{other_photo.id}", :class => "more_info profile_image explanation")
+
+  %h3= other_photo.title
+
+  %p
+    = link_to("View #{@other_actor.first_name}'s Profile", "#photo_connect_info_#{other_photo.id}", :class => "more_info profile_image explanation")
+
+
+
+= render :partial => "combo_action", :collection => @combo_actions
+
+%br
+
+- if @combo_actions.length > 1 && @combo_actions.select { |ca| ca.actor == @other_actor }.length == 0
+  %h4
+    Please Provide
+    = @other_actor.visible_name
+    A Chance To Respond
+  %p You've already already sent 2 messages.
+  %p
+    Please allow
+    = @other_actor.visible_name
+    an opportunity to respond before sending another message.
+    
+- else
+  = form_for @action, :url => action_connection_path(@combo) do |f|
+    = f.hidden_field :action
+    = f.label :message, "Send a message to #{@other_actor.first_name}"
+    = f.text_area :message, :class => "message"
+    %p
+    = f.submit "Send Message"
+
+%div{:id => "photo_connect_info_#{other_photo.id}", :style => "width: 660px; display: none; overflow: hidden;"}
+  = render :partial => "photos/profile", :locals => {:photo => other_photo}
+
+%div{:id => "photo_connect_info_#{player_photo.id}", :style => "width: 660px; display: none; overflow: hidden;"}
+  = render :partial => "photos/profile", :locals => {:photo => player_photo}
+

@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+%html{:xmlns => "http://www.w3.org/1999/xhtml", "xmlns:v" => "urn:schemas-microsoft-com:vml"}
+  %head
+    %title= "The Matching Game#{" - #{@title}" if @title.present?}"
+    %meta{:name => "description", :content => "Online dating meets the age-old art of matchmaking. Have fun matching people up or get matched yourself!"}
+
+    %meta{:name => "apple-mobile-web-app-capable", :content => "yes"}
+    %meta{:name => "viewport", :content => controller.viewport_content}
+    %link{:rel => "image_src", :href => "images/thumbnail.jpg"}
+    = csrf_meta_tag
+    = favicon_link_tag
+    = javascript_include_tag("https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js")
+    = javascript_include_tag("rails", "college_game", "photos", "facebook", "site")
+    = javascript_include_tag(Rails.env.production? ? "debug_stub" : "debug")
+    = stylesheet_link_tag("compiled/college.css?#{Rails.application.cache_buster}")
+    = stylesheet_link_tag("mobile-webkit", :media => "only screen and (max-device-width:480px)")
+    <link href='https://fonts.googleapis.com/css?family=Kranky|Gloria+Hallelujah' rel='stylesheet' type='text/css'>
+
+    - if @current_player.nil? || @current_player.new_record? || @current_player.user.nil?
+      = render :partial => "shared/fb_permissions"
+
+    = render :partial => "shared/lightbox"
+
+    <!--see http://developers.facebook.com/docs/reference/javascript/FB.init -->
+    #fb-root
+    %script{:type => "text/javascript"}
+      window.USER_NAME = "#{@current_player.first_name}"
+      window.fbAppId = "#{FACEBOOK_APP_ID}"
+      window.fbAsyncInit = function() {
+      = "FB.init({appId: window.fbAppId,"
+      status: true,
+      cookie: true});
+      FB.Canvas.setAutoResize();
+      };
+      (function() {
+      var e = document.createElement('script');
+      e.async = true;
+      e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
+      document.getElementById('fb-root').appendChild(e);
+      }());
+
+    :javascript
+      var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+      document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+
+    :javascript
+      try {
+        var pageTracker = _gat._getTracker("UA-15570848-1");
+        pageTracker._trackPageview();
+      } catch(err) {
+        var pageTracker = function(){};
+      }
+
+  %body{:class => "#{controller.controller_name} #{controller.controller_name}_#{controller.action_name}"}
+    %table.cork{:cellpadding => 0, :cellspacing => 0}
+      %tr
+        %td.top_frame{:colspan => 3}
+      %tr
+        %td.frame_buffer.left_frame
+        %td.frame_buffer.top_content
+          .tacked_logo
+            .logo= link_to(image_tag("college/logo.png"))
+            .tack= link_to(image_tag("college/tack.png"))
+          - if @current_player.college.try(:verified?)
+            .tacked_college_logo
+              .logo= link_to(image_tag("college/college_logos/#{@current_player.college.fb_id}.jpg"))
+              .tack.left_tack= link_to(image_tag("college/tack.png"))
+              .tack.right_tack= link_to(image_tag("college/tack.png"))
+          .navigation
+            = link_to("Play", college_root_path, :class => @selected_tab == "play" ? "selected_navigation" : "")
+            - if @current_player.college.try(:verified?)
+              \/
+              = link_to("Your Matches", college_photos_path, :class => @selected_tab == "matches_for_you" ? "selected_navigation" : "")
+              \/
+              = link_to("Chat", college_connections_path, :class => @selected_tab == "connections" ? "selected_navigation" : "")
+            \/
+            = link_to("Rankings", college_rankings_path, :class => @selected_tab == "rankings" ? "selected_navigation" : "")
+            \/
+            - if @current_player.college.try(:verified?)
+              = link_to("Settings", college_users_path, :class => @selected_tab == "settings" ? "selected_navigation" : "")
+            - else
+              = link_to("Get Matched (add your photo)", college_not_ready_path, :class => @selected_tab == "get_matched" ? "selected_navigation" : "")
+        %td.frame_buffer.right_frame
+      %tr
+        %td.left_frame
+        %td.content
+          = yield
+
+        %td.right_frame
+      %tr
+        %td.frame_buffer.left_frame
+        %td.frame_buffer.top_content
+        %td.frame_buffer.right_frame
+      %tr
+        %td.bottom_frame{:colspan => 3}
+

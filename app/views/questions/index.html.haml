@@ -1,0 +1,28 @@
+%h2 Questions & Answers
+%p Pose questions, answer questions, see how other people answered questions.
+%p NOTE: This one is totally a work in progress. Let me know if you see any problems.
+
+.right{:style => "width: 50%;"}
+  %h4 My Questions & Answers
+  - if @my_questions.empty? && @my_answers.empty?
+    %p You haven't yet asked or answered any questions.
+  - else
+    - (@my_questions + @my_answers).sort_by(&:created_at).collect { |q_or_a| q_or_a.is_a?(Question) ? q_or_a : q_or_a.question }.uniq.reverse.each do |q|
+      %p= link_to("#{q.title} (#{q.question_answers.joins(:player).where("players.gender = ?", Gendery.opposite(@current_player.gender)).count})", question_path(q))
+  %p= link_to("Ask A Question >", new_question_path)
+  
+  %br
+  %h4 All Questions
+  - @all_questions.each do |question|
+    %p= link_to(question.title, question_path(question))
+  %p=# link_to("View all questions >", all_questions_path)
+
+%h4 Popular Questions
+- @popular_questions.each do |question|
+  %p= link_to(question.title, question_path(question))
+%p=# link_to("All popular questions >", popular_questions_path)
+
+%br
+%h4 Recent Questions
+- @recent_questions.each do |question|
+  %p= link_to(question.title, question_path(question))

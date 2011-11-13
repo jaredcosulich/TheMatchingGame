@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+%html{:xmlns => "http://www.w3.org/1999/xhtml", "xmlns:v" => "urn:schemas-microsoft-com:vml"}
+  %head
+    %title= "The Matching Game#{" - #{@title}" if @title.present?}"
+    %meta{:name => "description", :content => "Online dating meets the age-old art of matchmaking. Have fun matching people up or get matched yourself!"}
+
+    %meta{:name => "apple-mobile-web-app-capable", :content => "yes"}
+    %meta{:name => "viewport", :content => controller.viewport_content}
+    %link{:rel => "image_src", :href => "images/thumbnail.jpg"}
+    = csrf_meta_tag
+    = favicon_link_tag
+    = javascript_include_tag("http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js")
+    = javascript_include_tag("rails", "game", "photos", "facebook", "site")
+    = javascript_include_tag(Rails.env.production? ? "debug_stub" : "debug")
+    = stylesheet_link_tag("compiled/#{controller.locale_subdomain_style}.css?#{Rails.application.cache_buster}")
+    = stylesheet_link_tag("mobile-webkit", :media => "only screen and (max-device-width:480px)")
+
+    /[if IE 6]
+      = stylesheet_link_tag("ie6.css")
+
+    :javascript
+      $(function() {
+        if (window.top != window) $('body').removeClass('no_facebook_iframe');
+        else $('body').removeClass('with_facebook_iframe');
+      })
+
+    :javascript
+      var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+      document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+
+    :javascript
+      try {
+        var pageTracker = _gat._getTracker("UA-15570848-1");
+        pageTracker._trackPageview();
+      } catch(err) {
+        var pageTracker = function(){};
+      }
+
+    :javascript
+      $(function() {
+        var upgradeCheck = $("#upgrade_check");
+        $(".upgrade_button").click(function() {
+          upgradeCheck.val("1");
+        });
+
+        if (upgradeCheck.val() == "1") {
+          upgradeCheck.val("");
+          location.reload();
+        }
+      })
+
+    <script type='text/javascript' src='http://partner.googleadservices.com/gampad/google_service.js'>
+    </script>
+    <script type='text/javascript'>
+    GS_googleAddAdSenseService("ca-pub-1657370723332984");
+    GS_googleEnableAllServices();
+    </script>
+    <script type='text/javascript'>
+    GA_googleAddSlot("ca-pub-1657370723332984", "top_banner");
+    GA_googleAddSlot("ca-pub-1657370723332984", "bottom_button");
+    = "GA_googleAddAttr('age', '#{@current_player.age_bucket}');"
+    = "GA_googleAddAttr('gender', '#{@current_player.full_gender}');"
+    </script>
+    <script type='text/javascript'>
+    GA_googleFetchAds();
+    </script>
+
+
+    %script{:type => "text/javascript"}
+      window.TMG_DATA = {
+      = "FB_APP_URL: 'http://www.thematchinggame.com',"
+      = "PLAYER_ID: '#{@current_player.id if @current_player}'"
+      };
+
+    =# clixpy_script
+
+  %body{:class => "#{controller.controller_name} #{controller.controller_name}_#{controller.action_name} no_facebook no_facebook_email #{'with_fb_id' unless @current_player.nil? || @current_player.fb_id.blank?} no_facebook_iframe with_facebook_iframe #{'admin' if controller.kind_of?(AdminController)} #{'no_ads' if @current_player.user.try(:email).blank? || @no_sidebar}"}
+    = render :partial => "shared/lightbox"
+    :javascript
+      try {if (window.location.host == window.parent.location.host && window.parent != window) document.body.className += ' iframed';} catch(e) {};
+
+    = render :partial => "layouts/fb_js"
+    - if session['admin_impersonating']
+      %div{:style => "padding: 30px; background-color: red; font-weight: bold;"}
+        = "YOU ARE AN ADMIN: #{session['admin_impersonating']}"
+        &nbsp;
+        = link_to("Log Out", session_path, :method => :delete)
+    #header
+      #header_content
+        - if @current_player.admin?
+          .admin= link_to("ADMIN MENU", admin_root_path)
+        .header_links
+
+          - if @current_player && @current_player.new_record?
+            = link_to("Log In", new_session_path, :class => "no_facebook_iframe first")
+          - else
+            = show_logout ? link_to("Log Out", session_path, :method => :delete, :class => "no_facebook_iframe first", :id => "log_out") : link_to("Log In", new_session_path, :class => "no_facebook_iframe")
+
+          - unless @current_player && @current_player.new_record?
+            = link_to("My Stuff", account_path)
+            = link_to("Play Again", root_path)
+        = link_to("#{image_tag("logo_pink_beta.png")} #{controller.locale_subdomain_edition}".html_safe, root_path, :class => 'title')
+
+    - unless @payment_screen
+      = render "shared/wall_of_folk"
+
+      %br
+
+      = render "shared/top_ad"
+
+    #overall_container
+
+      = render "shared/tabs" unless @payment_screen
+
+      #content
+        - unless flash[:notice].blank?
+          #flash
+            = flash[:notice]
+
+        = yield
+
+      = render :partial => "shared/right_side_bar" unless @payment_screen
+
+      = render :partial => "layouts/footer"
+    
+    - if false && !@no_sidebar && @game.nil? && !(@current_player.nil? || @current_player.new_record? || @current_player.gender.blank?)
+      <!-- Begin Survey.io code for thematchinggame.com -->
+      <script src="http://cdn.survey.io/embed/1.0/survey.js" type="text/javascript"></script>
+      <script type="text/javascript" charset="utf-8">
+      Surveyio.init({
+      survey_id: "bbc47",
+      token: "6117d0a7a960a413dea3a52eba07b49bfd41aeff",
+      banner: {
+      x: "right",
+      y: "top",
+      color: "orange"
+      }
+      });
+      </script>
+      <!-- /End Survey.io code -->

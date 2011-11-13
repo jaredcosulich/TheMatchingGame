@@ -1,0 +1,5 @@
+- pp @combo.try(:college_id)
+- return if @combo.try(:college_id).present?
+%p
+  If you would rather not receive these updates you can turn them off on your
+  = "#{link_to "account page", @emailing.auto_login_path(edit_account_path)} >".html_safe

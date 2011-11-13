@@ -1,0 +1,11 @@
+= link_to("Back to priority matching >", priorities_path, :style => "float: right; margin-right: 24px;")
+%h2 CrowdFlower Credits
+%p Do a little work (e.g. looking up addresses for Yelp) in exchange for credits.
+%p 10 credits = 5 days of priority matching.
+%p
+  Update: Based on some feedback I've heard, some of these jobs suck.
+  If a job has something like 1000+ available I'd recommend not bothering with it unless it awards a lot of credits
+  (it will probably take a long time to complete).
+  Sorry for the hassle. I'm working with them to provide better jobs.
+.earn_credits
+  %iframe{:src => "http://crowdflower.com/judgments/irdesign?uid=#{@current_player.user.id.to_obfuscated}&conversion_rate=0.5&conversion_name=credits",  :frameborder => 0}

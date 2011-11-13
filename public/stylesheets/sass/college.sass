@@ -1,0 +1,470 @@
+@mixin box-shadow($horizontal, $vertical, $blur-radius, $color)
+  -webkit-box-shadow: $horizontal $vertical $blur-radius $color
+  -moz-box-shadow: $horizontal $vertical $blur-radius $color
+  -o-box-shadow: $horizontal $vertical $blur-radius $color
+  box-shadow: $horizontal $vertical $blur-radius $color
+
+@mixin rotate($r)
+  -webkit-transform: rotate($r)
+  -moz-transform: rotate($r)
+  -o-transform: rotate($r)
+  transform: rotate($r)
+
+$offwhite = #F4F2F3
+$yellow = #ECFC54
+$green = #90FF35
+$red = #C90045
+$blue = #486791
+$big = 22pt
+$medium = 18pt
+$normal = 10pt
+$slightly_small = 9pt
+$small = 8pt
+
+body
+  padding: 0
+  margin: 0
+  font-family: 'Gloria Hallelujah', cursive
+  width: 760px
+  color: #333
+  font-size: $normal
+  line-height: 1.25em
+
+  a
+    text-decoration: none
+    cursor: pointer
+    &:visited
+      text-decoration: none
+      cursor: pointer
+    img
+      border: none
+
+  h1, a, a:visited
+    color: $blue
+
+  h1
+    font-size: $big
+    font-family: 'Kranky', cursive
+    padding: 12px 0
+    margin: 0
+
+  h2
+    font-size: 15pt
+    margin: 0
+    padding: 0
+
+  h3
+    font-size: 13pt
+    font-weight: normal
+    margin: 0
+    padding: 0
+
+  h4
+    margin: 0
+    padding: 0
+
+  .text_center
+    text-align: center
+
+  .uppercase
+    text-transform: uppercase
+
+  .left
+    float: left
+
+  .right
+    float: right
+
+  .clear
+    clear: both
+
+  .explanation
+    font-weight: normal
+    font-size: 10pt
+
+  .small
+    font-weight: normal
+    font-size: 8.5pt
+
+  .lightbox .lightbox_text
+    display: none
+
+  .lightboxed .lightbox
+    .lightbox_text
+      display: block
+    display: block
+    text-align: center
+    font-size: 8pt
+
+
+  .cork
+    height: 1472px
+    width: 760px
+    background: white url('/images/college/frame.jpg')
+    .top_frame
+      height: 36px
+      //background: white url('/images/college/top_frame.jpg')
+    .bottom_frame
+      height: 35px
+      //background: white url('/images/college/bottom_frame.jpg')
+    .frame_buffer
+      height: 95px
+    .left_frame, .right_frame
+      width: 38px
+    .right_frame
+      //background: white url('/images/college/right_frame.jpg') repeat-y
+    .left_frame
+      //background: white url('/images/college/left_frame.jpg') repeat-y
+    .tacked_logo
+      z-index: 20
+      position: absolute
+      top: 0px
+      left: 12px
+      .logo
+        +rotate(-8deg)
+      .tack
+        position: absolute
+        top: 6px
+        left: 57px
+    .tacked_college_logo
+      z-index: 20
+      position: absolute
+      top: 18px
+      left: 528px
+      .logo
+        +rotate(6deg)
+      .tack
+        position: absolute
+        img
+          width: 18px
+          height: 21px
+      .left_tack
+        top: -18px
+        left: 3px
+      .right_tack
+        top: 6px
+        left: 204px
+    .navigation
+      background: transparent url('/images/college/navigation.png') no-repeat
+      width: 582px
+      height: 38px
+      position: absolute
+      z-index: 30
+      top: 80px
+      left: 160px
+      padding-left: 9px
+      a
+        line-height: 30px
+        font-size: $slightly_small
+        padding: 0 9px
+        &.selected_navigation
+          background-color: $green
+    .content
+      vertical-align: top
+
+  &.home_index
+    #photos
+      width: 78%
+      margin: auto
+      z-index: 10
+      padding-left: 12px
+      position: relative
+      .congratulations
+        background-color: white
+        h3
+          padding: 12px 0
+        p
+          margin: 12px 6px
+        height: 220px
+      .photo
+        height: 300px
+        width: 240px
+        background-color: #F6F1EA
+        position: relative
+        +box-shadow(-2px, 2px, 6px, lighten(black, 20%))
+        text-align: center
+        .image
+          margin: 10px
+          background-color: black
+          height: 220px
+        .interests
+          height: 50px
+          background-color: white
+          margin: 0 10px 10px 10px
+          overflow: auto
+      .left_photo
+        float: right
+        +rotate(7deg)
+      .right_photo
+        +rotate(-3deg)
+        float: left
+      .tack
+        position: absolute
+        top: -9px
+        left: 114px
+      #photo_cache
+        height: 1px
+        width: 1px
+        overflow: hidden
+        position: absolute
+        top: -1000px
+        left: -1000px
+
+    #buttons
+      +rotate(-4deg)
+      +box-shadow(-2px, 2px, 6px, lighten(black, 20%))
+      margin: -99px 0 0 182px
+      background: transparent url('/images/college/paper.png') center no-repeat
+      height: 402px
+      width: 334px
+      .share_or_next
+        padding-top: 99px
+        text-align: center
+      .vote_buttons
+        .match_button
+          margin-top: 15px
+          cursor: pointer
+        .bad_match
+          float: left
+          margin-left: 21px
+        .good_match
+          float: right
+          margin-right: 21px
+        .click_text
+          width: 99px
+          margin: 18px 0 0 6px
+          float: left
+          text-align: center
+      .good_bad_votes
+        clear: both
+        width: 334px
+        margin-left: 6px
+        padding-top: 12px
+        .votes_header
+          padding: 0 0 6px 118px
+        .your_vote
+          padding: 0 0 6px 102px
+        .last_couple_photos
+          float: left
+          width: 99px
+          .photo_one, .photo_two
+            width: 45px
+            height: 45px
+            float: right
+          .photo_one
+            +rotate(-2deg)
+            text-align: left
+            margin-right: 6px
+          .photo_two
+            +rotate(3deg)
+            text-align: right
+        .votes_text
+          float: left
+          font-family: 'Kranky', cursive
+          color: $blue
+          text-align: right
+          width: 54px
+          font-weight: bold
+          .good_text
+            +rotate(-1deg)
+            margin-bottom: 6px
+          .bad_text
+            +rotate(1deg)
+        .votes
+          float: right
+          width: 162px
+          .good_votes
+            +rotate(-1deg)
+            background-color: $green
+            margin-bottom: 6px
+            border-top: 17px solid $green
+            border-right: 3px solid white
+            height: 1px
+          .bad_votes
+            +rotate(1deg)
+            background-color: $red
+            border-bottom: 17px solid $red
+            border-left: 1px solid white
+            border-right: 2px solid white
+            height: 1px
+        .verified_results
+          padding-left: 12px
+          overflow: hidden
+      .player_stats
+        clear: both
+        padding: 12px 12px 0 12px
+        line-height: 1.5em
+        .red
+          color: $red
+        .green
+          color: darken($green, 40%)
+    #badges
+      position: absolute
+      left: 622px
+      top: 455px
+      width: 102px
+
+    #matching_status_preview
+      +rotate(3deg)
+      +box-shadow(-2px, 2px, 6px, lighten(black, 20%))
+      background: transparent url('/images/college/small_paper.png') center no-repeat
+      height: 212px
+      width: 172px
+      position: absolute
+      top: 510px
+      left: 12px
+      .matching_status_message
+        padding: 30px 12px
+        img
+          margin: auto
+          display: block
+
+  .critical_error
+    background-color: white
+    +rotate(-2deg)
+    +box-shadow(-2px, 2px, 6px, lighten(black, 20%))
+    padding: 12px
+    width: 90%
+    margin-left: 5%
+    margin-top: 30px
+
+
+  .tacked_paper
+    background-color: $offwhite
+    +rotate(-2deg)
+    +box-shadow(-2px, 2px, 6px, lighten(black, 20%))
+    padding: 12px
+    width: 70%
+    margin-left: 18%
+    position: relative
+    .tack
+      position: absolute
+    .left_tack
+      top: 4px
+      left: 3px
+    .right_tack
+      top: 0
+      left: 465px
+    .photos_table
+      margin-top: 12px
+      margin-left: -108px
+      text-align: center
+      th
+        padding: 6px 12px
+      td
+        padding-bottom: 12px
+        &.match_answers
+          .answered_good, .answered_bad
+            display: none
+          &.answered_good
+            .answered_good
+              display: block
+            .not_answered
+              display: none
+          &.answered_bad
+            .answered_bad
+              display: block
+            .not_answered
+              display: none
+          .answer
+            cursor: pointer
+        .messages
+          background-color: #ECE5CE
+          text-align: left
+          +box-shadow(-1px, 1px, 3px, lighten(black, 20%))
+          .messages_header
+            border-bottom: 1px solid #E9CCBE
+            padding: 6px 12px 3px 12px
+          .messages_content
+            padding: 6px 0
+            width: 300px
+            overflow: auto
+            height: 120px
+            background: url('/images/college/notecard.gif') top left
+          .message
+            padding: 3px 12px
+            p
+              margin: 0
+              padding: 0
+          .them
+            color: #8087F3
+          .you
+            color: #EC574A
+          .new_message
+            padding: 6px
+            text-align: center
+            .message_input
+              width: 210px
+        .scores
+          padding-left: 12px
+          .good_score, .bad_score
+            margin-top: 12px
+            height: 18px
+          .good_score
+            background-color: $green
+          .bad_score
+            background-color: $red
+    .ranking
+      .leader_stat
+        background-color: $green
+        width: 90px
+        text-align: center
+        margin: 0 12px
+        padding-bottom: 12px
+    .ranking_stats
+      width: 100%
+      margin-bottom: 30px
+      .ranking_stat_text
+        text-align: right
+        width: 60px
+        padding: 6px 6px 6px 12px 
+      .ranking_stat_number
+        background-color: $yellow
+        text-align: center
+        padding: 18px 12px
+    .ranking_stat_number
+      font-size: $medium
+      padding: 12px 0 6px 0
+    .tacked_photo
+      margin-right: 12px
+      padding: 9px 6px 6px 6px
+      background-color: #D9D8D7
+      text-align: center
+      position: relative
+      +box-shadow(-2px, 1px, 6px, lighten(black, 20%))
+      &.rotate_0
+        +rotate(0deg)
+      &.rotate_1
+        +rotate(4deg)
+      &.rotate_2
+        +rotate(1deg)
+      &.rotate_3
+        +rotate(5deg)
+      .tack
+        position: absolute
+        top: -12px
+        left: 42%
+        img
+          width: 16px
+          height: 23px
+      p
+        margin: 6px 12px
+
+    .change_photo
+      padding: 0 12px 30px 0
+      float: left
+    .settings_section
+      padding: 12px 0 12px 12px
+      overflow: hidden
+      border-left: 1px solid $blue
+      border-bottom: 1px solid $blue
+      .explanation
+        font-size: $small
+        float: right
+        width: 150px
+      p
+        margin-top: 0
+    .pagination
+      width: 60%
+      margin: auto
+      overflow: hidden

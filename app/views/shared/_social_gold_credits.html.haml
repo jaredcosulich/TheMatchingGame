@@ -1,0 +1,6 @@
+#credits{:style => "display: none;"}
+  %h2 Credits
+  %p
+    = "You currently have #{pluralize(@current_player.user.credits, 'credit', 'credits')}."
+
+  = social_gold_iframe

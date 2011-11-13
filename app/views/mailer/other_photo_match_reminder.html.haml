@@ -1,0 +1,33 @@
+%p= "Hi#{" #{@name}" unless @name.blank?},"
+
+%p= "#{@matches_text} thought #{@matches_pronoun} might be a good match for you."
+
+%h3 Here is a photo of each of them:
+
+- @photo_photos.each_pair do |photo, other_photos|
+  For this photo:
+  %p= link_to image_tag(photo.image.url(:preview), :alt => "Your Photo", :style => "border:none;"), @emailing.auto_login_path(photos_path(:t => "possible"))
+  %p
+    The following
+    = @matches_text
+    thought they might be a good match:
+  %p
+    - other_photos[0..2].each do |other_photo|
+      = link_to image_tag(other_photo.image.url(:preview), :alt => "Their Photo", :style => "border:none;"), @emailing.auto_login_path(photos_path(:t => "possible"))
+      &nbsp;
+  %p
+    = link_to "View All Possible Matches For This Photo >", @emailing.auto_login_path(photos_path(:t => "possible"))
+  %br
+
+%br
+%br
+
+%p If you have any questions at all, please let us know.
+
+%p
+  Sincerely,
+  %br
+  The Matching Game Team
+
+
+

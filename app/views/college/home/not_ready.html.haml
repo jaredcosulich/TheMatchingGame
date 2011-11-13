@@ -1,0 +1,27 @@
+.tacked_paper
+  .tack.left_tack= link_to(image_tag("college/blue_tack.png"))
+  .tack.right_tack= link_to(image_tag("college/blue_tack.png"))
+
+  %h1.text_center.uppercase Get Matched
+  %p We're currently running a pilot program at a few universities.
+  %p
+    If want us to come to your university, please let us know by
+    emailing:
+  %p= mail_to("support@thematchinggame.com")
+  %p
+    If a lot of people from your university install this app and send us a request
+    we'll definitely prioritize your university.
+
+  %br
+
+  %p
+    In the meantime you can join the general Matching Game and get
+    matched with people from all over the place.
+
+  %p
+    Play the general
+    = link_to("Matching Game >", "http://www.thematchinggame.com", :target => "_blank")
+  %p
+    Play
+    = link_to("The Matching Game (college) >", root_path)
+

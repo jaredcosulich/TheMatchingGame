@@ -1,0 +1,13 @@
+%p= "Hi#{" #{@user.player.first_name}" unless @user.player.first_name.blank?},"
+
+%p= "Voting on your #{"friends' " if @friend}entry in to the Perfect Pair Challenge has completed!"
+
+%p= "You can see the results from your #{"friends' " if @friend}#{link_to("Perfect Pair page", @emailing.auto_login_path(couple_path(@couple_combo.id.to_obfuscated)))} >".html_safe
+
+%p
+  Thanks,
+  %br
+  The Matching Game Team
+
+
+

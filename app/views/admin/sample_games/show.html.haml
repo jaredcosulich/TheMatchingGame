@@ -1,0 +1,5 @@
+%h2 Sample Game for #{@game.player.present? ? "Player #{@game.player.id}" : "new player"}
+%p
+  = "Tried to get #{params[:count] || Features.combos_to_show} combos, got #{@combos.length} combos"
+
+= render :partial => "admin/combos/combos_table", :object => @combos

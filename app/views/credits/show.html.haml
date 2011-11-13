@@ -1,0 +1,7 @@
+%h2 Credits
+%p
+  = "You currently have #{pluralize(@current_player.user.credits, 'credit', 'credits')}."
+%p
+  = link_to("Return to priority matching >", priorities_path)
+
+%iframe#add_credits{:src => @credit_history_url, :frameborder => "0", :height => "365", :scrolling => "no", :width => "417"}

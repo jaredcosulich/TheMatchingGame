@@ -1,0 +1,5 @@
+%ul
+  - [:response_reminder, :prediction_progress, :password_reset, :photo_upload_notification, :share_message, :share_notification].each do |type|
+    %li= link_to type.to_s.titleize, admin_email_path(type)
+
+

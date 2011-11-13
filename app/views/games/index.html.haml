@@ -1,0 +1,21 @@
+- if @current_player.photos.approved_or_confirmed.not_coupled.present?
+  = render :partial => "shared/labs"
+- elsif @current_player.user.nil?
+  = render :partial => "shared/register_actions", :locals => {:ref => "games_header"}
+
+%br
+
+- if @current_player.level > 1
+  = render :partial => "shared/new_leaderboard", :locals => {:player => @current_player}
+  %br
+
+%h2 Review Your Answers
+
+%br
+%br
+
+= render :partial => "shared/next_options"
+
+= render :partial => "answers/answer", :collection => @answers
+
+= render :partial =>"answers/footer"

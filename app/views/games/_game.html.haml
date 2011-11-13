@@ -1,0 +1,6 @@
+.game_preview
+  %div
+  -(0..[1, game.answers.length-1].min).each do |i|
+    .game_combo
+      =image_tag(game.answers[i].combo.photo_one.image.url(:preview))
+      =image_tag(game.answers[i].combo.photo_two.image.url(:preview))

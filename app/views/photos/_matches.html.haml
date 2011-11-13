@@ -1,0 +1,33 @@
+.matches.lightboxed{:class => @photo.connectable? ? "me_connectable" : "me_not_connectable"}
+  .right
+    = link_to("Back to account >", account_path)
+
+  %div{:style => "float: left; margin-right: 12px;"}= processed_image_group(@photo, :thumbnail)
+  %div{:style => "overflow: hidden;"}
+    %h3
+      Status for this photo:
+      = @photo.status[1]
+    %p.explanation
+      (
+      = link_to("stop matching", pause_photo_path(@photo), :method => "POST", :confirm => "Are you sure you want to stop matching this photo?") if @photo.pausable?
+      = link_to("resume matching", resume_photo_path(@photo), :method => "POST") if @photo.resumable?
+      &nbsp; | &nbsp;
+      = link_to("remove photo", remove_photo_path(@photo), :method => "POST", :confirm => "Are you sure you want to completely remove this photo?") if @photo.removable?
+      )
+    %p= link_to("View matches >", photos_path)
+
+    - if @photo.confirmed?
+      %h4 While you're waiting for this photo to be approved:
+    = link_to("Match yourself a bit >", play_match_me_path(@target_photo))
+    %br
+    = link_to("Have your friends match you up >", match_me_path(@photo))
+
+  %div{:style => "clear: both;"}
+
+  %br
+
+  
+
+= render :partial => "photos/missing_info"
+
+

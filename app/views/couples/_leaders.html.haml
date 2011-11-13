@@ -1,0 +1,18 @@
+%style
+  == .leader_board { float: right; width: 240px; padding-left: 30px; }
+  == .leader_board table { width: 100%; }
+  == .leader_board td { border-bottom: 1px solid #ccc; padding: 6px 0; text-align: center; }
+  == .leader_board .explanation { margin-top: 3px; }
+  == .leader_board h3 .explanation { float: right; }
+
+%table{:cellspacing => 0, :cellpadding => 0}
+  - (@couple_combos || @couple_friends).each_with_index do |combo, index|
+    %tr
+      %td
+        %b= (index + 1 + (@start || 0)).ordinalize
+      %td= link_to(image_tag(combo.photo_one.image.url(:preview)), couple_path(combo.id.to_obfuscated))
+      %td= link_to(image_tag(combo.photo_two.image.url(:preview)), couple_path(combo.id.to_obfuscated))
+      %td
+        = combo.couple_complete? ? "#{combo.yes_percent}%" : "Voting In Progress"
+        .explanation
+          = link_to("details", couple_path(combo.id.to_obfuscated))

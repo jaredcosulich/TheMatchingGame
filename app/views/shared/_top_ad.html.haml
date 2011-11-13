@@ -1,0 +1,23 @@
+- return if user_not_ready
+
+#top_ad{:style => "width: 728px; margin: 0 auto 24px auto; padding: 12px 0; text-align: center;"}
+  - if true || rand(10) > 8
+    %div{:style => "background-color: #FFFA9C;"}
+      #promotion{:style => "padding: 12px"}
+        %h4 We're working on a new Facebook App
+        %p
+          It's got a pretty slick design. So check it out:
+        = link_to("The Matching Game on Facebook >", "http://apps.facebook.com/thematchinggame", :target => "_blank")
+
+  - else
+    <script type="text/javascript"><!--
+    google_ad_client = "ca-pub-1657370723332984";
+    /* MG Top 728x90 */
+    google_ad_slot = "2080657038";
+    google_ad_width = 728;
+    google_ad_height = 90;
+    //-->
+    </script>
+    <script type="text/javascript"
+    src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+    </script>

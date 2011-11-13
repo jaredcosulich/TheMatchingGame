@@ -1,0 +1,19 @@
+- if @current_player.user.nil?
+  #welcome_message.game_explanation
+    %h3
+      &nbsp;
+      %b Online dating meets the age-old art of matchmaking!
+    .game_explanation_section{:style => "border-right: 1px solid #ccc;"}
+      %b Become A Matchmaker
+      %p
+        = image_tag("question_couple.png")
+        Find out if any of your matches get introduced!
+        = link_to(image_tag("register.png"), new_session_path)
+    .game_explanation_section{:style => "padding-right: 0"}
+      %b Get Matched Yourself
+      %p
+        = image_tag("question_match.png")
+        Will our matchmakers find you a great match?
+        = link_to(image_tag("get_matched.png"), new_register_path(:ref => ref))
+        -# Who will our matchmakers match you with?
+        -# Let our community of matchmakers find a great match for you!

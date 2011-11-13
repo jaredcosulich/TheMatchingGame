@@ -1,0 +1,40 @@
+%tr
+  %td
+    %div{:style => "height: 6px;"}
+%tr
+  %td{:style => "padding: 12px; border: 1px solid #ccc"}
+    %p
+      = image_tag("http://#{Emailing.host}/images/question_small.png", :alt => "", :size => "20x20", :style => "vertical-align: -3px;")
+      About The Matching Game
+    %p
+      The Matching Game was built by Irrational Design to apply the age-old art of matchmaking to online dating. By
+      making it fun and challenging for people to test their matchmaking skills, we can help online daters meet their
+      perfect match without having to search through thousands of profiles!
+    %br
+    %div
+      = image_tag("http://#{Emailing.host}/images/question_small.png", :alt => "", :size => "20x20", :style => "vertical-align: -3px;")
+      About Irrational Design
+    %p
+      = link_to("Irrational Design", "http://www.irrationaldesign.com")
+      is a small company based out of San Francisco. We focus on making easy to use and fun products
+      that help with all aspects of your life. Check out our other products when you have a chance:
+      .site
+        = link_to(image_tag("http://irrationaldesign.com/images/logos/soundseed_logo.jpg", :alt => "SoundSeed.Me", :size => "75x75", :style => "border: none; vertical-align: middle; float: left; margin-right: 12px;"), "http://soundseed.me")
+        = link_to("SoundSeed.Me", "http://soundseed.me", :style => "display: block; padding: 12px 0;")
+        Discover, recommend, and promote great music.
+      .site{:style => "clear: left; padding-top: 12px;"}
+        = link_to(image_tag("http://irrationaldesign.com/images/logos/charity_birthday_square.png", :alt => "Charity Birthday", :size => "75x75", :style => "border: none; vertical-align: middle; float: left; margin-right: 12px;"), "http://www.charitybirthday.com")
+        = link_to("Charity Birthday", "http://www.charitybirthday.com", :style => "display: block; padding: 12px 0;")
+        Donate your birthday to charity.
+      .site{:style => "clear: left; padding-top: 12px;"}
+        = link_to(image_tag("http://irrationaldesign.com/images/logos/best_words_square.png", :alt => "BestWords.Me", :size => "75x75", :style => "border: none; vertical-align: middle; float: left; margin-right: 12px;"), "http://www.bestwords.me")
+        = link_to("BestWords.Me", "http://www.bestwords.me", :style => "display: block; padding: 12px 0;")
+        What words best describe you?
+      .site{:style => "clear: left; padding-top: 12px;"}
+        = link_to(image_tag("http://irrationaldesign.com/images/logos/secret_goals_square_logo.png", :alt => "Secret Goals", :size => "75x75", :style => "border: none; vertical-align: middle; float: left; margin-right: 12px;"), "http://www.secretgoals.com")
+        = link_to("Secret Goals", "http://www.secretgoals.com", :style => "display: block; padding: 12px 0;")
+        The ups and downs of achieving your goals, shared openly, honestly, secretly.
+      .site{:style => "clear: left; padding-top: 12px;"}
+        = link_to(image_tag("http://irrationaldesign.com/images/logos/matching_game_square.png", :alt => "The Matching Game", :size => "75x75", :style => "border: none; vertical-align: middle; float: left; margin-right: 12px;"), "http://www.thematchinggame.com")
+        = link_to("The Matching Game", "http://www.thematchinggame.com", :style => "display: block; padding: 12px 0;")
+        Online dating meets the age-old art of matchmaking.

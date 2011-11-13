@@ -1,0 +1,56 @@
+:javascript
+  $(function(){
+    $('#save_email').click(submitEmail);
+    $('#email').keypress(function(e) { if(e.keyCode == 13) { submitEmail() } } );
+  });
+
+
+.anonymous_warning.anonymous.no_facebook_iframe
+  .anonymous_warning_text
+    - if @current_player.photos.empty? && @current_player.fb_id.blank?
+      Save your score so you can come back and keep playing.
+      %br
+      %br
+    - elsif @current_player.fb_id.blank?
+      %h4
+        You've added a photo, but are not registered
+      %p
+        As long as you keep this browser window open you'll be able to see your matches.
+      %p
+        If you close this window, though, you may lose your matches
+    - else
+      Want to be notified when we find a great match for you?
+
+    - unless @current_player.photos.empty? && @current_player.fb_id.blank?
+      %p
+        - if @current_player.fb_id.blank?
+          %span.no_facebook_iframe Connect through facebook
+          %span.with_facebook_iframe Add The Matching Game
+        - else
+          Allow Facebook notifications
+        or set your email
+        - if @current_player.photos.empty?
+          - if @current_player.fb_id.blank?
+            so you can come back and check on your matches!
+          - else
+            and we'll notify you if any of your matches connect!
+        - elsif @current_player.fb_id.blank?
+          so you can come back to see your matches!
+        - else
+          and we'll email you when matches come in.
+    %div
+      .anonymous_error{:style => "display:none;"}
+      Name:
+      = text_field_tag("name", "", :id => "name", :style => "width: 84px;")
+      Email:
+      = text_field_tag("email", "", :id => "email", :style => "width: 84px;")
+      = submit_tag("Save", :id => "save_email")
+      &nbsp; &nbsp; or &nbsp; &nbsp;
+      %span.no_facebook_iframe
+        = facebook_connect_button(@current_player.fb_id.blank? ? "Connect through Facebook" : "Allow Facebook Notifications", "email_connect")
+      %span.with_facebook_iframe
+        = facebook_connect_button(@current_player.fb_id.blank? ? "Add The Matching Game" : "Allow Facebook Notifications", "email_connect")
+      &nbsp; &nbsp; or &nbsp; &nbsp;
+      = link_to("Log In >", new_session_path)
+  .anonymous_warning_thankyou{:style => "display:none;"}
+    %p Thanks, and welcome to The Matching Game!

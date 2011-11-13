@@ -1,0 +1,40 @@
+= javascript_include_tag("jquery.Jcrop.min")
+= stylesheet_link_tag("jquery.Jcrop")
+
+%style{:type => "text/css"}
+  == #photo_container { float: left; background-color: #ccc; width: 330px; text-align: center; margin-right: 30px; }
+  == #photo { margin: 15px; }
+  == #submits { overflow: hidden; }
+
+:javascript
+  function onSelect(crop){
+    $("#x").val(crop.x);
+    $("#y").val(crop.y);
+    $("#h").val(crop.h);
+    $("#w").val(crop.w);
+  }
+  $(function(){
+    $('#photo img').not('.processed_group_loading').load(function() {
+      var photo = $(this);
+      photo.Jcrop({
+        setSelect: [ 0, 0, photo.width(), photo.height()],
+        onSelect: onSelect
+      });
+    });
+  });
+
+%h2 Confirm photo
+%br
+#photo_container
+  #photo= processed_image_group(@photo, :normal)
+
+= form_for @photo, :url => crop_admin_photo_path(@photo) do |f|
+  = hidden_field_tag("crop_spec[x]", "", {:id => "x"})
+  = hidden_field_tag("crop_spec[y]", "", {:id => "y"})
+  = hidden_field_tag("crop_spec[w]", "", {:id => "w"})
+  = hidden_field_tag("crop_spec[h]", "", {:id => "h"})
+  Gender:
+  = text_field_tag("gender", @photo.gender)
+  %br
+  %br
+  = image_submit_tag("confirmphoto.png")

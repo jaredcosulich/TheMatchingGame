@@ -1,0 +1,39 @@
+%h2 Go Clubbing
+%p Ok, it's a cheesy name, but it's an interesting way to find new people that share your interests.
+%p Explore different clubs and join ones that look interesting.
+
+.right{:style => "width: 50%;"}
+  %h4 My Clubs
+  - @current_player.clubs.each do |club|
+    %p= link_to(club.title_with_count, club_path(club))
+  - if @current_player.interests.length > @current_player.clubs.length
+    %p.small
+      Don't see all of your interests as clubs?
+      %br
+      They may not have clubs assigned to them yet.
+
+  %p Want to edit your clubs or add a new club?
+  %p= link_to("Edit your interests (they become clubs) >", edit_account_profile_path)
+
+  %br
+  %h4 All Clubs
+  - @all.each do |club|
+    %p= link_to(club.title_with_count, club_path(club))
+  %p= link_to("View all clubs >", all_clubs_path)
+
+%h4 Popular Clubs
+- @clubs.each do |club|
+  %p= link_to(club.title_with_count, club_path(club))
+%p= link_to("All popular clubs >", popular_clubs_path)  
+
+-#
+  %br
+  %h4 Trending Clubs
+  - @trending.each do |club|
+    %p= link_to(club.title_with_count, club_path(club))
+
+%br
+%h4 Random Clubs
+- @random.each do |club|
+  %p= link_to(club.title_with_count, club_path(club))
+

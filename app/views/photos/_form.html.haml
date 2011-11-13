@@ -1,0 +1,46 @@
+%style{:type => "text/css"}
+  == .instructions li { font-size: 10pt; padding-bottom: 12px; }
+  == .facebook_photo_section { float: right; width: 330px; }
+  == .facebook_photo_section .info { overflow: auto; height: 162px; margin-bottom: 12px; }
+  == .facebook_photo { float: left; height: 154px; width: 142px; text-align: center; border-bottom: 1px solid #ccc; margin-bottom: 12px; }
+
+:javascript
+  withFB(loadFacebookPhotos);
+
+You can crop other people out of your photo after you save it.
+%br    
+%br    
+.info_box.wide
+  .facebook_photo_section
+    %h3 ... or use a photo from Facebook
+    - form_tag(facebook_photos_path) do
+      .info
+        .no_facebook
+          = facebook_connect_button("Use a Facebook Photo", "photo_connect")
+        #facebook_photos.with_facebook
+      = submit_tag "Use Facebook Photo", :class => "with_facebook"
+
+  %h3 Upload a photo of yourself
+  .info
+    = form_for(@photo, :html => {:multipart => true, :method => @photo.new_record? ? "post" : "put"}) do |form|
+      = form.label :image, "Photo:"
+      = form.error_message_on :image_content_type
+      = form.error_message_on :image_file_name
+      = form.file_field :image
+      - if @current_player.gender.blank?
+        = form.fields_for(:player) do |plf|
+          %div.inline
+            %p
+              = form.label :gender, "My Gender:"
+              = form.error_message_on :gender
+              = "#{plf.radio_button :gender, "m"} Male".html_safe
+              &nbsp;
+              = "#{plf.radio_button :gender, "f"} Female".html_safe
+
+      %p I certify that:
+      %ul
+        %li I am 18 years old or older
+        %li= "I agree to the #{link_to('terms of service', tos_about_path, :target => "blank")}".html_safe
+
+      = form.submit("Upload Photo")
+  %div{:style => "clear: both;"}

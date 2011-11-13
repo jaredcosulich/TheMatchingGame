@@ -1,0 +1,68 @@
+.photos{:style => "float:left; margin-right: 30px;"}
+  = render :partial => "photos/photo_set", :locals => {:photo_set => photo.photo_set}
+
+.profile_details{:style => "overflow: hidden;"}
+  %h2&= photo.visible_name
+
+  - if photo.visible_name =~ /Anonymous/
+    %p
+      This person has chosen to keep their information anonymous.
+  - else
+    - if photo.player.age
+      %p
+        = photo.he_she.camelize
+        is
+        = photo.player.age
+        years old
+        - if photo.player.location_name.present?
+          and lives in
+          &= photo.player.location_name
+
+    %br
+    %h4= "About #{photo.him_her.camelize}"
+    %p
+      - if photo.player.about.blank?
+        - if photo == @photo
+          .highlighted
+            You have not yet filled in your description.
+            %p
+            = link_to("Edit your profile >", edit_account_profile_path)
+        - else
+          &= "#{photo.visible_name} has not filled in #{photo.his_her} self-description."
+      - else
+        &= photo.player.about
+
+    %br
+    %h4 Interests, Activities, etc.
+    %p
+      - if photo.player.interests.blank?
+        - if photo == @photo && @photo.player == @current_player
+          .highlighted
+            You have not yet provided any interests, activities, etc.
+            %p
+            = link_to("Edit your profile >", edit_account_profile_path)
+        - else
+          &= "#{photo.visible_name} has not yet provided any interests, activities, etc."
+      - else
+        - photo.player.interests.each do |interest|
+          %p= interest.club.nil? ? interest.club : link_to(interest.title, club_path(interest.club))
+
+    %br
+    %h4 Answers to Questions
+    %p
+      - if photo.player.question_answers.blank?
+        - if photo == @photo && @photo.player == @current_player
+          .highlighted
+            You have not yet answered any questions.
+            %p
+            = link_to("Answer some questions >", questions_path)
+        - else
+          &= "#{photo.visible_name} has not yet answered any questions."
+      - else
+        - photo.player.question_answers.each do |answer|
+          %p
+            %b Question:
+            = link_to(answer.question.title, question_path(answer.question))
+          = simple_format(answer.answer)
+
+

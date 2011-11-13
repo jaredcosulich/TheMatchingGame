@@ -1,0 +1,200 @@
+- unless @yes_lat_lngs.empty? && @no_lat_lngs.empty?
+  :javascript
+    function initialize() {
+      var myLatlng = new google.maps.LatLng(0,0);
+      var myOptions = {
+        zoom: 1,
+        center: myLatlng,
+        mapTypeControlOptions: {
+           mapTypeIds: [google.maps.MapTypeId.ROADMAP]
+        },
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      }
+      var map = new google.maps.Map(document.getElementById("map"), myOptions);
+
+      var latlngbounds = new google.maps.LatLngBounds();
+
+      var yesLatLngs = #{@yes_lat_lngs.to_json}
+      var noLatLngs = #{@no_lat_lngs.to_json}
+
+      for (var i=0; i<yesLatLngs.length; ++i) {
+        var latLng = new google.maps.LatLng(yesLatLngs[i][0],yesLatLngs[i][1]);
+        new google.maps.Marker({
+          icon: '/images/green_dot.png',
+          position: latLng,
+          map: map,
+          title:"Yes"
+        });
+        latlngbounds.extend(latLng);
+      }
+
+      for (var i=0; i<noLatLngs.length; ++i) {
+        var latLng = new google.maps.LatLng(noLatLngs[i][0],noLatLngs[i][1]);
+        new google.maps.Marker({
+          icon: '/images/red_dot.png',
+          position: latLng,
+          map: map,
+          title:"No"
+        });
+        latlngbounds.extend(latLng);
+      }
+      map.fitBounds(latlngbounds);
+    }
+
+    function loadScript() {
+      var script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src = "http://maps.google.com/maps/api/js?sensor=false&callback=initialize";
+      document.body.appendChild(script);
+    }
+
+    $(loadScript());
+
+    $(function(){
+      $('.facebook_couples').click(function() { facebook_couples(#{@couple_combo.yes_percent}, "#{@couple_combo.photo_one.image.url(:preview)}", "#{@couple_combo.photo_two.image.url(:preview)}") } );
+    });
+    trackEvent("facebook_couples", "show", window.TMG_DATA.PLAYER_ID);
+
+
+%style
+  == h3 { text-align: center; margin-bottom: 12px; }
+  == .photo { width: 330px;  }
+  == .photo_one { float: left; text-align: right; }
+  == .photo_two { float: right; text-align: left; }
+  == .stats { float: left; width: 240px; border: 1px solid #ccc; padding: 0 12px; }
+  == #map { float: right; width: 400px; border: 1px solid #ccc; height: 300px; }
+  == .brag { clear: both; text-align: center; padding-bottom: 15px; line-height: 2em; }
+  == .challenge_friends { width: 360px; margin: auto; border: 1px solid #ccc; padding: 12px; }
+
+= render :partial => "couples/header"
+
+= link_to("View all the pairs >", couples_path, :style => "float: right;")
+
+- if params.include?(:cf)
+  .highlighted{:style => "margin: 15px 0;"}
+    Think you and your significant other can do better at The Perfect Pair Challenge?
+    %br
+    %br
+    = "Throw your hat in the ring, #{link_to("enter the challenge >", new_couple_path(:cf => @couple_combo.id.to_obfuscated))}"
+
+%br
+
+%h3 The Pair
+
+.photo.photo_one
+  = processed_image_group(@couple_combo.photo_one, :normal)
+.photo.photo_two
+  = processed_image_group(@couple_combo.photo_two, :normal)
+
+
+%div{:style => "clear:both;"}
+
+%br
+
+- if @couple_combo.couple_complete?
+  %h3 The Results
+
+  .brag
+    %h4
+      Overall Rank:
+      = @ranking.ordinalize
+    %b= "#{@couple_combo.yes_percent}%"
+    of people thought
+    = "#{@current_player_page ? "you two were" : "this pair was"} a great match."
+    - if @current_player_page
+      &nbsp; &nbsp;
+      = facebook_connect_button("Tell your friends about your results", "facebook_couples")
+
+
+  #map
+
+  .stats
+    %p= "#{pluralize(@couple_combo.yes_count + @couple_combo.no_count, 'person')} voted on whether #{@current_player_page ? "you two were" : "this pair was"} a great match or not."
+    %h4 Their Answers
+    %ul.explanation
+      %li
+        Yes:
+        &nbsp;
+        = @couple_combo.yes_count
+        &nbsp;
+        = "(#{@couple_combo.yes_percent}%)"
+      %li
+        No:
+        &nbsp;
+        = @couple_combo.no_count
+        &nbsp;
+        = "(#{100 - @couple_combo.yes_percent}%)"
+
+    %h4 The Map
+    .explanation
+      %p The map shows the location of each person who answered.
+      %ul
+        %li Green dots = Yes
+        %li Red dots = No
+      %p
+        We were unable to locate
+        = pluralize((@couple_combo.yes_count + @couple_combo.no_count) - (@yes_lat_lngs.length + @no_lat_lngs.length), "person")
+
+  - if @current_player_page || !@couple_friends.empty?
+    %div{:style => "clear: both; padding-top: 30px;"}
+    .brag
+      %h4
+        = "Rank Amongst #{@current_player_page ? "Your" : "Their"} Friends:"
+        = @friend_ranking.nil? ? "No Friends Yet" : @friend_ranking.ordinalize
+      - if @couple_friends.empty?
+        You haven't yet challenged any of your friends yet to see which of you is a more perfect pair.
+    - unless @couple_friends.empty?
+      .leader_board{:style => "#{'float: none; margin: auto;' unless @current_player_page}"}
+        %h3= "#{@current_player_page ? "You and Your" : "Their"} Friends"
+        = render :partial => "couples/leaders"
+  = render :partial => "challenge"
+  
+  - unless @current_player_page
+    .brag{:style => "padding-top: 30px;"}
+      - if @current_player.photos.detect { |p| p.couple_combo_id.present? }.nil?
+        %h4 Think you and your significant other can do better at The Perfect Pair Challenge?
+        = "Throw your hat in the ring, #{link_to("enter the challenge >", new_couple_path(:cf => params.include?(:cf) ? @couple_combo.id.to_obfuscated : nil))}"
+      - else
+        %h4 Do you know this pair?
+        You can add them to your list of friends you are competing against.
+        %br
+        = link_to("Add this pair as a friend >", add_couple_friend_couple_path(@couple_combo.id.to_obfuscated), :method => "POST")
+
+- else
+  %br
+  %div{:style => "text-align: center;"}
+    %h3 Status
+    - if @current_player_page
+      - if @couple_combo.photo_one.approved? && @couple_combo.photo_two.approved?
+        %p Voting is in progress. We'll email you as soon as the results are in.
+      - else
+        %p Your photos are pending approval. We'll email when your results are in or if there are any problems.
+    - else
+      - if @couple_combo.photo_one.approved? && @couple_combo.photo_two.approved?
+        %p Voting is in progress for this pair.
+      - else
+        %p This pair is pending approval
+      - unless CoupleFriend.already_friended?(@current_player, @couple_combo)
+        %p
+          Are you friends with this pair?
+          = link_to("Get notified when their results are in >", add_couple_friend_couple_path(@couple_combo.id.to_obfuscated), :method => "POST") 
+    %br
+
+    = render :partial => "challenge"
+
+    %br
+    %h3 While You Wait For The Results
+
+    %p Help other people find their perfect pair.
+    %p Play The Matching Game and help online singles meet their match!
+
+    %p= link_to(image_tag("playagame.png"), root_path)
+
+
+
+%div{:style => "clear:both; text-align: center; padding: 45px;"}
+  = link_to("View all of the pairs >", couples_path)
+  &nbsp; &nbsp; &nbsp;
+  = link_to("Play The Matching Game >", root_path)
+
+%br

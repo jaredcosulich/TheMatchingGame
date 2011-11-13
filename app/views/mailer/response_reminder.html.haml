@@ -1,0 +1,30 @@
+%p= "Hi#{" #{@name}" unless @name.blank?},"
+
+%p= "We just wanted to let you know that the matchmakers at The Matching Game have predicted #{@matches_count} potential matches for you."
+
+%h3 Here is a preview of your matches:
+
+- @photo_photos.each_pair do |photo, other_photos|
+  This photo:
+  %p= link_to image_tag(photo.image.url(:preview), :alt => "Your Photo", :style => "border:none;"), @emailing.facebook_if(photo, photos_path, college_photos_path)
+  %p Has Been Matched With:
+  %p
+    - other_photos[0..2].each do |other_photo|
+      = link_to image_tag(other_photo.image.url(:preview), :alt => "Their Photo", :style => "border:none;"), @emailing.facebook_if(photo, photos_path, college_photos_path)
+      &nbsp;
+  %p
+    = link_to "View All Matches For This Photo >", @emailing.facebook_if(photo, photos_path, college_photos_path)
+  %br
+
+%br
+%br
+
+%p If you have any questions at all, please let us know.
+
+%p
+  Sincerely,
+  %br
+  The Matching Game Team
+
+
+

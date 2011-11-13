@@ -1,0 +1,22 @@
+%p= "Hi#{" #{@recipient.player.first_name}" unless @recipient.player.first_name.blank?},"
+
+%p
+  We wanted to start the year off right, so we've decided to make it
+  %b completely free
+  to send and receive messages to your matches on The Matching Game.
+
+%p
+  That's correct. You can now send messages with anyone you've been matched with, for free.
+
+%p
+  We've also unlocked all of your previous matches, so you can message with them as well.
+
+%p
+  So
+  = "#{link_to("start messaging", @emailing.auto_login_path(account_path))}!".html_safe
+
+%p
+  Happy New Year!
+  %br
+  The Matching Game Team
+

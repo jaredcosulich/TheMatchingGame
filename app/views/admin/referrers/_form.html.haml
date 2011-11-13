@@ -1,0 +1,12 @@
+= form_for(@referrer, :url => @referrer.new_record? ? admin_referrers_path : admin_referrer_path(@referrer), :html => {:method => @referrer.new_record?? "post" : "put"}) do |form|
+  = form.error_messages
+  = form.label :url
+  = form.text_field :url
+  = form.label :uid
+  = form.text_field :uid
+  = form.label :title
+  = form.text_field :title
+  = form.label :note
+  = form.text_area :note, :rows => 4
+
+  = form.submit("Save")

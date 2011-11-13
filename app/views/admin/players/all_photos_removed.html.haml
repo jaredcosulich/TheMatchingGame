@@ -1,0 +1,7 @@
+%h3 Players with removed photo who have no photos left
+
+- seen_player_ids = {}
+- @removed_player_photos.each do |photo|
+  - next if seen_player_ids[photo.player_id]
+  - seen_player_ids[photo.player_id] = true
+  %p= link_to(image_tag(photo.image.url(:thumbnail)), admin_player_path(photo.player))

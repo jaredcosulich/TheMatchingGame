@@ -1,0 +1,24 @@
+%style
+  == .challenge_instructions { float: right; width: 345px; margin-top: 30px; border: 1px solid #ccc; padding: 12px; margin-left: 15px; }
+
+.challenge_instructions
+  %h3 The Matchmaking Challenge
+  .explanation
+    %p Challenge your friends to see who is the best matchmaker!
+    %br
+  %h4 How The Matchmaking Challenge Works
+  .explanation
+    %p
+      Each of you will see photos of
+      = Features.challenge_scoring_combos_to_show + Features.challenge_predicted_combos_to_show
+      couples and you'll need to correctly identify which couples are good matches.
+    %br
+  %h4 Winning The Challenge
+  .explanation
+    %p
+      The person who correctly identifies the most good and bad matches wins.
+    %br
+  %h4 Matches That Don't Count
+  .explanation
+    %p About half of the matches will not count toward your score.
+    %p For these matches you're actually helping the people pictured find a great match.

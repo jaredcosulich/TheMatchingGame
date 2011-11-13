@@ -1,0 +1,21 @@
+%table{:style => "text-align: center;", :cellpadding => 0, :cellspacing => 0}
+  %th Combo Id
+  %th{:style => "width: 120px; text-align: center;"} Photo One
+  %th{:style => "width: 120px; text-align: center;"} Photo Two
+  %th Yes Percent
+  %th Score
+  %th Delta
+  %th One Said
+  %th Two Said
+  %tr
+    %td
+      = link_to(combo.id, admin_combo_path(combo.id))
+      - unless combo.active?
+        %br INACTIVE
+    %td= image_tag(combo.photo_one.image.url(:thumbnail))
+    %td= image_tag(combo.photo_two.image.url(:thumbnail))
+    %td= "#{combo.yes_percent}%"
+    %td= "#{combo_score.score}"
+    %td= "#{combo_score.score - combo.yes_percent}"
+    %td= combo.response.photo_one_answer if combo.response
+    %td= combo.response.photo_two_answer if combo.response

@@ -1,0 +1,103 @@
+/*
+Syntax error: Undefined variable: "$background".
+        on line 8 of public/stylesheets/sass/locale.sass
+
+3:     float: none
+4: 
+5: #overall_container
+6:   margin-top: 18px
+7:   padding: 6px
+8:   background: $background
+9: 
+10: .welcome_message
+11:   padding-top: 12px
+12:   position: relative
+13:   .locale
+
+Backtrace:
+public/stylesheets/sass/locale.sass:8
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/haml-3.0.18/lib/sass/script/variable.rb:39:in `_perform'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/haml-3.0.18/lib/sass/script/node.rb:61:in `perform'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/haml-3.0.18/lib/sass/tree/prop_node.rb:132:in `perform!'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/haml-3.0.18/lib/sass/tree/node.rb:305:in `_perform'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/haml-3.0.18/lib/sass/tree/node.rb:213:in `perform'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/haml-3.0.18/lib/sass/tree/node.rb:326:in `perform_children'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/haml-3.0.18/lib/sass/tree/node.rb:326:in `map'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/haml-3.0.18/lib/sass/tree/node.rb:326:in `perform_children'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/haml-3.0.18/lib/sass/tree/node.rb:317:in `perform!'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/haml-3.0.18/lib/sass/tree/rule_node.rb:191:in `perform!'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/haml-3.0.18/lib/sass/tree/node.rb:305:in `_perform'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/haml-3.0.18/lib/sass/tree/node.rb:213:in `perform'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/haml-3.0.18/lib/sass/tree/node.rb:326:in `perform_children'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/haml-3.0.18/lib/sass/tree/node.rb:326:in `map'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/haml-3.0.18/lib/sass/tree/node.rb:326:in `perform_children'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/haml-3.0.18/lib/sass/tree/node.rb:317:in `perform!'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/haml-3.0.18/lib/sass/tree/root_node.rb:59:in `perform!'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/haml-3.0.18/lib/sass/tree/node.rb:305:in `_perform'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/haml-3.0.18/lib/sass/tree/node.rb:213:in `perform'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/haml-3.0.18/lib/sass/tree/root_node.rb:37:in `perform'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/haml-3.0.18/lib/sass/tree/root_node.rb:29:in `render'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/haml-3.0.18/lib/sass/plugin.rb:220:in `update_stylesheet'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/haml-3.0.18/lib/sass/plugin.rb:85:in `update_stylesheets'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/haml-3.0.18/lib/sass/plugin.rb:78:in `each'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/haml-3.0.18/lib/sass/plugin.rb:78:in `update_stylesheets'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/haml-3.0.18/lib/sass/plugin.rb:76:in `each'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/haml-3.0.18/lib/sass/plugin.rb:76:in `update_stylesheets'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/haml-3.0.18/lib/sass/plugin.rb:50:in `check_for_updates'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/haml-3.0.18/lib/sass/plugin/rack.rb:40:in `call'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/best_standards_support.rb:17:in `call'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/head.rb:14:in `call'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/rack-1.2.1/lib/rack/methodoverride.rb:24:in `call'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/params_parser.rb:21:in `call'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/flash.rb:182:in `call'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/session/abstract_store.rb:149:in `call'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/cookies.rb:295:in `call'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/activerecord-3.0.3/lib/active_record/query_cache.rb:32:in `call'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/activerecord-3.0.3/lib/active_record/connection_adapters/abstract/query_cache.rb:28:in `cache'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/activerecord-3.0.3/lib/active_record/query_cache.rb:12:in `cache'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/activerecord-3.0.3/lib/active_record/query_cache.rb:31:in `call'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/activerecord-3.0.3/lib/active_record/connection_adapters/abstract/connection_pool.rb:353:in `call'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/callbacks.rb:46:in `call'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/activesupport-3.0.3/lib/active_support/callbacks.rb:415:in `_run_call_callbacks'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/callbacks.rb:44:in `call'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/rack-1.2.1/lib/rack/sendfile.rb:107:in `call'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/remote_ip.rb:48:in `call'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/show_exceptions.rb:46:in `call'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/railties-3.0.3/lib/rails/rack/logger.rb:13:in `call'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/rack-1.2.1/lib/rack/runtime.rb:17:in `call'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/activesupport-3.0.3/lib/active_support/cache/strategy/local_cache.rb:72:in `call'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/rack-1.2.1/lib/rack/lock.rb:11:in `call'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/rack-1.2.1/lib/rack/lock.rb:11:in `synchronize'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/rack-1.2.1/lib/rack/lock.rb:11:in `call'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/rack-1.2.1/lib/rack/static.rb:33:in `call'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/static.rb:30:in `call'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/railties-3.0.3/lib/rails/application.rb:168:in `call'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/railties-3.0.3/lib/rails/application.rb:77:in `send'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/railties-3.0.3/lib/rails/application.rb:77:in `method_missing'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/railties-3.0.3/lib/rails/rack/log_tailer.rb:14:in `call'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/rack-1.2.1/lib/rack/content_length.rb:13:in `call'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/rack-1.2.1/lib/rack/chunked.rb:15:in `call'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/rack-1.2.1/lib/rack/handler/mongrel.rb:67:in `process'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/mongrel-1.1.5/lib/mongrel.rb:159:in `process_client'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/mongrel-1.1.5/lib/mongrel.rb:158:in `each'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/mongrel-1.1.5/lib/mongrel.rb:158:in `process_client'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `run'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `initialize'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `new'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `run'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/mongrel-1.1.5/lib/mongrel.rb:268:in `initialize'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/mongrel-1.1.5/lib/mongrel.rb:268:in `new'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/mongrel-1.1.5/lib/mongrel.rb:268:in `run'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/rack-1.2.1/lib/rack/handler/mongrel.rb:38:in `run'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/rack-1.2.1/lib/rack/server.rb:213:in `start'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/railties-3.0.3/lib/rails/commands/server.rb:65:in `start'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/railties-3.0.3/lib/rails/commands.rb:30
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/railties-3.0.3/lib/rails/commands.rb:27:in `tap'
+/Users/jaredcosulich/.rvm/gems/ruby-1.8.7-p299@matchmaker3/gems/railties-3.0.3/lib/rails/commands.rb:27
+script/rails:6:in `require'
+script/rails:6
+*/
+body:before {
+  white-space: pre;
+  font-family: monospace;
+  content: "Syntax error: Undefined variable: \"$background\".\A         on line 8 of public/stylesheets/sass/locale.sass\A \A 3:     float: none\A 4: \A 5: #overall_container\A 6:   margin-top: 18px\A 7:   padding: 6px\A 8:   background: $background\A 9: \A 10: .welcome_message\A 11:   padding-top: 12px\A 12:   position: relative\A 13:   .locale"; }

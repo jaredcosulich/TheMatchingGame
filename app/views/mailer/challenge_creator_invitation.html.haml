@@ -1,0 +1,8 @@
+%p Your challenge has been created.
+
+%p= "To view your challenge visit #{link_to("this link", accept_challenge_url(@challenge, :token => @challenge_player.token, :host => @host))} >".html_safe
+
+%p The following message was emailed to all challengers with a link to the challenge:
+
+= @challenge.invitation_text.gsub(/\n/, '<br/>')
+

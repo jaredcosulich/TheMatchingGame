@@ -1,0 +1,20 @@
+= link_to("Back to priority matching >", priorities_path, :style => "float: right; margin-right: 24px;")
+
+%h2 Watch Videos to Earn Credits
+%p.right{:style => "margin-right: 24px;"}
+  = link_to("Watch another video >", params)
+%p 2 videos = 2 credits = 1 day of priority matching.
+%p
+  You currently have
+  = "#{pluralize(@current_player.user.credits, "credit")}."
+  = link_to("Use your credits >", priorities_path)
+%p
+  %b IMPORTANT:
+  %br
+  Do not leave this site to watch videos.
+  You have to watch the videos in the player below to get credits.
+  %br
+  You also must watch videos all the way without fast-forwarding through to get credit.
+.watch_credits
+  %iframe{:src => "http://embed.jungroup.com/embedded_videos/catalog_frame?uid=#{@current_player.user.id}&site=thematchinggame&pid=6275178", :frameborder => 0}
+

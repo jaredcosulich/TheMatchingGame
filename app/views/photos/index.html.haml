@@ -1,0 +1,30 @@
+%div{:class => @photo.connectable? ? "me_connectable" : "me_not_connectable"}
+  .highlighted.me_not_connectable_message
+    .me_not_connectable_message
+      Your profile is currently set to "just curious"
+      = link_to("Edit your profile >", edit_account_profile_path)
+
+  %div{:style => "float: left; margin-right: 12px;"}= processed_image_group(@photos.first, :thumbnail)
+  %h2
+    = @current_player.name_age_and_place
+    %p.explanation
+      &nbsp;(
+      = link_to('view profile', "#photo_connect_info_#{@current_player.id}", :class => "more_info")
+      &nbsp; | &nbsp;
+      = link_to('edit profile', edit_account_profile_path)
+      )
+    %div{:id => "photo_connect_info_#{@current_player.id}", :style => "width: 660px; display: none; overflow: hidden;"}
+      = render :partial => "photos/profile", :locals => {:photo => @photos.first}
+
+  .clear
+  %br
+
+  %h3
+    All Photos
+    %span.explanation (click a photo to edit settings)
+  %div{:style => "margin-top: 6px;"}
+    - @photos.each do |photo|
+      = link_to(image_tag(photo.image.url(:preview)), photo_path(photo))
+
+  %br
+  = render :partial => "photos/awaiting_response"

@@ -1,0 +1,59 @@
+.tacked_paper
+  .tack.left_tack= link_to(image_tag("college/blue_tack.png"))
+  .tack.right_tack= link_to(image_tag("college/blue_tack.png"))
+
+  %h1.text_center.uppercase Your Settings
+  .change_photo.lightboxed
+    .tacked_photo.rotate_3
+      .tack= link_to(image_tag("college/blue_tack.png"))
+      %p
+        %b Current Photo
+      - if @current_player.college_photo.nil?
+        %p
+          %br
+          You don't yet
+          %br
+          have a photo.
+          %br
+          %br
+        %p
+          = link_to("Add A Photo", new_college_photo_path, "data-width" => "600px;", "data-height" => "360px;", :class => "lightbox")
+      - else
+        = image_tag(@current_player.college_photo.image.url(:thumbnail))
+        %p
+          = link_to("Change Photo", new_college_photo_path, "data-width" => "600px;", "data-height" => "360px;", :class => "lightbox")
+
+  = form_for @current_player.user, :url => college_user_path(@current_player.user), :method => :put do |f|
+    .settings_section
+      .explanation
+        Select which gender you prefer to be matched with, men or women.
+
+      %p Match Me With:
+      - options = "<option value='f'>Women</option><option value='t'>Men</option>" if @current_player.gender == 'm'
+      - options = "<option value='f'>Men</option><option value='t'>Women</option>" if @current_player.gender == 'f'
+      - options.gsub!(/(value=#{@current_player.same_sex? ? "'t'" : "'f'"})/, "\\1 selected=selected")
+      = select_tag("same_sex", options.html_safe)
+
+    .settings_section
+      - if @current_player.college_photo.nil?
+        .small
+          %p You don't yet have a photo to match.
+          %p Please add a photo to the left.
+      - else
+        .explanation
+          If you no longer want to be matched, but would like to continue matchmaking, switch your status.
+
+        %p Matching Status:
+        - options = "<option value=0>Active</option><option value=1>Paused</option>"
+        - options.gsub!(/(value=#{@current_player.college_photo.confirmed_or_approved? ? 0 : 1})/, "\\1 selected=selected")
+        = select_tag("pause", options.html_safe)
+
+    .settings_section{:style => "border-bottom: 0"}
+      %p Delete Account:
+      .explanation{:style => "float: none; width: auto;"}
+        If you'd like to delete your account,
+        please remove the app using your privacy settings in Facebook.
+
+    .clear
+      
+    %p.text_center= f.submit("Save Changes")

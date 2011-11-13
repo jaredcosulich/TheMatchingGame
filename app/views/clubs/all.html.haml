@@ -1,0 +1,22 @@
+%style
+  == .letters { overflow: hidden; padding-right: 90px; margin-top: 12px; }
+  == .letters .letter { float: left; width: 45px; margin-bottom: 12px; }
+
+.right
+  = link_to("Back to clubs home >", clubs_path)
+
+%h2 All Clubs
+%p Here's a list of all the clubs so far.
+%br
+
+.right{:style => "width: 50%;"}
+  %h4 Jump To A Letter
+  .letters
+    - ("A".."Z").each do |letter|
+      .letter= link_to(letter.upcase, all_clubs_path(:letter => letter.downcase))
+
+
+%h4= "All Clubs Starting With '#{@letter.upcase}'"
+- @this_letter.each do |club|
+  %p= link_to(club.title_with_count, club_path(club))
+

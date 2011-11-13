@@ -1,0 +1,17 @@
+%style
+  == .meet { clear: both; width: 420px; overflow: hidden; margin: 12px auto 60px auto; }
+  == .answer .yes_button { background: url("/images/buttons.png") no-repeat scroll -194px -38px transparent; }
+  == .answer .no_button { width: 164px; background: url("/images/buttons.png") no-repeat scroll -24px -38px transparent; }
+
+
+= render :partial => "photos/profile", :locals => {:photo => @highlighted_photo}
+
+.meet
+  %h3
+    A Good Match?
+  %p
+    Do you think you and
+    = @highlighted_photo.first_name.blank? ? (@highlighted_photo.him_her) : @highlighted_photo.first_name
+    might be a good match?
+  = render :partial => "profile_game/answer", :locals => {:game => "folk", :highlighted_photo => @highlighted_photo, :photo_id => @current_player.photos.approved_or_confirmed.first.id, :next_message => "Now keep exploring."}
+

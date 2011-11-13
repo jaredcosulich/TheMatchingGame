@@ -1,0 +1,38 @@
+.top_navigation
+  .top_box{:style => "margin: 0;"}
+    .top_box_content
+      %h3 Play Again
+      %p Help more people meet their perfect match! The more people you match, the more the system trusts your matches.
+      = link_to(image_tag("playagain.png"), root_path)
+
+  .top_box
+    .top_box_content
+      - if @current_player.photos.empty?
+        %h3 Get Matched
+        %p
+          Think you'd get matched with a cute girl or guy?
+          %br
+          &nbsp;
+          %br
+          Only one way to find out...
+        = link_to(image_tag("jointoday.png"), new_register_path(:ref => "action_bar"))
+      - else
+        %h3 Tell Your Friends
+        %p
+          Help us spread the word.
+          %br
+          &nbsp;
+          %br
+          Recommend The Matching Game to your friends.
+        = link_to(image_tag("sharewithfriends.png"), new_share_path)
+  .top_box
+    .top_box_content
+      %h3 Challenge Your Friends
+      %p
+        Think you're a better matchmaker than your friends?
+        %br
+        &nbsp;
+        %br
+        Challenge them to find out!
+      = link_to(image_tag("challenge.png"), challenges_path)
+

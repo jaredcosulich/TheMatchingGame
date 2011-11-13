@@ -1,0 +1,28 @@
+%p= pluralize(Interest.where("club_id is null").count, "unclubbed interest", "unclubbed interests")
+
+- if @unclubbed_interest.present?
+  = @unclubbed_interest.title
+  = form_for :interest, :url => set_club_admin_club_path(@unclubbed_interest) do |f|
+    = text_field_tag :title, @selected_club.try(:title)
+    = f.text_field :club_id, :value => @selected_club.try(:id)
+    = f.submit "Save"
+
+  %br
+
+  %h4 New Club
+  = form_for :club, :url => admin_clubs_path do |f|
+    = f.label :title
+    = f.text_field :title, :value => @unclubbed_interest.title.downcase
+    = f.submit "Save"
+
+  %br
+  %br
+
+  = link_to_function("Not A Club", "$('#title').val('not a club'); $('#interest_club_id').val(-1);")
+
+  %br
+  %br
+
+  %h4 Possible Clubs
+  - @possible_matches.uniq  .each do |club|
+    %p= link_to_function(club.title, "$('#title').val('#{club.title}'); $('#interest_club_id').val(#{club.id});")

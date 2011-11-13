@@ -1,0 +1,47 @@
+# The api key, secret key, and canvas page name are required to get started
+# Tunnel configuration is only needed if you are going to use the facebooker:tunnel Rake tasks
+# Your callback url in Facebook should be set to http://public_host:public_port
+# If you're building a Facebook connect site,
+#    change the value of set_asset_host_to_callback_url to false
+# To develop for the new profile design, add the following key..
+# api: new
+# remove the key or set it to anything else to use the old facebook design.
+# This should only be necessary until the final version of the new profile is released.
+
+development: &development
+  api_key: 2e6578b32a204632a90b5a5de1a42418
+  secret_key: 1607c57472adf6bf0e75fba3615cc759
+  canvas_page_name: thematchinggame-dev
+  callback_url: http://localhost:3000/
+  pretty_errors: true
+  set_asset_host_to_callback_url: false
+#  tunnel:
+#    public_host_username: jared
+#    public_host: sandbox.abrons.com
+#    public_port: 9002
+#    local_port: 3000
+#    server_alive_interval: 0
+
+performance:
+  <<: *development
+
+test:
+  api_key: 9d1c553105140bfb3cb9ef52ed43105a
+  secret_key: bf648962e2e43420f8125940b445c7bb
+  canvas_page_name: matchmaker_adam
+  callback_url: http://localhost:3000/
+  set_asset_host_to_callback_url: false
+
+staging:
+  api_key: c5d834897068a07c907b962fbf26fe1c
+  secret_key: 2a4f2e95c635427b91c861edb37bd9f8
+  canvas_page_name: thematchinggame-s
+  callback_url: http://thematchinggame-staging.heroku.com/
+  set_asset_host_to_callback_url: false
+
+production:
+  api_key: 40fa11243115860a75eb1d0a43fa8a9f
+  secret_key: 3a6410b1dabd7344ea69471731d8894d
+  canvas_page_name: thematchinggame
+  callback_url: http://www.thematchinggame.com/
+  set_asset_host_to_callback_url: false

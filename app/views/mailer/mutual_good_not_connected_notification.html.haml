@@ -1,0 +1,25 @@
+%p= "Hi#{" #{@recipient.first_name}" unless @recipient.first_name.blank?},"
+
+%p
+  We just wanted to let you know that you and
+  = "#{@author.first_name.blank? ? "one of your matches" : @author.first_name}"
+  both thought you would be a good match for each other!
+
+%p
+  Here is a photo of
+  = "#{@author.first_name_or_anonymous}:"
+  %br
+  = link_to image_tag(@combo.photo_for(@author).image.url(:thumbnail), :alt => "#{@author.his_her.titleize} Photo"), @emailing.auto_login_path(connection_path(@combo.to_param))
+
+%p
+  Your status is currently set to "Just Curious", so you can't message
+  = @author.first_name_or_anonymous
+  and
+  = @author.first_name_or_anonymous
+  can't message you.
+
+%p
+  If you would like to send a message to
+  = @author.him_her
+  you can change your status on
+  = "#{link_to "your edit profile page", @emailing.auto_login_path(edit_account_profile_path)} >".html_safe

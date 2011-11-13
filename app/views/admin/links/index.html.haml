@@ -1,0 +1,24 @@
+%h2 Link Clicks
+
+%br
+
+%h3 Go To:
+= link_to("All", admin_links_path)
+&nbsp; | &nbsp;
+= link_to("Today", admin_links_path(:d => 'today'))
+&nbsp; | &nbsp;
+= link_to("Yesterday", admin_links_path(:d => 'yesterday'))
+&nbsp; | &nbsp;
+= link_to("Same Day Last Week", admin_links_path(:d => 'same_day_last_week'))
+&nbsp; | &nbsp;
+= link_to("This Week", admin_links_path(:d => 'this_week'))
+&nbsp; | &nbsp;
+= link_to("Last Week", admin_links_path(:d => 'last_week'))
+
+%br
+
+%ul{:style => "line-height: 2em;"}
+  - @link_clicks.each do |link_click|
+    %li= "#{link_to(link_click.link.source.player.id, admin_player_path(link_click.link.source.player))} clicked to <b>#{link_click.link.path}</b> from the #{link_click.link.source.name} on #{(link_click.created_at - 8.hours).strftime("%m/%d/%Y at %I:%M%p PST")}".html_safe
+
+

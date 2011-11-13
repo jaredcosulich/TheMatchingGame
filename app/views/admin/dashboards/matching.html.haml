@@ -1,0 +1,33 @@
+%style
+  == td { text-align: right; padding: 6px; }
+  == tr.section { background-color: lightgrey; }
+  == tr.section td { text-align: left; }
+  == tr.groups th { text-align: center; }
+
+%table
+  %thead
+    %tr
+      %th Stat
+      %th One Week Ago
+      %th Two Weeks Ago
+      %th Three Weeks Ago
+      %th Four Weeks Ago
+  %tbody
+    %tr.section
+      %td(colspan=7) Totals
+      %tr= matches_row "Photos", :totals, :photo_count
+      %tr= matches_row "Answers", :totals, :answer_count
+      %tr= matches_row "Combos", :totals, :combo_count
+      %tr= matches_row "Matches", :totals, :matches
+      %tr= matches_row "Responses", :totals, :responses
+      %tr= matches_row "Good Matches", :totals, :good
+      %tr= matches_row "Good-Good Matches", :totals, :good_good
+    - [:combos, :matches, :responses, :good, :good_good].each do |key|
+      %tr.section
+        %td(colspan=7)= key.to_s.titleize
+      %tr= matches_row "Avg Total", key, :total_average
+      %tr= matches_row "First within 3 Days", key, :first_within_3_days, :percent
+      %tr= matches_row "First within 1 Week", key, :first_within_1_week, :percent
+      %tr= matches_row "Avg Total within 1 Week", key, :average_total_within_1_week
+      %tr= matches_row "Avg Total within 2 Weeks", key, :average_total_within_2_weeks
+      %tr= matches_row "Avg Total within 1 Month", key, :average_total_within_1_month

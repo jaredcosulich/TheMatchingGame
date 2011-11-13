@@ -1,0 +1,77 @@
+%h1 Edit Your Account
+
+%div
+  = render(:partial => "form", :locals => {:submit_label => "Save Email & Password", :method => "PUT"})
+
+%br
+%br
+%br
+
+%h3 Edit Email Preferences
+
+%br
+
+To unsubscribe from an email uncheck its box below:
+
+= form_for @current_player, :url => account_path, :html => {:method => "PUT"} do |f|
+  = f.error_messages
+  = f.fields_for(:user) do |uf|
+    = uf.fields_for(:email_preference) do |epf|
+      .account_info
+        %table.layout
+          %tr
+            %td
+              = epf.check_box :awaiting_response
+            %td
+              = epf.label :awaiting_response, "Matches Awaiting Your Response Email"
+          %tr
+            %td &nbsp;
+            %td.explanation
+              A daily email that notifies you of any matches that are awaiting your response.
+
+          %tr
+            %td &nbsp;
+
+          %tr
+            %td
+              = epf.check_box :prediction_progress
+            %td
+              = epf.label :prediction_progress, "Predicted Matches Email"
+          %tr
+            %td &nbsp;
+            %td.explanation
+              A daily email that notifies you of any progress that has occurred with the matches you predicted in the game.
+
+  = f.submit "Save Email Preferences"
+
+%br
+%br
+%br
+
+%h3 Delete Account
+
+%br
+
+= form_for @current_player, :url => account_path, :html => {:method => "PUT"} do |f|
+  = f.error_messages
+  = f.fields_for(:user) do |uf|
+    %h4 Why are you leaving?
+    = uf.text_area :deleted_reason, :style => "width: 600px; height: 150px;"
+    = uf.hidden_field :deleted_at, :value => Time.new
+    = uf.hidden_field :email, :value => "#{Time.new.to_i}#{@user.email}" unless @user.try(:email).blank?
+  %p
+    = f.submit "Delete Account", :id => "deleted_submit", :confirm => "Are you sure you want to delete your account completely?", :disabled => true
+    %span#deleted_reason.explanation
+      Help a guy out. Let me know, honestly, why you are leaving.
+
+
+%br
+%br
+%br
+
+:javascript
+  $(function() {
+    $("#player_user_attributes_deleted_reason").keypress(function() {
+      $("#deleted_submit").attr("disabled", false);
+    });
+  });

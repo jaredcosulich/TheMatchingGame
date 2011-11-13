@@ -1,0 +1,14 @@
+%h2= "Sessions for #{@player_id}"
+
+%br
+
+- @player_sessions.each do |player_session|
+  %h3= "Session starting #{player_session.start_time.strftime("%B %e, %Y at %I:%M%p")} for #{player_session.duration} seconds"
+  %table{:style => "width: 400px;"}
+    - player_session.infos.each do |info|
+      %tr
+        %td= info.path
+        %td= info.duration
+        %td= link_to "details", admin_request_log_detail_path(@player_id, info.key)
+  %br
+  %br

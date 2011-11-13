@@ -1,0 +1,57 @@
+.next_options
+
+  - if @current_player.photos.empty?
+    .next_option
+      %h3
+        Get Matched
+      %p Curious to see who you would be matched with?
+
+      %p Only one way to find out...
+
+      %div{:style => "text-align: center;"}
+        = link_to(image_tag("jointoday.png"), new_register_path(:ref => "next_options"), :style => "display: block; margin-bottom: 6px;")
+
+  .next_option
+    %h3
+      Keep Playing
+
+    %p Help match more people!
+
+    %div{:style => "text-align: center;"}
+      = link_to(image_tag("playagain.png"), root_path, :style => "display: block; margin-bottom: 6px;")
+      = link_to("Play a Long Game >", root_path(:c => 'e'))
+
+  .next_option
+    %h3
+      Challenge Friends
+
+    %p Think you can matchmake better than your friends?
+    %p Challenge your friends to a Matchmaker Challenge.
+
+    %div{:style => "text-align: center;"}
+      = link_to(image_tag("challenge.png"), challenges_path)
+
+  %br
+  %br
+  %h3 Is This Real?
+  .explanation
+    %p
+      Yes. you are matching real people.
+    %p
+      If you're good, some of your matches may start dating.
+      %br
+      They may even get married :)
+    - if @current_player.anonymous?
+      %p
+        = "If you #{link_to("register a new account", new_session_path)}, we'll let you know if any of your matches do start dating.".html_safe
+
+
+  %br
+  %br
+  %h3 More To Do
+  %p
+    = link_to("Tell your friends >", new_share_path)
+  %p
+    = link_to("Check in on your matches >", answers_path)
+  %p
+    = link_to("Learn more about the site >", about_path)

@@ -1,0 +1,19 @@
+:javascript
+  $(function() {
+    $('#question_long_answers').click(function() {
+      $("#suggested_answers").toggle(!this.checked);
+    });
+  });
+
+= form_for :question, :url => questions_path do |f|
+  %p
+    = f.label :title, "Your Question:"
+    = f.text_field :title, :style => "width: 30em;"
+  %p
+    = f.check_box :long_answers
+    This question requires a thoughtful, lengthy answer
+  %p#suggested_answers
+    = f.label :suggested_answers, "Suggested Answers (comma separated):"
+    = f.text_field :suggested_answers, :style => "width: 30em;"
+  %p
+    = f.submit "Save Question"

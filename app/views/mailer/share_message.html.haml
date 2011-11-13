@@ -1,0 +1,5 @@
+%p= @message_content
+
+%p
+  You can check out The Matching Game at this link:
+  = "http://#{Rails.env.production? ? 'www' : Rails.env}.thematchinggame.com?r=es"

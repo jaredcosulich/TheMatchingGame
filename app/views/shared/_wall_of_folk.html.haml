@@ -1,0 +1,21 @@
+- return if user_not_ready
+
+- photos = Photo.random.approved.joins(:player).where("players.connectable = true").where("couple_combo_id is null").where("photos.gender = ?", Gendery.opposite(@current_player.gender)).limit(6)
+
+#wall_of_folk
+  %table{:style => "clear: both; width: 900px; margin: auto; text-align: center;"}
+    %tr
+      - photos[0...3].each do |photo|
+        %td{:style => "width: 13%"}
+          = link_to(image_tag(photo.image.url(:thumbnail)), player_path(photo))
+
+      %td{:style => "width: 22%"}
+        %h3 Wall of Folk
+        .small
+          a random selection of people
+        .small
+          click to learn more about someone
+
+      - (photos[3...6] || []).each do |photo|
+        %td{:style => "width: 13%"}
+          = link_to(image_tag(photo.image.url(:thumbnail)), player_path(photo))

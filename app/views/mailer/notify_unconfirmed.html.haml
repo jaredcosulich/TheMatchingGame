@@ -1,0 +1,13 @@
+%p= "Hi#{" #{@recipient.first_name}" unless @recipient.first_name.blank?},"
+
+%p You have an unconfirmed photo.
+%p We can't start matching you until you confirm the photo.
+
+%p
+  You can confirm the photo
+  = link_to "here >", @emailing.auto_login_path(photo_path(@photo.to_param))
+
+%p
+  Thanks,
+  %br
+  The Matching Game Team

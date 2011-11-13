@@ -1,0 +1,7 @@
+%div{:style => "width: 50%; float: left;"}
+  = render :partial => "admin/combos/combos_table", :object => @fake_predicted_combos
+
+.clear
+
+- @fake_predicted_combos.collect { |c| [c.photo_one_id, c.photo_two_id] }.flatten.each do |id|
+  %p= id

@@ -1,0 +1,132 @@
+:javascript
+  $(function(){
+    $('.yes_no_buttons img').click(
+      function() {
+        var yes = this.src.indexOf('yes') > -1;
+        $(this).closest('.photo').addClass(yes ? 'approved' : 'rejected');
+        $(this).closest('.yes_no_buttons').fadeOut();
+        $(this).closest('.photo').find('.undo').delay(400).fadeIn();
+      }
+    );
+
+    $('.undo a').click(
+      function() {
+        $(this).closest('.undo').fadeOut();
+        var photo = $(this).closest('.photo');
+        photo.find('.yes_no_buttons').delay(400).fadeIn();
+        setTimeout(function() {
+          photo.removeClass('rejected').removeClass('approved');
+        }, 600);
+      }
+    );
+
+    $('#approve_rest').click(
+      function() {
+        $('.photo').not('.rejected').addClass('approved').find('.yes_no_buttons').hide().end().find('.undo').show();
+      }
+    );
+
+    $('#save_all').click(
+      function() {
+        var data = {};
+        $('.photo').each(
+          function() {
+            if ($(this).hasClass('approved')) {
+              data[this.id] = ['approved', $(this).find('.bucket input:radio:checked').val(), $(this).find('.rotation input:radio:checked').val()];
+            } else if ($(this).hasClass('rejected')) {
+              data[this.id] = ['rejected', $(this).find('.reason input').val()];
+            }
+          }
+        );
+        $.ajax({
+          type: 'POST',
+          url: "/admin/approvals/bulk",
+          data: {photos: data},
+          success: function() {
+            location.reload();
+          }
+        });
+      }
+    );
+  });
+
+%style{:type => "text/css"}
+  == .photo_container { height: 250px; float: left; text-align: center; border: 1px solid #ccc; margin: 0 3px 3px 0; }
+  == .photo { padding-top: 3px; margin: 0 3px 3px 0; }
+  == .photo .photo_links { display: block; height: 120px; }
+  == .profile { font-size: 8pt; }
+  == .save_links { float: right; font-size: larger; font-weight: bold; margin-top: 90px; text-align: center; }
+  == .save_links a { display: block; margin-bottom: 30px; }
+  == .yes_no_buttons { padding-top: 6px; }
+  == .yes_no_buttons img { padding: 0 3px; cursor: pointer; }
+  == .approved .undo .rejected { display: none; }
+  == .rejected .undo .approved { display: none; }
+  == .undo .rejected { color: red; }
+  == .bucket { text-align: center; width: 100%; }
+
+.right
+  = Player.joins(:photos).select("distinct(players.id)").where("photos.couple_combo_id is null and photos.current_state != 'rejected'").where("players.created_at > ?", 24.hours.ago).count
+  \/
+  = Player.joins(:photos).select("distinct(players.id)").where("photos.couple_combo_id is null and photos.current_state != 'rejected'").where("players.created_at > ?", 7.days.ago).count
+  %br
+  = WantPayment.where("charge_id is not null and created_at > ?", 24.hours.ago).count
+  = "(#{WantPayment.where("charge_id is not null and created_at > ?", 24.hours.ago).sum(:amount)})"
+  \/
+  = WantPayment.where("charge_id is not null and created_at > ?", 7.days.ago).count
+  = "(#{WantPayment.where("charge_id is not null and created_at > ?", 7.days.ago).sum(:amount)})"
+  \-
+  = WantPayment.where("created_at > ?", 24.hours.ago).count
+  \/
+  = WantPayment.where("created_at > ?", 7.days.ago).count
+  (Payments)
+  %br
+  = Photo.connection.select_value("select count(distinct(player_id)) from photos where current_state = 'approved'")
+  (Users w/ Photos)
+  %br
+  = Combo.active.count
+  (Active)
+  %br
+  = time_ago_in_words(Combo.active.order("created_at asc").first.created_at)
+  (Oldest)
+  %br
+  = link_to("#{Interest.where("club_id is null").count} unclubbed interests", admin_clubs_path)
+
+
+%h1= "Unreviewed Photos"
+
+.save_links
+  %a#approve_rest{:href => "javascript:void(0)"} < Approve Rest >
+  %a#save_all{:href => "javascript:void(0)"} < Save All >
+
+= render :partial => "photo", :collection => @unreviewed
+
+%h2{:style => "clear: both; padding-top: 3em;"} Recent Photos
+- @most_recent_photos.each do |photo|
+  .photo_container
+    .photo= link_to(image_tag(photo.image.url(:thumbnail)), admin_player_path(photo.player))
+    .profile
+      = photo.current_state
+      %br
+      = photo.gender
+      - if photo.player.profile.present? && photo.player.profile.age.present?
+        = photo.player.profile.age
+      - elsif photo.player.facebook_profile.present?
+        = "FB: #{photo.player.facebook_profile.age}"
+
+      - unless photo.player.referrer.nil?
+        %br
+        = photo.player.referrer.url
+        %br
+        = photo.player.referrer.title
+        = photo.player.referral.locale
+      - unless photo.couple_combo_id.nil?
+        %br
+        Couple
+      - unless photo.college_id.nil?
+        %br
+        = photo.college.name
+      %br
+        = photo.player.location_name  
+
+
+

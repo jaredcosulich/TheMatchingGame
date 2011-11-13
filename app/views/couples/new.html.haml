@@ -1,0 +1,47 @@
+= render :partial => "couples/header"
+
+
+.leader_board
+  %h3
+    .explanation= link_to("All Pairs >", couples_path)
+    Leader Board
+  = render :partial => "couples/leaders"
+
+%p Are you and your significant other the perfect pair?
+%p Compete against other couples with the Internet as the judge.
+%p Challenge your friends to see who is the better pair!
+
+%br
+
+%h3 Rules
+%ol
+  %li Photos can not be 2 halves of the same photo
+  %li Photos must be of an actual couple
+  %li You must not take it too seriously :)
+
+%br
+
+%h3 Get Started
+
+
+= form_for(:couple, :url => couples_path, :html => {:multipart => true}) do |form|
+  = hidden_field_tag(:cf, params[:cf])
+  = form.fields_for(:photo_one) do |pf1|
+    %p
+      = pf1.label :image, "The Guy:"
+      = pf1.file_field :image
+  = form.fields_for(:photo_two) do |pf2|
+    %p
+      = pf2.label :image, "The Gal:"
+      = pf2.file_field :image
+  - if @current_player.email.blank?
+    %p
+      = form.label :email, "Your Email:"
+      = form.text_field :email
+
+  %p.small
+    Sorry for the "guy" and "gal" stuff.
+    We're hoping to build a same-sex version soon.
+
+  %p
+    = form.submit("Submit Entry")

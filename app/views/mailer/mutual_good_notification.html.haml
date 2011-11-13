@@ -1,0 +1,20 @@
+%p= "Hi#{" #{@recipient.first_name}" unless @recipient.first_name.blank?},"
+
+%p
+  You and
+  = "#{@author.first_name.blank? ? "one of your matches" : @author.first_name}"
+  both thought you would be a good match for each other!
+
+%p
+  Here is a photo of
+  = "#{@author.first_name_or_anonymous}:"
+  %br
+  = link_to image_tag(@combo.photo_for(@author).image.url(:thumbnail), :alt => "#{@author.his_her.titleize} Photo"), @emailing.facebook_if(@combo, connections_path(@combo), college_connections_path(@combo))
+
+%p
+  Would you like to send a message to
+  = "#{@author.him_her}?"
+
+%p
+  = "You can learn more about #{@author.him_her} and send a message to #{@author.him_her} from "
+  = "#{link_to "your connection page", @emailing.facebook_if(@combo, connection_path(@combo), college_connections_path(@combo))} >".html_safe

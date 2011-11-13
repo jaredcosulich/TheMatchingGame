@@ -1,0 +1,15 @@
+%p Hi,
+
+%p Your photo has been approved and is now being matched.
+
+%p It may take a few days before a match is found, but hopefully we'll find one sooner than that.
+
+%p
+  You can watch the matching progress from the
+  = link_to("'in progress' tab >", @emailing.auto_login_path(photos_path(:t => "progress")))
+
+%br
+%p
+  Thanks,
+  %br
+  The Matching Game Team

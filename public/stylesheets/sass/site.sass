@@ -1,0 +1,521 @@
+@mixin box-shadow($horizontal, $vertical, $blur-radius, $color)
+  -webkit-box-shadow: $horizontal $vertical $blur-radius $color
+  -moz-box-shadow: $horizontal $vertical $blur-radius $color
+  -o-box-shadow: $horizontal $vertical $blur-radius $color
+  box-shadow: $horizontal $vertical $blur-radius $color
+
+@mixin rotate($r)
+  -webkit-transform: rotate($r)
+  -moz-transform: rotate($r)
+  -o-transform: rotate($r)
+  transform: rotate($r)
+
+$box_color = #eee
+$background = white
+$width = 950px
+$content_width = 750px
+$game_width = 756px
+$buttons = '/images/buttons.png'
+
+
+/****** General *****/
+
+a
+  color: #20809c
+  text-decoration: none
+  cursor: pointer
+  &:visited
+    color: #20809c
+    text-decoration: none
+    cursor: pointer
+  img
+    border: none
+
+h1
+  font-size: 18pt
+  margin: 0
+  padding: 0
+
+h2
+  font-size: 15pt
+  margin: 0
+  padding: 0
+
+h3
+  font-size: 13pt
+  font-weight: normal
+  margin: 0
+  padding: 0
+
+h4
+  margin: 0
+  padding: 0
+
+h1, h2, h3
+  .inline_link
+    font-size: 10pt
+    font-weight: normal
+
+.explanation
+  font-weight: normal
+  font-size: 10pt
+
+.small
+  font-weight: normal
+  font-size: 8.5pt
+
+.latest_news
+  padding-bottom: 12px
+  .explanation
+    margin-top: 6px
+
+
+/****** All Pages ******/
+
+body
+  font-size: 11pt
+  font-family: arial, sans-serif
+  padding: 0
+  margin: 0
+  color: #333
+  background-color: $background
+
+#header
+  padding-bottom: 1px
+  background-color: black
+  +box-shadow(-24px, 3px, 24px, lighten(black, 20%))
+  margin-bottom: 15px
+  a
+    padding: 0 12px
+    display: block
+    float: right
+    color: #999
+    &:visited
+      color: #999
+      padding: 0 12px
+      display: block
+      float: right
+    &:hover
+      color: white
+    &:first
+      padding-right: 0
+  .header_links
+    position: absolute
+    bottom: 0
+    display: block
+  .title, .title:visited
+    position: absolute
+    bottom: -3px
+    display: block
+    left: 0
+    padding-bottom: 2px
+    color: white
+  .header_links
+    right: 0
+  #header_content
+    height: 3em
+    width: $width
+    margin: auto
+    overflow: hidden
+    zoom: 1
+    position: relative
+
+.no_ads #header #header_content
+  width: $game_width
+
+#overall_container
+  width: $width
+  position: relative
+  margin: auto
+  overflow: hidden
+  #right_side_bar
+    float: right
+    text-align: center
+    width: 160px
+  #content
+    float: left
+    width: $content_width
+    overflow: hidden
+    position: relative
+    zoom: 1
+    padding-bottom: 30px
+
+.no_ads #overall_container
+  width: $game_width
+  #ads
+    display: none
+
+body.admin #content
+  width: $width
+
+
+#footer_content
+  border-top: 1px solid #333
+  padding: 6px 0 12px 0
+  background-color: $background
+  //color: white
+
+#footer
+  clear: both
+  width: $width
+  margin: auto
+  overflow: hidden
+  zoom: 1
+  position: relative
+  a
+    color: #999
+    &:visited
+      color: #999
+    &:hover
+      color: black
+  .right
+    color: #999
+    display: block
+    float: right
+    font-size: 9pt
+  iframe
+    margin-left: 12px
+
+.share, .top_join
+  overflow: hidden
+  padding-bottom: 6px
+  .text
+    line-height: 20px
+    float: left
+
+.share
+  float: right
+
+.top_join
+  padding-left: 12px
+
+.no_ads #footer
+  width: $game_width
+
+#irrational_design
+  padding-bottom: 60px
+  overflow: hidden
+  .irrational_design a
+    color: #D14334
+  .site
+    float: left
+    font-size: 9pt
+    text-align: center
+    margin: 12px 12px 0 0
+
+.right
+  float: right
+
+.clear
+  clear: both
+
+.missing_info
+  display: none
+  padding: 12px
+
+.info_box .interests, .interests
+  input
+    display: inline
+    width: 24em
+
+/****** GAME *******/
+
+body
+  &.home #overall_container #content, &.challenges #overall_container #content, &.match_me #overall_container #content
+    margin-top: 0
+    margin-left: 0
+    width: $game_width
+    padding-bottom: 0
+    overflow: hidden
+
+.welcome_message
+  text-align: center
+  clear: both
+
+.multiplier
+  .button
+    width: 90px
+  .no_button
+    background-position: -50px -38px
+    &:active
+      background-position: -50px 0
+
+.button
+  width: 205px
+  height: 37px
+  float: left
+  margin: 0 12px
+  cursor: pointer
+.yes2_button
+  background: url($buttons) -220px -364px no-repeat
+  &:active
+    background-position: -220px -325px
+.no2_button
+  background: url($buttons) -50px -364px no-repeat
+  &:active
+    background-position: -50px -325px
+.yes3_button
+  background: url($buttons) -220px -444px no-repeat
+  &:active
+    background-position: -220px -405px
+.no3_button
+  background: url($buttons) -50px -444px no-repeat
+  &:active
+    background-position: -50px -405px
+.yes_button
+  background: url($buttons) -218px -38px no-repeat
+  &:active
+    background-position: -218px 0
+.no_button
+  background: url($buttons) 60px -38px no-repeat
+  &:active
+    background-position: 60px 0
+
+#container
+  width: $width
+  position: relative
+  margin: auto
+  .right_wrong
+    text-align: left
+    position: absolute
+    top: -114px
+    left: 62px
+    line-height: 1.5em
+    width: 300px
+    border: 2px solid #ccc
+    background-color: white
+    font-size: 12pt
+    font-weight: normal
+    display: none
+    padding: 12px
+    img
+      float: left
+      margin: 12px 12px 12px 0
+  .frame
+    position: absolute
+    top: 0
+    width: $game_width
+  .combo
+    .photos
+      zoom: 1
+      .photo_container
+        height: 414px
+        width: 50%
+        float: left
+      .photo
+        display: block
+        margin: 0 12px
+        background-color: white
+        padding: 10px 15px 0 15px
+        border: 2px solid #DDD
+        +box-shadow(0, 3px, 24px, lighten(black, 20%))
+      .not_loaded_photo
+        background: white url("/images/static_loading.jpg") 70px 90px no-repeat
+        height: 330px
+        width: 252px
+        margin-top: 30px
+      .hidden_interests
+        height: 24px
+        div
+          display: none
+      .interests
+        height: 36px
+        overflow: hidden
+        margin-bottom: 6px
+        span
+          color: #777777
+          font-style: italic
+      .left_photo
+        float: right
+        +rotate(6deg)
+      .right_photo
+        +rotate(-6deg)
+        float: left
+    .show_interests
+      text-align: center
+      display: block
+    .question, .tip, .answer
+      color: #333333
+      font-size: 21px
+      font-weight: bold
+      letter-spacing: -0.02em
+      position: relative
+      text-align: center
+    .tip
+      color: #777777
+      font-size: 12px
+      font-weight: normal
+      display: none
+    .answer
+      margin: 6px auto
+      width: 458px
+      height: 40px
+      .results
+        position: absolute
+        width: 39px
+        bottom: 37px
+        height: 0
+      .no
+        border-top: 1px solid #540038
+        border-left: 1px solid #540038
+        border-right: 1px solid #540038
+        background-color: #E600B1
+        left: 142px
+      .yes
+        border-top: 1px solid #40880a
+        border-left: 1px solid #40880a
+        border-right: 1px solid #40880a
+        background-color: #50a710
+        left: 265px
+    .multiplier_message
+      margin: -6px 0 6px 0
+      text-align: center
+    .good_button
+      background: url($buttons) -218px -118px no-repeat
+      &:active
+        background-position: -218px -78px
+    .bad_button
+      background: url($buttons) 64px -118px no-repeat
+      &:active
+        background-position: 64px -78px
+    .real_life_match
+      width: 600px
+      font-size: 12px
+      background-color: #eee
+      border: 1px solid #ccc
+      text-align: center
+      padding: 12px 0
+      position: absolute
+      top: 15px
+      left: 55px
+
+#completed
+  padding-top: 30px
+  text-align: center
+  line-height: 3em
+  .inline_forms form
+    display: inline
+
+.home_index .game_explanation
+  margin: 30px 0
+
+.home_index .game_explanation .game_explanation_section
+  padding: 0 28px
+
+.game_explanation
+  padding: 12px
+  overflow: hidden
+  zoom: 1
+  h3
+    border-bottom: 1px solid #ccc
+    text-align: center
+    padding-bottom: 12px
+    margin-bottom: 12px
+  .game_explanation_section
+    float: left
+    width: 310px
+    padding: 0 18px
+    height: 150px
+    text-align: center
+    p
+      padding: 0 18px
+      img
+        float: left
+      a
+        img
+          margin-top: 6px
+          float: none
+
+.match_me_promo
+  border: 1px solid #ccc
+  padding: 12px 
+  .intro_photo
+    float: right
+    width: 254px
+    .your_photo
+      float: left
+      img
+        display: block
+        margin: 0 12px
+        background-color: white
+        padding: 3px 6px 12px 6px
+        border: 1px solid #DDD
+        +box-shadow(0, 3px, 12px, lighten(black, 20%))
+        +rotate(6deg)
+
+
+/****** FACEBOOK *********
+
+body
+  &.with_facebook_iframe
+    #header a.no_facebook_iframe
+      display: none
+      &:visited
+        display: none
+    .no_facebook_iframe
+      display: none
+  &.no_facebook_iframe .with_facebook_iframe,
+  &.with_facebook_email .no_facebook_email,
+  &.no_facebook_email .with_facebook_email,
+  &.with_facebook .no_facebook,
+  &.no_facebook .with_facebook
+    display: none
+
+
+/*********** IFRAME  **********
+body.iframed
+  #header
+    display: none
+  #footer
+    display: none
+  #overall_container, #overall_container #content
+    width: auto
+  #right_side_bar, .tabs, #top_ad, #wall_of_folk
+    display: none
+
+
+$light_yellow: #FFFA9C
+
+.not_subscribed
+  background-color: $light_yellow
+  text-align: center
+  margin-top: 12px
+  padding: 6px
+  table
+    td
+      padding: 12px 12px 0 12px
+
+@import legacy
+@import tablesorter
+
+/*********** CREDITS **********/
+
+.credits_area
+  border-top: 1px dashed #ccc
+  padding-top: 30px
+  margin-top: 30px
+  .priority_photos
+    .photo_option
+      overflow: hidden
+      padding-top: 12px
+      .image_for_option
+        width: 60px
+        height: 60px
+        text-align: center
+        float: left
+        margin-right: 12px
+
+
+body.credits_earn #overall_container #content,
+body.credits_work #overall_container #content,
+body.credits_watch #overall_container #content
+  width: $content_width
+  margin-left: 0
+  .earn_credits
+    iframe
+      width: $content_width
+      height: 800px
+  .watch_credits
+    iframe
+      width: 543px
+      height: 370px

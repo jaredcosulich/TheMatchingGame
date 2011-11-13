@@ -1,0 +1,31 @@
+%style
+  == li { margin-bottom: 12px; }
+
+
+%h2 Welcome To A Private Matching Session
+
+%br
+
+%div{:style => "float: left; margin-right: 30px; "}
+  = processed_image_group(@target_photo, :normal)
+
+%div{:style => "overflow: hidden;"}
+  %h4= "Find A Great Match For #{name_for(@target_photo).capitalize}"
+
+  %p Instructions:
+  %ol
+    %li
+      Select which of the following
+      = @target_photo.redundant_gender == 'm' ? "women" : "men"
+      might be a good match for
+      = name_for(@target_photo)
+    %li
+      The matches you select will be verified by our matchmakers. If they
+      agree then
+      = @target_photo.first_name.blank? ? (@target_photo.he_she) : @target_photo.first_name
+      will be able to message the people you've selected.
+
+  %p= link_to("Start Matching >", play_match_me_path(@target_photo.id.to_obfuscated))
+
+
+

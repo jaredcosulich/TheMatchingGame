@@ -1,0 +1,8 @@
+= render @photo
+
+%table.clear
+  - @photo_pairs.each do |photo_pair|
+    %tr
+      %td= render photo_pair.other_photo
+      %td= photo_pair.combo_id 
+      %td= photo_pair.score

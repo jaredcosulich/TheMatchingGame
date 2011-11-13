@@ -1,0 +1,87 @@
+:javascript
+  withFB(loadFacebookPhotos);
+  $(function() {
+    $('#registers_form').submit(function() {
+      if ($('input:radio[name=player[connectable]]:checked').length == 0) {
+        alert("Please specify whether you are looking to date or are just curious.");
+        return false;
+      }
+
+      if ($('input:radio[name=player[gender]]:checked').length == 0) {
+        alert("Please specify your gender.");
+        return false;
+      }
+
+      if ($('#player_profile_attributes_birthdate_1i').val().length == 0) {
+        alert("Please specify your birth date.");
+        return false;
+      }
+    })
+  })
+
+- step_classes = %w{one two three}
+
+= form_for @current_player, :url => register_path, :html => {:id => "registers_form", :method => "POST", :multipart => true} do |f|
+  - if @current_player.user.new_record?
+    = f.fields_for :user do |uf|
+      .info_box.wide{:class => step_classes.shift}
+        %h3
+          Set your email and password
+          %span.explanation (so you can come back and see your matches)
+        .info
+          - if @current_player.user.errors.on(:email) =~ /taken/
+            %div{:style => "float: right; margin-right: 24px;"}
+              %p
+                %b Forgot your password?
+                %br
+                = link_to("Reset it here >", new_password_reset_path(:email => @current_player.email))
+          %table.layout
+            %tr
+              %th= uf.label :email, "Email #{uf.error_message_on :email}".html_safe
+              %td= uf.text_field :email
+
+            %tr
+              %th= uf.label :password, "Password #{uf.error_message_on :password}".html_safe
+              %td= uf.password_field :password
+
+            %tr
+              %th= uf.label :password_confirmation, "Password Confirmation #{uf.error_message_on :password_confirmation}".html_safe
+              %td= uf.password_field :password_confirmation
+
+  .info_box.wide{:class => step_classes.shift}
+    %h3 Set your status
+    = render :partial => "profiles/form_fields", :locals => {:f => f}
+
+
+  = f.fields_for(@photo) do |phf|
+    .info_box.wide{:class => step_classes.shift}
+      .facebook_photo_section
+        %h3 ... or use a photo from Facebook
+        .info
+          .no_facebook
+            = facebook_connect_button("Use a Facebook Photo", "photo_connect")
+          #facebook_photos.with_facebook
+
+      %h3 Upload a photo of yourself
+      .info
+        = phf.label :image, "Photo:"
+        = phf.error_message_on :image_content_type
+        = phf.error_message_on :image_file_name
+        = phf.file_field :image
+
+      %div{:style => 'clear:both'}
+        %p You can crop other people out of your photo after you save it.
+        %p You must be 18 years old or over to add your photo.
+
+    - if @current_player.user.new_record? || @current_player.user.terms_of_service.nil?
+      = f.fields_for :user do |uf|
+        %br
+        .inline
+          %b= uf.label :terms_of_service, "Terms #{uf.error_message_on :terms_of_service}:".html_safe
+          = uf.check_box :terms_of_service
+          = "I agree to the #{link_to('terms of service', tos_about_path, :target => "blank")}".html_safe
+
+    %br
+    %br
+
+    = f.submit("Save")

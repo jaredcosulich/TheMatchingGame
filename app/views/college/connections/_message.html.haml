@@ -1,0 +1,3 @@
+.message
+  - class_name = combo_action.actor == @current_player ? "you" : "them"
+  = simple_format("<span class='#{class_name}'>#{combo_action.actor.visible_name}</span> #{h(combo_action.message)}")

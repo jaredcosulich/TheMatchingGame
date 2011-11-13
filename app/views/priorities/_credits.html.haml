@@ -1,0 +1,72 @@
+.credits_area
+  %h3 Credits
+
+  %p
+    You currently have
+    = "#{pluralize(@current_player.user.credits, "credit")}."
+    10 credits = 5 days of priority matching.
+
+  %h4 Use Your Credits - Start Priority Matching
+
+  .priority_photos
+    - @photos.each do |photo|
+      .photo_option
+        = form_for @priority do |f|
+          .image_for_option= image_tag(photo.image.url(:preview))
+          - if @current_player.user.credits > 0
+            = f.label :credits_applied, "How many credits do you want to apply?", :class => "explanation"
+            = f.select :credits_applied, (1..(@current_player.user.credits / 2)).collect { |i| ["#{i * 2} (#{i} days of priority matching)", i * 2] }
+            = f.hidden_field :photo_id, :value => photo.id
+            = f.submit "Apply Credits"
+          - else
+            You don't have any credits to use. Get more credits below.
+            
+        .small
+          - if photo.priority?
+            This photo will be matching as a priority until
+            = photo.priority_until.strftime("%b. %d, %Y")
+            = "(#{time_ago_in_words(photo.priority_until)} from now)"
+          - else
+            This photo is not currently matching as a priority.
+  %br
+  %br
+
+  - if true
+    %h4 Watch Videos to Earn Credits
+    %p We've teamed up with the folk from Jun Publishing to get access to videos for credits.
+    %p You can earn credit simply by watching videos.
+
+    %p
+      = link_to("Watch videos to earn credits >", watch_credits_path)
+
+    %br
+
+
+
+  - elsif @current_player.id % 2 == 0
+    %h4 Earn Credits
+    %p We've teamed up with the folk from Tapjoy to get access to offers for credits.
+    %p You can do things like take surveys, watch videos, subscribe to a free trial of Netflix, etc. to earn credits.
+
+    %p
+      = link_to("Earn credits >", earn_credits_path)
+
+    %br
+    
+  - else
+    %h4 Work For Credits
+    %p
+      We've teamed up with a company called CrowdFlower that lets you work
+      (e.g. looking up phone numbers for Yelp)
+      in exchange for credit. It usually takes about 30 minutes to earn
+      10 credits.
+    %p
+      = link_to("Work for credits >", work_credits_path)
+
+    %br
+
+  - if false
+    %h4 Rather Just Pay?
+    %p
+      If you'd prefer to just buy credits you can do so
+      = link_to("here >", credits_path)

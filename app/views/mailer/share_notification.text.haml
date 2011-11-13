@@ -1,0 +1,9 @@
+%p
+  A new share (
+  = @share.id
+  ) has been uploaded by
+  = @share.player.user ? @share.player.user.email : 'Anonymous'
+
+%p
+  = "Environment: #{Rails.env}"
+  = "http://#{Emailing.host}/admin/shares"

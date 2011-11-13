@@ -1,0 +1,35 @@
+%h1 ADMIN
+
+%h2 Management
+%ul
+  %li= link_to("Approvals", admin_approvals_path)
+  %li= link_to("Shares", admin_shares_path)
+  %li= link_to("Players", admin_players_path)
+  %li= link_to("Sample Games", admin_sample_games_path)
+  %li= link_to("Sample Emails", admin_emails_path)
+  %li= link_to("Facebook Test Users", admin_facebook_users_path)
+
+%br
+
+%h2 Reports
+%ul
+  %li
+    = link_to("Dashboard", admin_dashboards_path)
+    &nbsp;(
+    = link_to("Matching", matching_admin_dashboards_path)
+    )
+  %li= link_to("Transactions", admin_transactions_path)
+  %li= link_to("Combos", admin_combos_path)
+  %li= link_to("Photos", admin_photos_path)
+  %li= link_to("Reports", admin_reports_path)
+  %li= link_to("Responses", admin_responses_path)
+  %li= link_to("Responses Progress", progress_admin_responses_path)
+  %li
+    = link_to("Clusters", admin_clusters_path)
+    &nbsp;(
+    = link_to("Smarter Clusters?", admin_smarter_clusters_path)
+    )
+  %li= link_to("Referrers", admin_referrers_path)
+  %li= link_to("Best Photos", good_admin_photos_path)
+  %li= link_to("Request Logs", admin_request_logs_path)
+  %li= link_to("Games", admin_games_path)

@@ -1,0 +1,226 @@
+%style{:type => "text/css"}
+  == table { margin-bottom: 45px; }
+  == th { padding: 6px; }
+  == td { border: 1px solid #ccc; padding: 6px; }
+  == .breakdown { width: 100%; }
+  == .breakdown td { border: none; vertical-align: top; }
+
+%h3 Go To:
+= link_to("Today", admin_reports_path(:d => 'today'))
+&nbsp; | &nbsp;
+= link_to("Yesterday", admin_reports_path(:d => 'yesterday'))
+&nbsp; | &nbsp;
+= link_to("Same Day Last Week", admin_reports_path(:d => 'same_day_last_week'))
+&nbsp; | &nbsp;
+= link_to("This Week", admin_reports_path(:d => 'this_week'))
+&nbsp; | &nbsp;
+= link_to("Running Week", admin_reports_path(:d => 'running_week'))
+&nbsp; | &nbsp;
+= link_to("Last Week", admin_reports_path(:d => 'last_week'))
+
+%br
+%br
+
+%table{:cellpadding => 0, :cellspacing => 0}
+  %th Players
+  %th Male Players
+  %th Female Players
+  %th Users
+  %th Photos
+  %th Approved Photos
+  %th Games
+  %th Answers
+  %th Referrals
+  %th FB Ids
+  %th Link Clicks
+  %tr
+    %td= @player_count
+    %td= @male_player_count
+    %td= @female_player_count
+    %td= @user_count
+    %td= @photo_count
+    %td= @approved_photo_count
+    %td= @game_count
+    %td= @answer_count
+    %td= link_to(@referral_count, admin_referrers_path(:d => params[:d]))
+    %td= @fb_count
+    %td= link_to(@link_click_count, admin_links_path(:d => params[:d]))
+
+%table{:cellpadding => 0, :cellspacing => 0}
+  %th Daters Visited
+  %th Active Combos
+  %th Oldest Active
+  %th Active Men
+  %th Active Women
+  %th Approved Photos
+  %th All Photos Removed
+  %th Deleted Accounts
+  %tr
+    %td= @daters_visited
+    %td= @active_combos
+    %td= @oldest_active_combo
+    %td= @active_players_m
+    %td= @active_players_f
+    %td= @approved_photos
+    %td= link_to(@last_photo_removed_count, all_photos_removed_admin_players_path)
+    %td= link_to(@deleted_account_count, deleted_accounts_admin_players_path)
+
+%table.breakdown
+  %tr
+    %td
+      %h3 Combos
+      %table{:cellpadding => 0, :cellspacing => 0}
+        %tr
+          %td
+            %b Total
+          %td= @combo_count
+        %tr
+          %td
+            %b Active
+          %td= @active_combo_count
+        %tr
+          %td
+            %b Inactive
+          %td= @inactive_combo_count
+        %tr
+          %td
+            %b Inactivated
+          %td= @inactivated_combo_count
+    %td
+      %h3 Responses
+      = link_to("Total: #{@response_count}", admin_responses_path(:d => params[:d]))
+      %table{:cellpadding => 0, :cellspacing => 0}
+        %th answers
+        %th count
+        - @responses_summary.each_pair do |responses, count|
+          %tr
+            %td= link_to(responses, admin_responses_path(:a => responses.gsub(/\s/, ''), :d => params[:d]))
+            %td= count
+    %td
+      %h3 Summarized
+      %table{:cellpadding => 0, :cellspacing => 0}
+        %th answers
+        %th count
+        - @good_bad_summary.each_pair do |responses, count|
+          %tr
+            %td= responses
+            %td= count
+    %td
+      %h3 Combo Actions
+      %table{:cellpadding => 0, :cellspacing => 0}
+        %th action
+        %th count
+        - @combo_actions.each do |row|
+          %tr
+            %td= row['action']
+            %td= row['count']
+
+%h3 Challenges
+%table{:cellpadding => 0, :cellspacing => 0}
+  %th Challenges
+  %th Challengers
+  %th With Player
+  %tr
+    %td= @challenge_count
+    %td= @challenge_player_count
+    %td= @challenge_player_played_count
+
+%br
+%br
+
+%h3 Emails
+%table{:cellpadding => 0, :cellspacing => 0}
+  %th Name
+  %th Status
+  %th Count
+  - @emailings.each do |emailing|
+    %tr
+      %td= emailing['email_name']
+      %td= emailing['status'] == 'f' ? "UNSUB" : "&nbsp;"
+      %td= emailing['count']
+  %br
+%br
+
+%h3 Answers
+%table{:cellpadding => 0, :cellspacing => 0}
+  %th Total
+  %th No Count
+  %th Yes Count
+  %th Match Me
+  %th Interests
+  %th Discover
+  %th Clubbing
+  %tr
+    %td= @answer_count
+    %td= @no_count
+    %td= @yes_count
+    %td= @match_me_answer_count
+    %td= @interests_answer_count
+    %td= @discover_answer_count
+    %td= @club_answer_count
+
+
+
+%h3 Yes/No Trending
+%table{:cellpadding => 0, :cellspacing => 0}
+  %th Trending No
+  %th Trending Yes
+  %th Active Yes
+  %th Active No
+  %th Active Many Votes
+  %th Inactive Yes
+  %th Inactive No
+  %th Inactive Many Votes
+  %tr
+    %td= @trending_no_count
+    %td= @trending_yes_count
+    %td= @active_yes_count
+    %td= @active_no_count
+    %td= @active_many_votes_count
+    %td= @inactive_yes_count
+    %td= @inactive_no_count
+    %td= @inactive_many_votes_count
+
+
+%h3 Games / Player
+%table{:cellpadding => 0, :cellspacing => 0}
+  - @game_players.each do |game_player|
+    %th= pluralize(game_player['game_count'], 'Game', 'Games')
+  %tr
+    - total_count = @game_players.inject(0) { |total, info| total + info['count'].to_i }
+    - @game_players.each do |game_player|
+      %td
+        = game_player['count']
+        %br
+        - or_greater_count = @game_players.inject(0) { |total, info| info['game_count'].to_i >= game_player['game_count'].to_i ? total + info['count'].to_i : total }
+        = "#{100 * or_greater_count / total_count}%"
+
+
+%h3 Average Answers / Player
+= number_with_precision(@average_answer_player, :precision => 2)
+
+%br
+%br
+
+%h3 Answers / Player
+%table{:cellpadding => 0, :cellspacing => 0}
+  %th Player Id
+  %th Answers
+  %th Location
+  %th Reg
+  %th Has Photos
+  %th Accuracy
+  %th Referrer
+  %th Campaign
+  %th Chall
+  -@answers_per_player.each do |row|
+    %tr
+      %td=link_to(row["player_id"], admin_player_path(row["player_id"]))
+      %td=row["answers"]
+      %td=row["geo_name"]
+      %td=row["registered"] == 't' ? "True" : ""
+      %td=row["photos"] == 't' ? "True" : ""    
+      %td=number_to_percentage(row["accuracy"], :precision => 0)
+      %td=row["referrer_url"]
+      %td=row["referrer"]
+      %td=row["challenges"]

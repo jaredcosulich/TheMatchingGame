@@ -1,0 +1,40 @@
+%style{:type => "text/css"}
+  == .recent_photo { height: 150px; display: block; float: left; }
+  == a.approved { border-top: 6px solid green; }
+  == a.rejected { border-top: 6px solid red; }
+  == a.paused, a.paused_unapproved { border-top: 6px solid yellow; }
+  == a.unconfirmed { border-top: 6px solid blue; }
+
+
+%h1 Look up a photo
+%div
+  ID:
+  = text_field_tag(:id)
+  = submit_tag("Go To Photo", :onclick => "location.href = location.href + '/' + $('#id').val();")
+
+%br
+%br
+
+- if @page > 0
+  = link_to("< Previous Page", params.merge(:page => @page - 1))
+  &nbsp; &nbsp; &nbsp;
+= link_to("Next Page >", params.merge(:page => @page + 1))
+
+%br
+%br
+
+- @photos.each do |photo|
+  = link_to(image_tag(photo.image.url(:thumbnail)), admin_photo_path(photo), :title => "#{photo.current_state} - #{photo.title} - #{photo.player.referrer.url unless photo.player.nil? || photo.player.referrer.nil?}", :class => "recent_photo #{photo.current_state}")
+
+%div{:style => "clear: both;"}
+
+%br
+
+- if @page > 0
+  = link_to("Previous Page >", params.merge(:page => @page - 1))
+  &nbsp; &nbsp; &nbsp;
+= link_to("Next Page >", params.merge(:page => @page + 1))
+
+%br
+%br
+

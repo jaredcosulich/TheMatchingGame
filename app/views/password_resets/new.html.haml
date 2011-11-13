@@ -1,0 +1,7 @@
+.info_box
+  %h3 Reset Your Password
+  .info
+    = form_for :password_reset, :url => password_reset_path do |f|
+      = f.label :email
+      = f.text_field :email, :value => params[:email]
+      = f.submit "Send reset link"

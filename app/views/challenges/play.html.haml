@@ -1,0 +1,17 @@
+%script{:type => "text/javascript", :src => "http://www.google.com/jsapi?key=#{Geokit::Geocoders::google}"}
+:javascript
+  $(function(){
+    startGame(#{@game.id}, #{@challenge_combo_combos.to_json}, false, pageTracker._trackPageview, 1000, true);
+  });
+
+%h2.welcome_message
+  Correctly match people to complete the challenge!
+
+#progress_bar
+  #progress_count
+  #progress_so_far
+
+#container
+
+=render :partial => "challenges/completed"
+

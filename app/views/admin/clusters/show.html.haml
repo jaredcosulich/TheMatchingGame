@@ -1,0 +1,53 @@
+:javascript
+  $(function(){
+    $('img').click(function(){
+      if ($(this).hasClass('highlight')) $("#combos").removeClass("highlighting");
+      else $("#combos").addClass("highlighting");
+      $('img').removeClass('highlight');
+      $('img.' + $(this).attr('class').split(' ')[1]).addClass('highlight');
+    })
+
+    $('img').dblclick(function(){
+      location.pathname = $(this).attr('path');      
+    });
+  })
+
+%h1 Photo Correlations
+
+%div{:style => "float: right; width: 360px; height: 300px; overflow: auto;"}
+  .recommendations
+    %h4 Correlations
+    - @correlations.each do |info|
+      - photo_id = info[0]
+      - correlation = info[1]
+      %div{:style => "float:left; height: 84px;"}
+        - photo = Photo.find(photo_id)
+        = image_tag(photo.image.url(:preview), :class => "correlation #{dom_id(photo)}", :path => admin_cluster_path(photo))
+        %br
+        = correlation
+  .recommendations
+    %h4 Already Seen
+    - @existing_suggestions.each do |photo_id|
+      %div{:style => "float:left;"}
+        - photo = Photo.find(photo_id)
+        = other_photo_tag(@combo_finder.find_combo(@photo.id, photo_id), photo, :preview)
+  .recommendations
+    %h4 Not Seen Yet
+    - @not_existing_suggestions.each do |photo_id|
+      %div{:style => "float:left;"}
+        - photo = Photo.find(photo_id)
+        = image_tag(photo.image.url(:preview), :class => "correlation #{dom_id(photo)}", :path => admin_cluster_path(photo))
+
+%div
+  =image_tag(@photo.image.url, :class => "main_photo #{dom_id(@photo)}", :path => admin_cluster_path(@photo))
+
+%table#combos
+  - @combos.sort{ |a,b| b.yes_percent <=> a.yes_percent }.each do |combo|
+    - other_photo = combo.other_photo(@photo)
+    %tr
+      %td
+        = other_photo_tag(combo, other_photo, :thumbnail)
+      %td
+        - @other_combos[combo.id].sort{ |a,b| b.yes_percent <=> a.yes_percent }.each do |other_combo|
+          - other_other_photo = other_combo.other_photo(other_photo)
+          = other_photo_tag(other_combo, other_other_photo, :preview)

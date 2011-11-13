@@ -1,0 +1,9 @@
+.anonymous_warning.anonymous.with_facebook_iframe
+  .anonymous_warning_text
+    - if @current_player.photos.empty?
+      Want to be notified if the matches you've predicted actually connect in real life?
+      %br
+      %br
+      = facebook_connect_button("Allow Facebook Notifications", "email_connect")
+  .anonymous_warning_thankyou{:style => "display:none;"}
+    Thanks, and welcome to The Matching Game!

@@ -1,0 +1,5 @@
+= form_for :combo_action, :url => connect_connection_path(combo) do |f|
+  %p= f.label :message, "Your message:"
+  = f.text_area :message, :class => "message", :cols => 80, :rows => 8
+  %p= f.submit "Send Message"
+

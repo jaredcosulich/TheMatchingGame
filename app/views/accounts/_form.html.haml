@@ -1,0 +1,25 @@
+= form_for @current_player, :url => account_path, :html => {:method => method} do |f|
+  = f.error_messages
+  = f.fields_for(:user) do |uf|
+    .account_info
+      %table.layout
+        %tr
+          %th= uf.label :email, "Email #{uf.error_message_on :email}".html_safe
+          %td= uf.text_field :email
+
+        %tr
+          %th= uf.label :password, "Password #{uf.error_message_on :password}".html_safe
+          %td= uf.password_field :password
+
+        %tr
+          %th= uf.label :password_confirmation, "Password Confirmation #{uf.error_message_on :password_confirmation}".html_safe
+          %td= uf.password_field :password_confirmation
+        - if @current_player.user.new_record? || @current_player.user.terms_of_service.nil?
+          %tr
+            %th= uf.label :terms_of_service, "Terms #{uf.error_message_on :terms_of_service}".html_safe
+            %td.inline
+              = uf.check_box :terms_of_service
+              = "I agree to the #{link_to('terms of service', tos_about_path, :target => "blank")}".html_safe
+
+  = f.submit submit_label
+

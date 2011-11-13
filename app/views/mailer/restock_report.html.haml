@@ -1,0 +1,49 @@
+%h2 Restock Report
+
+%br
+
+%p= "Disabled #{@disabled.length}"
+%p= "Added #{@added.length}"
+%p= "In #{@time} seconds"
+%p= PP.pp(@timings, "", 40)
+%br
+
+%h3 Disabled
+%table
+  %th Combo Id
+  %th Photo One
+  %th Photo Two
+  %th Yes Count
+  %th No Count
+  %th Yes Percent
+  %th Score
+  %th Delta
+  %th Creation Reason
+  - @disabled.each do |combo|
+    %tr
+      %td= link_to(combo.id, admin_combo_url(combo, :host => @host))
+      %td= link_to(image_tag(combo.photo_one.image.url(:preview)), admin_photo_url(combo.photo_one, :host => @host))
+      %td= link_to(image_tag(combo.photo_two.image.url(:preview)), admin_photo_url(combo.photo_two, :host => @host))
+      %td= combo.yes_count
+      %td= combo.no_count
+      %td= combo.yes_percent
+      %td= combo.score
+      %td= (combo.score || 0) - (combo.yes_percent || 0)
+      %td= combo.creation_reason
+
+%br
+%br
+
+%h3 Added
+%table
+  %th Combo Id
+  %th Reason
+  %th Photo One
+  %th Photo Two
+  - @added.each do |combo|
+    - next if combo.new_record?
+    %tr
+      %td= link_to(combo.id, admin_combo_url(combo, :host => @host))
+      %td= combo.creation_reason
+      %td= link_to(image_tag(combo.photo_one.image.url(:preview)), admin_photo_url(combo.photo_one, :host => @host))
+      %td= link_to(image_tag(combo.photo_two.image.url(:preview)), admin_photo_url(combo.photo_two, :host => @host))

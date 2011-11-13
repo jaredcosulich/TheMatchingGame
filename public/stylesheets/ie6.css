@@ -1,0 +1,7 @@
+#container .combo .photos .photo_container .photo {
+  border: none;
+}
+
+#container .combo .photos .photo_container {
+  width: 49%
+}

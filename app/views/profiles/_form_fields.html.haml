@@ -1,0 +1,134 @@
+%script{:type => "text/javascript", :src => "http://www.google.com/jsapi?key=#{Geokit::Geocoders::google}"}
+= javascript_include_tag("geocoding")
+:javascript
+  $(function() {
+    function setConnectable() {
+      $.each($('.connectable'), function() {
+        if (this.checked) {
+          $('#profile').attr('class', this.value == 't' ? 'info connectable' : 'info not_connectable');
+        }
+      });
+    }  
+    $('.connectable').click(setConnectable);
+    setConnectable();
+  });
+
+
+.info#profile
+  %table
+    %tr
+      %td
+        = f.radio_button :connectable, 't', :class => 'connectable', :checked => (!@current_player.user.new_record? && @current_player.connectable?)
+        %br
+        %br
+      %td
+        %b Looking to date
+        %br
+        I'm interested in meeting the people I get matched with.
+        .explanation (you don't have to connect with anyone, but you will have the option to connect)
+    %tr
+      %td &nbsp;
+      %td &nbsp;
+    %tr
+      %td
+        = f.radio_button :connectable, 'f', :class => 'connectable', :checked => (!@current_player.user.new_record? && !@current_player.connectable?)
+        %br
+        %br
+      %td
+        %b Just curious
+        %br
+        I'm not interested in meeting anyone. I'd prefer to be anonymous.
+        .explanation (you won't be able to connect with people you get matched with, but you can see your matches)
+  %div.account_details
+    %br
+
+    = f.fields_for(:profile) do |pf|
+      .facebook_profile_info{:style => "float: right; width: 270px; padding-top: 12px;"}
+        %h3 Facebook Information
+        - if @current_player.facebook_profile
+          #facebook_name_age_and_place{:style => "display:none;"}
+            = @current_player.facebook_profile.name_age_and_place
+          %p
+            %label.inline= "#{radio_button_tag "preferred_profile", "facebook", @current_player.preferred_profile.is_a?(FacebookProfile)} Use this profile information".html_safe
+          &= "First Name: #{@current_player.facebook_profile.first_name}"
+          %br
+          &= "Last Name: #{@current_player.facebook_profile.last_name}"
+          %br
+          &= "Location: #{@current_player.facebook_profile.location_name}"
+          %br
+          &= "Birth Date: #{@current_player.facebook_profile.birthdate.strftime('%B %d, %Y') unless @current_player.facebook_profile.birthdate.nil?}"
+          %br
+          &= "Gender: #{@current_player.gender == 'm' ? 'Male' : 'Female'}"
+        - else
+          .no_facebook
+            = facebook_connect_button("Use Profile Info from Facebook", "fb_profile_info")
+          .with_facebook
+            Loading...
+
+      .profile_info
+        %h3 Information
+
+        - if @current_player.facebook_profile
+          %p
+            %label.inline= "#{radio_button_tag "preferred_profile", "profile", @current_player.preferred_profile.is_a?(Profile)} Use this profile information".html_safe
+        %table.layout
+          %tr.connectable_details
+            %th= pf.label :first_name
+            %td= pf.text_field :first_name, :class => 'profile_input'
+
+          %tr.connectable_details
+            %th= pf.label :last_name
+            %td= pf.text_field :last_name, :class => 'profile_input'
+
+          %tr.connectable_details
+            %th= pf.label :location_name
+            %td
+              = pf.text_field :location_name, :class => 'profile_input'
+              = pf.hidden_field :location_lat
+              = pf.hidden_field :location_lng
+
+          %tr
+            %th= pf.label :birth_date
+            %td= pf.date_select :birthdate, {:order => [:month, :day, :year], :end_year => 1900, :start_year => 18.years.ago.year, :include_blank => true, :default => nil}, :class => "profile_input"
+
+          %tr
+            %th= f.label :gender
+            %td.inline
+              %label
+                = f.radio_button :gender, "m"
+                Male
+              &nbsp; &nbsp; &nbsp;
+              %label
+                = f.radio_button :gender, "f"
+                Female
+          /
+            %tr
+              %th= pf.label :sexual_orientation
+              %td.inline
+                %label
+                  = pf.radio_button :sexual_orientation, "s"
+                  Straight
+                &nbsp; &nbsp; &nbsp;
+                %label
+                  = pf.radio_button :sexual_orientation, "g"
+                  Gay/Lesbian
+
+
+      .profile_preview.connectable_details
+        %h3
+          Profile Preview
+          %span.explanation (how people you match with will see you):
+        #profile_preview_text
+
+      - unless @current_player.preferred_profile.nil?
+        .profile_extra_info.connectable_details
+          %br
+          %h3 Interests
+          = render "profiles/interests"
+
+        .profile_extra_info.connectable_details
+          %br
+          %h3 About Description
+          = render "profiles/about", :form => pf
+
+  %div{:style => "clear: both;"}

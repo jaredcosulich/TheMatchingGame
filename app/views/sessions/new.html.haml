@@ -1,0 +1,42 @@
+%div{:style => "float: right; width: 300px; text-align: center;"}
+  %h3 Login with Facebook
+  %p
+    The Matching Game works great with Facebook!
+  %p
+    = facebook_connect_button("Connect through Facebook", 'fb_connect')
+
+.info_box
+  %h3
+    Log In To Your Account
+  .info
+    = form_for @session, :url => session_path do |f|
+      %div
+        = f.error_messages
+        %table.layout
+          %tr
+            %th= f.label :email
+            %td= f.text_field :email
+
+          %tr
+            %th= f.label :password
+            %td= f.password_field :password
+
+          %tr
+            %th
+            %td.inline
+              = f.check_box :remember_me
+              = f.label :remember_me, "remember me", :class=>"remember_me"
+
+      = f.submit "Login"
+
+      %br
+      Don't remember your password?
+      %br
+      = link_to("Reset your password >", new_password_reset_path)
+
+
+.info_box{:style => "clear: both;"}
+  %h3
+    Register A New Account
+  .info
+    = render(:partial => "accounts/form", :locals => {:submit_label => "Sign Up", :method => "POST"})

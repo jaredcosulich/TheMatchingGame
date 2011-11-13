@@ -1,0 +1,51 @@
+%style
+  == .leader_board_navigation { width: 165px; float: left; }
+
+= render :partial => "couples/header"
+
+
+.leader_board_navigation
+  %h3 How It Works
+  .explanation
+    %p Couples submit two photos, one of each of them.
+    %p People playing The Matching Game say whether they think the pair is a great match (without knowing that they are a real life couple).
+    %p See where you and your significant other rank. Challenge your friends. Fun and interesting to see the results!
+  %br
+  %h3 Showing
+  - (@couple_combos_count.to_f / @limit.to_f).ceil.times do |i|
+    - start_index = i * @limit + 1
+    - end_index = i * @limit + @limit
+    - end_index = @couple_combos_count if end_index > @couple_combos_count
+    %p= link_to_unless(@page == i, "Perfect Pairs #{start_index} - #{end_index}#{' >' unless @page == i}", couples_path(:page => i))
+
+.next_options
+  .next_option
+    %h3
+      The Perfect Pair
+
+    %p Think you and your other half are the perfect pair?
+    %p Throw your hat in the ring!
+    = link_to("Enter the Challenge >", new_couple_path)
+
+  .next_option
+    %h3
+      The Matching Game
+
+    %p Help online singles meet their match!
+
+    %div{:style => "text-align: center;"}
+      = link_to(image_tag("playagame.png"), root_path, :style => "display: block; margin-bottom: 6px;")
+
+  .next_option
+    %h3
+      Challenge Friends
+
+    %p Think you can matchmake better than your friends?
+    %p Challenge your friends to a Matchmaker Challenge.
+
+    %div{:style => "text-align: center;"}
+      = link_to(image_tag("challenge.png"), challenges_path)
+
+.leader_board{:style => "padding-right: 45px;"}
+  %h3 All Time Leader Board
+  = render :partial => "couples/leaders"

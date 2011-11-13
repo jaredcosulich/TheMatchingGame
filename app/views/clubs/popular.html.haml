@@ -1,0 +1,28 @@
+.right
+  = link_to("Back to all clubs >", photo_path(@current_player.photos.approved_or_confirmed.first))
+
+%h2 Popular Clubs
+
+.right{:style => "width: 50%;"}
+  %br
+  %h4 All Clubs
+  - @all.each do |club|
+    %p= link_to(club.title_with_count, club_path(club))
+  %p= link_to("View all clubs >", all_clubs_path)
+
+  %br
+  %h4 Random Clubs
+  - @random.each do |club|
+    %p= link_to(club.title_with_count, club_path(club))
+
+%br
+  
+%h4 Popular Clubs
+- @clubs.each do |club|
+  %p= link_to(club.title_with_count, club_path(club))
+
+%p
+  - if @page > 0
+    = link_to("< Previous Page", popular_clubs_path(:page => @page - 1))
+    &nbsp; &nbsp;
+  = link_to("Next Page >", popular_clubs_path(:page => @page + 1))

@@ -1,0 +1,21 @@
+.interests
+  .explanation Enter 5 of your favorite interests, activities, etc.
+  %p.explanation A few examples:
+  %ul.explanation{:style => "margin-top: 0; float: left;"}
+    %li Running
+    %li Arcade Fire
+    %li Movies
+    %li Surfing
+    %li Mystery Novels
+    %li Wine
+  %ul.explanation{:style => "margin-top: 0; float: left;"}
+    %li Skiing in Tahoe
+    %li Mad Men
+    %li Real Simple Magazine
+    %li Lasagna
+    %li Dogs
+    %li The Boston Red Sox
+  - ([(interests = @current_player.interests).length + 2, 5].max).times do |i|
+    %p.clear
+      = "#{i + 1}: "
+      = text_field_tag "interests[][title]", interests[i].present? ? interests[i].title : ""

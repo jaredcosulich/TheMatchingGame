@@ -1,0 +1,70 @@
+%style
+  == .highlighted_photo img { float: left; margin-right: 12px; }
+  == .highlighted_photo .profile { float: left; width: 150px; overflow: hidden; }
+  == .highlighted_photo .profile .interests { margin-top: 12px; }
+  == .section { clear: both; overflow: hidden; padding-top: 24px; }
+  == .section table { width: 100%; }
+  == .section table td { width: 20%; text-align: center; padding: 0 6px; }
+  == .meet { float: left; width: 200px; margin-left: 30px; }
+  == .right { float: right; margin-right: 12px; padding-top: 6px; }
+  == .answer .yes_button { background: url("/images/buttons.png") no-repeat scroll -194px -38px transparent; }
+  == .answer .no_button { background: url("/images/buttons.png") no-repeat scroll -20px -38px transparent; }
+  == .photos { overflow: hidden; }
+  == .photos .photo { float: left; margin-right: 12px; height: 120px; width: 120px; line-height: 120px; text-align: center; }
+
+%h2= "Meet Someone From The \"#{@club.title.capitalize}\" Club"
+.section
+  .highlighted_photo
+    - player = @photo.player
+    = image_tag(@photo.image.url)
+    .profile
+      %h3= player.first_name
+      %p= player.location_name
+      .interests
+        %b= "#{@photo.he_she.capitalize} belongs to these interests/clubs:"
+        %ul
+          - @photo.player.interests.each do |interest|
+            %li= link_to_unless(interest.club.nil?, interest.title, club_path(interest.club))
+    .meet
+      %h3
+        A Good Match?
+
+      %div{:id => "photo_profile_#{@photo.id}", :style => "display: none; width: 720px;"}
+        = render :partial => "photos/profile", :locals => {:photo => @photo}
+      %p= link_to "Learn more about #{@photo.visible_name}", "#photo_profile_#{@photo.id}", :class => "more_info"
+
+      %p
+        Do you think you and
+        = player.first_name.blank? ? (player.him_her) : player.first_name
+        might be a good match?
+      = render :partial => "profile_game/answer", :locals => {:game => "club", :highlighted_photo => @photo, :photo_id => @matching_photo.id, :next_message => "Now keep exploring."}
+
+.section
+  = link_to("< Back to the \"#{@club.title}\" club", club_path(@club, :page => params[:page]))
+
+
+- if @other_photos.present?
+  .section
+    %h4= "Other #{@other_photos.first.gender == "m" ? "handsome gentlemen" : "lovely ladies"} in this club"
+    .photos
+      - @other_photos.each do |photo|
+        .photo= link_to(image_tag(photo.image.url(:thumbnail)), photo_club_path(@club, :selected => photo.to_param))
+
+
+.section
+  %h4 Join this club:
+  %p
+    Join this club if you find
+    = "\"#{@club.title}\""
+    to be of interest.
+  %p
+    It will make it easier for
+    = @photo.gender == "m" ? "handsome gentlemen" : "lovely ladies"
+    who share this interest to find you and for you to find them.
+  %p= link_to("Join this club >", join_club_path(@club), :method => :post)
+
+
+.section
+  %h4 Keep Exploring - Select A Different Club From This Random List
+  - @other_clubs.each_with_index do |club, index|
+    = "#{link_to(club.title_with_count, club_path(club))}#{", &nbsp; " unless index == @other_clubs.length - 1}".html_safe

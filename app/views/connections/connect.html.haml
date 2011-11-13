@@ -1,0 +1,13 @@
+- photo = @combo.photo_for(@other_actor)
+- combo = @combo
+- return unless photo.player
+
+= render :partial => "photos/profile", :locals => {:photo => photo}
+
+%div.clear
+%br
+
+- if combo.present?
+  %div{:style => "float: right;"}
+  %h2&= "Start messaging with #{photo.visible_name}"
+  = render :partial => "connections/form", :locals => {:combo => combo, :photo => photo}

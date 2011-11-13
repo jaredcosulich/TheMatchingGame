@@ -1,0 +1,49 @@
+%style{:type => "text/css"}  
+  == .help_response { float: left; border-right: 1px solid #ccc; padding: 12px; width: 211px; line-height: 1.3em; }
+  == .help_response_text { height: 3em; }
+  == .help_response_button { line-height: 32px; }
+  == .help_response_explanation { line-height: 1.3em; text-align: left; margin-left: 60px; margin-bottom: 30px; }
+
+:javascript
+  $(function(){
+    $("#help_response_continue").click(function(){
+      $('#questions').animate({left: -800}, 1000)
+        .next('#help_response_feedback').show().animate({right: 0}, 1000);
+    });      
+  });
+
+#completed{:style => "position: relative; display:none;", :class => 'help_request'}
+  #questions{:style => "position: absolute; top: 0; left: 0; "}
+    %h2 Please Help
+    %h3 We're running out of matches! Please add your photo.
+    .help_response_explanation
+      %p We have so many people who are match making that we are running out of matches to make.
+      %p Would you mind adding your photo so that people can match you?
+      %p
+        It's always fun to see who you get matched with. Even if you are in a relationship you can add your
+        %br
+        photo anonymously and just let us know if the matches the game finds for you are good or not.
+
+    %h3 Will you add your photo?
+    %div
+      .help_response
+        .help_response_text Sure, I'd love to help!
+        .help_response_button= link_to(image_tag("addphoto.png"), help_response_account_path(:help_response => {:code => "add_photo"}), :method => "POST")      
+      .help_response
+        .help_response_text I'd rather not, but I'll tell some friends about the site.
+        .help_response_button= link_to(image_tag("sharewithfriends.png"), help_response_account_path(:help_response => {:code => "share"}), :method => "POST")
+      .help_response{:style => "border-right: none;"}
+        .help_response_text I'd rather not, but I'd like to keep playing and making matches.
+        .help_response_button= link_to("Continue >", "javascript: void(0)", :id => "help_response_continue")
+
+  #help_response_feedback.frame{:style => "display:none; top: 0; right: -800px; padding-top: 60px;"}
+    %h3 Can you give us any feedback?
+    .help_response_explanation
+      %p We'd like to make the game as comfortable as possible for people to add their photo.
+      %p Can you tell us why you'd rather not add your photo?
+      %p It would be a big help in improving the site.
+      %h4 Why would you rather not add your photo?
+      = form_for :help_response, :url => help_response_account_path do |f|
+        = f.hidden_field :code, :value => "continue"
+        = f.text_area :feedback, :style => "height: 8em; width: 600px;"
+        = f.submit("Save Feedback")

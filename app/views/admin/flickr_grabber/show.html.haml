@@ -1,0 +1,31 @@
+%style
+  \.latest_flickr_photo {
+  border: 1px solid #ccc;
+  padding: 6px;
+  margin-bottom: 6px;
+  width: 150px;
+  overflow: hidden;
+  float :left;
+  }
+
+  \.latest_flickr_photo img {
+  vertical-align: top;
+  }
+
+%p=link_to("Load Defaults", admin_flickr_grabber_path(:load_defaults => 1), :method => "post")
+
+
+= form_for(@flickr_photo, :url => admin_flickr_grabber_path) do |form|
+  = form.text_field(:flickr_url)
+  = form.fields_for(@flickr_photo.photo) do |photo_form|
+    = photo_form.hidden_field :gender
+  = form.submit("Save Male", :onmousedown => "document.getElementById('flickr_photo_photo_gender').value = 'm';")
+  = form.submit("Save Female", :onmousedown => "document.getElementById('flickr_photo_photo_gender').value = 'f';")
+
+%br
+%br
+
+- @latest_flickr_photos.each do |flickr_photo|
+  .latest_flickr_photo
+    = flickr_photo.flickr_url.split(/\//).last
+    = image_tag(flickr_photo.photo.image.url(:thumbnail))

@@ -1,0 +1,31 @@
+%h3 Social Gold Transactions
+%table.tablesorter
+  %thead
+    %tr
+      %th Id
+      %th Created
+      %th UserId
+      %th UserEmail
+      %th PlayerId
+      %th PlayerName
+      %th Net Payout
+      %th Event
+      %th Extra Fields
+  %tbody
+    - @social_gold_transactions.each do |sgt|
+      %tr
+        %td= sgt.id
+        %td= sgt.created_at
+        %td= sgt.user_id
+        %td= sgt.user.email
+        %td= link_to sgt.user.player_id, admin_player_path(sgt.user.player_id)
+        %td= sgt.user.player.full_name
+        %td= sgt.net_payout_amount
+        %td= sgt.extra_fields['event']
+        %td= sgt.extra_fields.inspect
+
+= javascript_include_tag "jquery.tablesorter.min"
+:javascript
+  $(function(){
+    $("table.tablesorter").tablesorter();
+  })

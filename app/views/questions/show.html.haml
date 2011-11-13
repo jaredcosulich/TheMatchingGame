@@ -1,0 +1,159 @@
+:javascript
+  function initialize() {
+    var myLatlng = new google.maps.LatLng(0,0);
+    var myOptions = {
+      zoom: 1,
+      center: myLatlng,
+      mapTypeControlOptions: {
+         mapTypeIds: [google.maps.MapTypeId.ROADMAP]
+      },
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    }
+    var map = new google.maps.Map(document.getElementById("map"), myOptions);
+
+    var latlngbounds = new google.maps.LatLngBounds();
+
+    var answers = #{@question.opposite_sex_answers(@current_player.gender).map(&:player).collect { |p| {:id => p.id, :lat_lng => p.lat_lng } }.to_json}
+    for (var i=0; i<answers.length; ++i) {
+      if (answers[i].lat_lng.lat == 39.833) continue;
+      var latLng = new google.maps.LatLng(answers[i].lat_lng.lat,answers[i].lat_lng.lng);
+      var marker = new google.maps.Marker({
+        icon: '/images/green_dot.png',
+        position: latLng,
+        map: map
+      });
+      setAnswerClick(marker, answers[i]);
+      latlngbounds.extend(latLng);
+    }
+
+    map.fitBounds(latlngbounds);
+    setTimeout(function() { if (map.getZoom() > 6) map.setZoom(6); }, 500);
+  }
+
+  function setAnswerClick(marker, answer) {
+    google.maps.event.addListener(marker, 'click', function() { showAnswer(answer.id) });
+  }
+
+  function showAnswer(id) {
+    var answer = $("#answer_" + id);
+    var fullAnswerArea = $("#full_answer");
+    fullAnswerArea.css("top", $("#map").position().top)
+    fullAnswerArea.find(".answer").html(answer.html());
+    fullAnswerArea.css("visibility", "visible");
+    fullAnswerArea.animate({width: "300px"}, 1000);
+    fullAnswerArea.find(".close").click(function() {
+      fullAnswerArea.animate({width: "0"}, 1000);
+      setTimeout(function() { fullAnswerArea.css("visibility", "hidden"); }, 800)
+    })
+  }
+
+  function loadScript() {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = "http://maps.google.com/maps/api/js?sensor=false&callback=initialize";
+    document.body.appendChild(script);
+  }
+
+  $(loadScript());
+
+
+%style
+  == .suggested_answers { overflow: hidden; margin-bottom: 150px; }
+  == .suggested_answer { float: left; margin: 12px 24px 0 0; }
+  == .recent_answers { overflow: hidden; width: 384px; margin-top: 12px; }
+  == .recent_answers .answer { overflow: hidden; margin-bottom: 12px; }
+  == .answer img { float: left; margin-right: 6px; }
+  == #map { width: 300px; height: 300px; border: 1px solid #ccc; margin-bottom: 60px; }
+  == .right { position: relative; }
+  == #full_answer { visibility: hidden; height: 300px; overflow: auto; background-color: white; width: 0px; position: absolute; top: 70px; right: 300px; border: 1px solid #ccc;}
+  == #full_answer .close { float: right; margin: 0 6px 12px 6px; cursor: pointer; font-size: 18pt; }
+  == #full_answer .answer { padding: 12px; }
+
+.right
+  = link_to("Back to all questions >", questions_path)
+
+%h2 Questions & Answers
+
+%br
+
+%h3 The Question
+
+%br
+  
+%h4= @question.title
+
+#edit_answer{:style => @my_answer.nil? ? nil : "display: none;"}
+  = form_for :question_answer, :url => question_question_answers_path(@question) do |f|
+    %p{:style => "font-size: 12pt;"}
+      - if @question.long_answers?
+        %p
+          This question requires a longer, more thoughtful answer.
+      = f.label :answer, "Your Answer:"
+      - if @question.long_answers?
+        = f.text_area :answer, :value => @my_answer.try(:answer), :style => "font-size: 11pt; width: 420px; height: 210px;"
+      - else
+        = f.text_field :answer, :value => @my_answer.try(:answer), :style => "font-size: 12pt; width: 420px;"
+      = f.submit "Save Answer", :style => "font-size: 11pt;"
+
+  %br
+  - unless @question.long_answers?
+    %h4 Popular Answers (click one to use that answer)
+    .suggested_answers
+      - @question.popular_answers.each do |a|
+        = link_to_function(a, "$('#question_answer_answer').val('#{a}');", :class => "suggested_answer")
+
+- if @my_answer.present?
+  #displayed_answer
+    %p Your Answer:
+    = simple_format(@my_answer.answer)
+    = link_to_function("edit answer", "$('#displayed_answer').hide(); $('#edit_answer').show();", :class => "small")
+
+- if @my_answer.present? || @current_player.admin?
+  %br
+  %h4
+    Answers From
+    = @current_player.gender == "m" ? "Lovely Ladies" : "Handsome Gentlemen"
+
+  - if @opposite_sex_answers.length == 0
+    %p
+      Doesn't look like any
+      = @current_player.gender == "m" ? "lovely ladies" : "handsome gentlemen"
+      have answered this question yet.
+    %p
+      Sorry, this feature is brand new, so it'll probably be a little while before there is any
+      interesting stuff going on.
+    %p
+      Please ask/answer more questions to help get the ball rolling.
+    %p
+      = link_to("Ask/Answer more questions >", questions_path)  
+
+  - else
+    - unless @question.long_answers?
+      %br
+      %div
+        %b Popular Answers:
+        = @question.grouped_opposite_sex_answers(@current_player.gender).collect { |a| "#{a[0]} (#{a[1]})" }[0...5].join(", ").html_safe
+
+    .right
+      %br
+      %h4 Map of Answers
+      Click a marker to see the person and answer
+      .small * We may not have locations for everyone
+      #map
+      #full_answer
+        .close x
+        .answer
+
+    %br
+    %h4 Recent Answers:
+    .recent_answers
+      - @question.opposite_sex_answers(@current_player.gender).sort_by(&:created_at).reverse.each do |answer|
+        - photo = answer.player.photos.approved_or_confirmed.first
+        - next if photo.nil?
+        .answer{:id => "answer_#{answer.player.id}"}
+          = link_to(image_tag(photo.image.url(:preview)), player_question_path(answer.player.id.to_obfuscated))
+          = answer.player.visible_name
+          = link_to("view all answers >", player_question_path(answer.player.id.to_obfuscated), :class => "small")
+          .answer_text
+            = @question.long_answers? ? simple_format(answer.answer) : "A) #{answer.answer}"
+

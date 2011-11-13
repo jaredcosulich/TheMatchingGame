@@ -1,0 +1,56 @@
+- combo = combo_row
+%tr
+  %td
+    = combo.new_record? ? "NEW" : link_to(combo.id, admin_combo_path(combo.id))
+    %br
+    = combo.creation_reason
+    - unless combo.active?
+      %br INACTIVE
+  %td= combo.yes_count
+  %td= combo.no_count
+  %td= "#{combo.yes_percent}%"
+  %td= combo.combo_scores.empty? ? "&nbsp;".html_safe : combo.combo_scores.first.score
+  %td
+    = thumbnail(combo.photo_one)
+    %br
+    = combo.photo_one.bucket
+  %td
+    = thumbnail(combo.photo_two)
+    %br
+    = combo.photo_two.bucket
+  %td
+    - if combo.response
+      = combo.response.photo_one_answer
+      %br
+      = combo.response.photo_one_rating
+  %td
+    - if combo.response
+      = combo.response.photo_two_answer
+      %br
+      = combo.response.photo_two_rating
+  %td
+    - if combo.verified?
+      = combo.verified_good? ? "#{image_tag("green_circle.png")}<br/>Good<br/>Match".html_safe : "#{image_tag("red_circle.png")}<br/>Bad<br/>Match".html_safe
+    - else
+      &nbsp;
+- if pair = combo.photo_one_pair
+  %tr
+    %td
+      = pair.id
+    %td
+      = "PRO: #{pair.calculate_profile_distance}"
+    %td
+      = "CON: #{pair.connection_score}"
+    %td
+      = "COR: #{number_with_precision(pair.correlation_score, :precision => 5)}"
+- if pair = combo.photo_two_pair
+  %tr{:colspan => 10}
+    %td
+      = pair.id
+    %td
+      = "PRO: #{pair.calculate_profile_distance}"
+    %td
+      = "CON: #{pair.connection_score}"
+    %td
+      = "COR: #{number_with_precision(pair.correlation_score, :precision => 5)}"
+

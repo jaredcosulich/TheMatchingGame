@@ -1,0 +1,45 @@
+%h1= "Combo #{@combo.id}"
+
+%h3 Counts
+%table{:cellpadding => 0, :cellspacing => 0}
+  %th Yes
+  %th No
+  %th Yes Percent
+  %th Score
+  %th Active
+  %th Response One
+  %th Response Two
+  %tr
+    %td= @combo.yes_count
+    %td= @combo.no_count
+    %td= "#{@combo.yes_percent}%"
+    %td= @combo.combo_scores.empty? ? "&nbsp;" : @combo.combo_scores.first.score  
+    %td= @combo.active?
+    %td
+      = @combo.photo_one_answer
+      %br
+      = time_ago_in_words(@combo.photo_one_answered_at) if @combo.photo_one_answered_at
+    %td
+      = @combo.photo_two_answer
+      %br
+      = time_ago_in_words(@combo.photo_two_answered_at) if @combo.photo_two_answered_at
+
+=photo_link(@combo.photo_one, :normal)
+=photo_link(@combo.photo_two, :normal)
+
+
+%h3 Answers
+- @combo.answers.sort { |a,b| (b.answer == 'y' ? 1 : -1) <=> (a.answer == 'y' ? 1 : -1) }.each do |answer|
+  %p
+    = "#{answer.player.nil? ? "NO PLAYER" : answer.player.id}: #{answer.full_answer}"
+    - unless answer.player.nil?
+      &nbsp; &nbsp;
+      = " (registered)" if answer.player.user
+      = " #{answer.player.player_stat.answer_count unless answer.player.player_stat.nil?} answers,"
+      = " #{answer.player.player_stat.accuracy unless answer.player.player_stat.nil?} accuracy)"
+
+%h3 Photo Pairs
+- @combo.photo_pairs.each do |photo_pair|
+  %p= h photo_pair.inspect
+  %p= "CON: #{photo_pair.connection_score}"
+  %p= "COR: #{photo_pair.correlation_score}"

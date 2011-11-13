@@ -1,0 +1,7 @@
+%h3 Deleted Accounts
+
+- seen_player_ids = {}
+- @deleted_user_player_photos.each do |photo|
+  - next if seen_player_ids[photo.player_id]
+  - seen_player_ids[photo.player_id] = true
+  %p= link_to(image_tag(photo.image.url(:thumbnail)), admin_player_path(photo.player))

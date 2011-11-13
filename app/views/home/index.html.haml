@@ -1,0 +1,54 @@
+- @no_sidebar = true
+
+%script{:type => "text/javascript", :src => "http://www.google.com/jsapi?key=#{Geokit::Geocoders::google}"}
+:javascript
+  $(function() {
+    startGame(null, #{@combos.to_json}, #{params[:c] == 'e'}, pageTracker._trackPageview, null, null, null, #{@current_player.level});
+  });
+-#
+  .share
+    .text.small
+      Having fun? Share the love.
+      &nbsp;
+    = twitter_button
+    = like_button
+
+  - if @current_player.user.nil?
+    .top_join
+      .text.small
+        Will our matchmakers find you a great match?
+        = link_to("Join today for free >", new_register_path(:ref => "top_join"))
+
+%div{:style => "height: 1px; visibility: hidden; overflow: hidden;"}
+  = image_tag("buttons.png")
+
+%h2.welcome_message
+  - if params[:c] == 'e'
+    This is a long game.
+    %span.explanation
+      Done playing?
+      = link_to("Review your answers >", games_path)
+  - elsif controller.locale_subdomain.blank?
+    If people agree on a great match, we'll make the introductions.
+  - else
+    If people &#94; agree on a great match, we'll make the introductions.
+    .locale from san francisco & the bay area
+
+- if need_user_action_to_set_cookie?
+  .with_facebook_iframe{ :style => "text-align: center; padding: 90px 0 360px 0;"}
+    = form_tag :safari, :url => safari_path do
+      -# TODO #hidden_field_tag("fb_id", (controller.facebook_params[:canvas_user] || controller.facebook_params[:user]))
+      = image_submit_tag("playagame.png")
+
+  .no_facebook_iframe
+    #container
+      = render :partial => "games/training_responses"
+
+    = render :partial => "games/completed"
+- else
+  #container
+    = render :partial => "games/training_responses"
+
+  = render :partial => "games/completed"
+
+= render :partial => "shared/register_actions", :locals => {:ref => "in_game"}

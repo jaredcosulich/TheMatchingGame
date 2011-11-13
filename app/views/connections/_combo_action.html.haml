@@ -1,0 +1,35 @@
+- name = combo_action.actor.first_name
+.combo_action
+  = link_to("#{image_tag(combo_action.photo.image.url(:thumbnail))}<br/>View Profile".html_safe, "#photo_connect_info_#{combo_action.photo_id}", :class => "more_info profile_image explanation")
+
+  %div.explanation{:style => "float: right;"}= "#{time_ago_in_words(combo_action.created_at)} ago"
+
+  %h4= "#{'You and ' if combo_action.action == 'connection_summary'}#{name}"
+
+  .explanation{:style => "overflow: hidden;"}
+    - if combo_action.visible_to?(@current_player)
+      = simple_format(h(combo_action.message))
+    - else
+      .not_subscribed{:style => "overflow: hidden;"}
+        %h3= "You have a message from #{name}."
+        %table
+          %tr
+            %td
+              %h4 Unlock All Connections
+              %p
+                With an unlimited membership
+                you can read this message and all other messages from any connection.
+              = "The unlimited membership is just $#{ComboAction::SUBSCRIPTION_PRICE}/month."
+            %td
+              %h4 Unlock This Connection
+              %p
+                Unlock this conversation to read this message and any future messages sent to you by
+                = name
+              = "It costs just $#{ComboAction::CONVERSATION_PRICE} to unlock this connection."
+          %tr
+            %td
+              = link_to(image_tag("upgradenow.png"), SocialGoldTransaction.subscribe_url(@current_player.user), :class => "upgrade_button more_info", "data-width" => "480", "data-height" => "420")
+            %td
+              = link_to(image_tag("unlockconnection.png"), SocialGoldTransaction.unlock_url(@current_player.user, unlock_connection_url(@combo)), :class => "upgrade_button more_info", "data-width" => "480", "data-height" => "420")
+          
+

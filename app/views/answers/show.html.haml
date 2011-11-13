@@ -1,0 +1,118 @@
+:javascript
+  $(function() {
+    var answerCount = 20;
+
+    function runQuery(query, append) {
+      $('#answers_container').attr('class', query);
+      if (!append) $('#results').html("");
+      $('#results_container').addClass('loading');
+      $('#load_more').hide();
+      var offset = $('#results .combo_result').length;
+      $.get("/answers/query?q=" + query + "&offset=" + offset, function(r) {
+        $('#results_container').removeClass('loading');
+        if (r.length > 10) {
+          if (append) $('#results').append(r);
+          else $('#results').html(r);
+          if ($('#results .combo_result').length % answerCount == 0) $('#load_more').show();
+        } else if (!append) {
+          $('#results').html($('#results_container .' + query + ' .no_combos').html());
+        }
+      });
+    }
+
+    $('.nav').click(function() {
+      this.blur();
+      var query = this.className.replace(/nav/, '');
+      query = $.trim(query.replace(/answers_tab/, ''));
+      runQuery(query);
+    })
+
+    $('#load_more a').click(function() {
+      runQuery($('#answers_container').attr('class'), true);
+    })
+  });
+
+= render :partial => "shared/action_bar"
+
+- unless @current_player.nil? || @current_player.new_record?
+  = render :partial => "shared/new_leaderboard", :locals => {:player => @current_player}
+  = render :partial => "shared/ranking", :locals => {:player => @current_player}
+
+
+%br
+
+- if @current_player.photos.empty?
+  %div{:style => "float: right; text-align: right;"}
+    Curious to see who you would be matched with?
+    %br
+    = link_to("Get matched >", new_register_path(:ref => "answers_curious"))
+
+%h2 Review Your Answers
+
+#answers_container.new
+  #answers_nav
+    %a.answers_tab.nav.new{:href => "javascript:void(0);"}
+      Recent
+    %span.group Matches You Predicted
+    %a.answers_tab.nav.predicted_correct{:href => "javascript:void(0);"}
+      Correct
+      = counts('predicted_correct')
+    %a.answers_tab.nav.predicted_incorrect{:href => "javascript:void(0);"}
+      Incorrect
+      = counts('predicted_incorrect')
+    %span.group Existing Matches
+    %a.answers_tab.nav.existing_correct{:href => "javascript:void(0);"}
+      Correctly Identified
+      = counts('existing_correct')
+    %a.answers_tab.nav.existing_incorrect{:href => "javascript:void(0);"}
+      Incorrectly Identified
+      = counts('existing_incorrect')
+  #results_container
+    #results_buffer
+    .result_explanation.new
+      %h3 Recent Answers
+    .result_explanation.existing_correct
+      %h3 Existing Matches You Correctly Identified
+      %p
+        These matches were verified as good matches before we showed them to you.
+        They provide feedback on your matching more quickly.
+      .no_combos
+        You haven't correctly identified any of the existing matches.
+        %p= link_to('Play again >', root_path)
+    .result_explanation.existing_incorrect
+      %h3 Existing Matches You Incorrectly Identified
+      %p
+        These matches were verified as bad matches before we showed them to you.
+        They provide feedback on your matching more quickly.
+      .no_combos
+        You have not yet incorrectly identified any of the existing matches.
+        %p= link_to('Play again >', root_path)
+    .result_explanation.predicted_correct
+      %h3 Matches You Predicted Correctly
+      %p
+        You've correctly predicted the following good or bad matches!
+        We've received opinions from the people being matched to verify.
+      .no_combos
+        None of the matches you've predicted to be good or bad have been verified by the couple being matched.
+        %p
+          The more matches you make, the more likely you'll begin to see matches you've predicted become a reality.
+          = link_to('Play again >', root_path)
+    .result_explanation.predicted_incorrect
+      %h3 Matches You Predicted That Were Wrong
+      %p
+        You were unfortunately incorrect with the following good or bad matches.
+        We've received opinions from the people being matched to verify.
+      .no_combos
+        None of the matches you've predicted to be bad have been verified by the couple being being matched.
+        %p= link_to('Play again >', root_path)
+    #results
+      = render :partial => "answers/answer", :collection => @answers
+    #load_more{:style => (@answers.length == 20 ? "": "display:none;")}
+      %a < Load More >
+    .loading_combo_results
+      %p
+        Loading...
+      %p
+        = image_tag("loading.gif")
+
+= render :partial =>"answers/footer"

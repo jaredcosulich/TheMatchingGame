@@ -1,0 +1,66 @@
+- stat = player.current_stat
+- return if stat.nil?
+  
+%style
+  == .experienced_matcher { margin-top: 12px; width: 100%; }
+  == .experienced_matcher td { vertical-align: top; border: none; border-right: 1px solid #ccc; text-align: center; }
+  == .experienced_matcher td h3 { margin-bottom: 6px; }
+  == .experienced_matcher td .percentile { font-size: 9pt; margin-top: 12px; }
+  == .experienced_matcher td.matching_stats_right_column { border-right: none; }
+  == .experience_explanation .matching_stats_center_column, .experience_explanation .matching_stats_right_column { border-bottom: 1px solid #ccc;}
+  == .accuracy_explanation .matching_stats_left_column, .accuracy_explanation .matching_stats_right_column { border-bottom: 1px solid #ccc;}
+  == .score_explanation .matching_stats_left_column, .score_explanation .matching_stats_center_column { border-bottom: 1px solid #ccc;}
+  == .no_explanation .explanation_container td { border: none; padding: 0; }
+  == .explanation_container td { border: 1px solid #ccc; border-top: none; padding: 12px; }
+  == .stat_explanation { display: none; }
+  == .experience_explanation .experience_explanation, .accuracy_explanation .accuracy_explanation, .score_explanation .score_explanation { display: block; }
+  == .score_history { position: relative; }
+  == .score_history .score_history_chart { display: none; }
+  == .full_score_history .score_history_charts .full_score_history, .last_25_score_history .score_history_charts .last_25_score_history, .last_30_days_score_history .score_history_charts .last_30_days_score_history { display: block; }
+  == #save_score { display: none; position: absolute; top: 39px; left: 0; }
+
+:javascript
+  $(function() {
+    $('.matching_stat a').click(function() {
+      var container = $('.experienced_matcher');
+      if (container.hasClass(this.className)) {
+        container.attr('class', 'experienced_matcher no_explanation');
+      } else {
+        container.attr('class', 'experienced_matcher ' + this.className);
+      }
+    });
+
+    $('.score_history span a').click(function() {
+      $(".score_history").attr('class', 'score_history ' + this.className);
+    });
+
+    $('.save_score').click(function() {
+      $("#save_score").slideToggle();
+    });
+  });
+
+- unless stat.answer_weight.nil?
+  = render :partial => "shared/leaderboard", :locals => {:player => player}
+
+  - if player.games.length > 1
+    - score_history = player.score_history
+    .score_history.last_25_score_history
+      %h2
+        Your Score Progress
+        - if player.anonymous?
+          %a.explanation.save_score &nbsp; save your score
+        - if score_history.length > 25
+          %span.explanation
+            &nbsp; &nbsp; &nbsp;
+            %a.last_25_score_history Last 25 Games
+            &nbsp; | &nbsp;
+            %a.full_score_history All Games
+      - if player.anonymous?
+        #save_score
+          = render_anonymous_warning
+      %p.score_history_charts
+        %span.score_history_chart.last_25_score_history
+          = sparkline((score_history.length > 25 ? score_history[-25..-1] : score_history))
+        - if score_history.length > 25
+          %span.score_history_chart.full_score_history
+            = sparkline(score_history)

@@ -1,0 +1,105 @@
+#footer
+  -#
+    = twitter_button
+    <script src="http://www.stumbleupon.com/hostedbadge.php?s=2&r=http://www.thematchinggame.com"></script>
+    = like_button
+  #footer_content
+    .right
+      %a.more_info{:href => "#feedback"} Support/Feedback
+      &nbsp;
+      %a.more_info{:href => "#success_story"} Success Stories
+      &nbsp;
+      = link_to("About", about_path)
+      &nbsp;
+      = link_to("&copy Irrational Design 2011".html_safe, "http://www.irrationaldesign.com", :target => "_blank")
+
+    #irrational_design
+      .irrational_design
+        An
+        = link_to("Irrational Design", "http://www.irrationaldesign.com", :target => "_blank")
+        Production
+
+      %a.site{:href => "http://www.charitybirthday.com", :target => "_blank"}
+        = image_tag("charity_birthday_logo.png")
+        %br
+        CharityBirthday.com
+
+      %a.site{:href => "http://www.secretgoals.com"}
+        = image_tag("secret_goals_square_logo.png", :style => "border: 1px solid #ccc;")
+        %br
+        SecretGoals.com
+
+      %a.site{:href => "http://soundseed.me", :target => "_blank"}
+        = image_tag("soundseed_logo.jpg")
+        %br
+        SoundSeed.Me
+
+#feedback.email_us{:style => "display: none;"}
+  = form_for :feedback, :url => feedback_path, :remote => true, :html => {:id => "feedback_form", :class => "email_us_form"}  do |f|
+    %p Let me know if questions or feedback about The Matching Game.
+    %p Simply enter your message below and I'll email you back if a response is required.
+    %p Thanks, Jared
+    %p
+      You can also reach me at
+      = mail_to("support@thematchinggame.com")
+    - if @current_player.try(:user).nil?
+      %b Your Email
+      %br
+      = f.text_field :email, :style => "width: 90%;"
+    %b Message
+    %br
+    = f.text_area :message, :style => "width: 90%;"
+    %p= f.submit "Send"
+  .sending{:style => "display:none;"}
+    Sending...
+  .success{:style => "display:none;"}
+    Thanks for your message!
+  .failure{:style => "display:none;"}
+    There was an error. Please try again in a little bit or email us at
+    = mail_to "support@thematchinggame.com"
+    \.
+
+#success_story.email_us{:style => "display: none;"}
+  = form_for :feedback, :url => feedback_path, :remote => true, :html => {:id => "success_story_form", :class => "email_us_form"}  do |f|
+    %p
+      Did The Matching Game help you meet someone? Want to share your story?
+      I'd love to hear about it. It's the main reason I built this site :)
+    %p Thanks, Jared
+    %p And congratulations!
+    - if @current_player.try(:user).nil?
+      %b Your Email
+      %br
+      = f.text_field :email, :style => "width: 90%;"
+    %b Message
+    %br
+    = f.text_area :message, :style => "width: 90%;"
+    %p= f.submit "Send"
+  .sending{:style => "display:none;"}
+    Sending...
+  .success{:style => "display:none;"}
+    Thanks for your message!
+  .failure{:style => "display:none;"}
+    There was an error. Please try again in a little bit or email us at
+    = mail_to "support@thematchinggame.com"
+    \.
+
+
+:javascript
+  $(".email_us")
+    .live("ajax:loading", function(xhr){ $("#facebox .email_us_form").hide(); $("#facebox .email_us .sending").show(); })
+    .live("ajax:complete", function(xhr){ $("#facebox .email_us .sending").hide(); })
+    .live("ajax:success",  function(data, status, xhr){$("#facebox .email_us .success").show(); })
+    .live("ajax:failure",  function(xhr, status, error){$("#facebox .email_us .failure").show(); });
+
+
+/
+  ="PLAYERID: #{@current_player.id}" if @current_player
+  ="FBID: #{@current_player.user.fb_id} - USERID: #{@current_player.user.id} - PLAYERID: #{@current_player.id}" if @current_player && @current_player.user
+- unless Rails.env.production?
+  %br
+  %br
+  = link_to("LOG OUT", session_path, :method => :delete)
+  = "#{@current_player.id unless @current_player.nil?}"
+  = "#{@current_player.user.fb_id}" if @current_player && @current_player.user
+%form
+  = text_field_tag("upgrade_check", "", :style => "display: none;")

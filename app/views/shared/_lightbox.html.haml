@@ -1,0 +1,8 @@
+= javascript_include_tag("facebox")
+= stylesheet_link_tag("facebox")
+
+:javascript
+  $(function() {
+    $('.lightboxed .lightbox').facebox({opacity: 0.5});
+    $('.more_info').facebox({opacity: 0.5});
+  });

@@ -1,0 +1,17 @@
+%h2 Questions & Answers
+
+.right
+  %h4 New Question
+  = render :partial => "questions/form"
+
+%h4 Unverified Questions
+- @unverified_questions.each do |question|
+  %p= link_to(question.title, question_path(question))
+
+%br
+%h4 Recent Questions
+- @recent_questions.each do |question|
+  %p= link_to(question.title, question_path(question))
+
+
+

@@ -1,0 +1,21 @@
+- last_day = 100.years.ago
+
+%h2 Last 100 Player Views
+
+%table
+  - @recent_sessions.each do |session_info|
+    - day = Time.parse(session_info['key'][0])
+    - if day != last_day
+      - last_day = day
+      %tr
+        %td{:colspan => 2} &nbsp;
+      %tr
+        %td{:colspan => 2}
+          %h3= day.strftime('%B %e, %Y')
+
+    %tr
+      %td
+        = session_info['key'][1].nil? ? "" : link_to(session_info['key'][1], admin_request_log_path(session_info['key'][1]))
+      %td
+        = session_info['value']
+

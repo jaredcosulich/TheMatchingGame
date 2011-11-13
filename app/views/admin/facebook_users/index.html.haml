@@ -1,0 +1,12 @@
+%style
+  == dt{margin-top: 6px;}
+%h3 Test Facebook Users
+%dl
+  - @test_users.each do |test_user|
+    %dt= test_user["id"]
+    %dd= test_user["login_url"]
+    - if test_user["access_token"]
+      %dd= test_user["access_token"]
+      %dd= link_to "Delete", admin_facebook_user_path(test_user["id"], :access_token => test_user["access_token"] ), :method => :delete
+
+%p= link_to("Create New", admin_facebook_users_path, :method => :post)    

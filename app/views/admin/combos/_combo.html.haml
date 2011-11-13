@@ -1,0 +1,49 @@
+%table{:cellpadding => 0, :cellspacing => 0}
+  %th Combo Id
+  %th Yes
+  %th No
+  %th Yes Percent
+  %th Score
+  %th Photo One
+  %th Photo Two
+  %th One Said
+  %th Two Said
+  %th Verified
+  %th Score
+  %tr
+    %td
+      = link_to(combo.id, admin_combo_path(combo.id))
+      - unless combo.active?
+        %br INACTIVE
+    %td= combo.yes_count
+    %td= combo.no_count
+    %td= "#{combo.yes_percent}%"
+    %td= combo.combo_scores.empty? ? "&nbsp;" : combo.combo_scores.first.score  
+    %td
+      = thumbnail(combo.photo_one)
+      %br
+      = combo.photo_one.bucket
+    %td
+      = thumbnail(combo.photo_two)
+      %br
+      = combo.photo_two.bucket
+    %td
+      - if combo.response
+        = combo.response.photo_one_answer
+        %br
+        = combo.response.photo_one_rating
+    %td
+      - if combo.response
+        = combo.response.photo_two_answer
+        %br
+        = combo.response.photo_two_rating
+    %td
+      - if combo.verified?
+        = combo.verified_good? ? "#{image_tag("green_circle.png")}<br/>Good<br/>Match".html_safe : "#{image_tag("red_circle.png")}<br/>Bad<br/>Match".html_safe
+      - else
+        &nbsp;
+    %td
+      - score_info = Combinator.score_info(combo.photo_one, combo.photo_two).reject{|k,v|k == :photo}
+      = score_info[:score]
+      %div
+        = score_info.inspect.split(/,/).join("<br/>").html_safe

@@ -1,0 +1,37 @@
+%h2 Referrers
+
+%h3 Create A New Referrer
+
+= render :partial => "form"
+%br
+%br
+
+%h3 Existing Referrers
+
+%br
+
+%h3 Go To:
+= link_to("All", admin_referrers_path)
+&nbsp; | &nbsp;
+= link_to("Today", admin_referrers_path(:d => 'today'))
+&nbsp; | &nbsp;
+= link_to("Yesterday", admin_referrers_path(:d => 'yesterday'))
+&nbsp; | &nbsp;
+= link_to("Same Day Last Week", admin_referrers_path(:d => 'same_day_last_week'))
+&nbsp; | &nbsp;
+= link_to("This Week", admin_referrers_path(:d => 'this_week'))
+&nbsp; | &nbsp;
+= link_to("Last Week", admin_referrers_path(:d => 'last_week'))
+
+%br
+
+%ul
+  - last_referrer = nil
+  - @referrers.each do |referrer|
+    -if last_referrer != referrer.url
+      - last_referrer = referrer.url
+      %br
+      %h4= last_referrer
+    %li= "#{link_to(referrer.title, admin_referrer_path(referrer, :d => params[:d]))} (#{referrer.uid}) - #{@referrals[referrer.id]}".html_safe
+
+

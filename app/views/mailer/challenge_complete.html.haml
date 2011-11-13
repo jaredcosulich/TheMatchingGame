@@ -1,0 +1,31 @@
+%p= "#{@challenge.name} has been completed!"
+
+%p= "#{@challenge.winners.map(&:name).join(" and ")} won the challenge with #{pluralize(@challenge.winners.first.correct_count, 'correct match', 'correct matches')}."
+
+%p
+  You can see all of the challenge results from the
+  = link_to("challenge page", @emailing.auto_login_path(challenge_path(@challenge)))
+  >
+
+%p
+  You can also rematch your friends
+  = link_to("here", @emailing.auto_login_path(new_challenge_path(:from => @challenge.to_param)))
+  >
+
+%p
+  If you'd like to play some more and help more people meet their match, then you can play
+  = link_to("The Matching Game", @emailing.auto_login_path(root_path))
+  >
+
+%p
+  If you'd like to get matched yourself,
+  = link_to("create a new profile", @emailing.auto_login_path(new_register_path(:ref => "challenge_complete")))
+  >
+
+%p
+  Thanks,
+  %br
+  The Matching Game Team
+
+
+

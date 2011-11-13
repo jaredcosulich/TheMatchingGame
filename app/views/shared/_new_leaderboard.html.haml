@@ -1,0 +1,60 @@
+- player = nil if player.nil? || player.new_record?
+
+- correct_start = (params.include?(:top_leader) || player.nil?) ?  0 : Player.leaderboard(player).count(:conditions => ["correct_count > ?", player.correct_count]) - 2
+- correct_start = 0 if correct_start < 0
+- correct = Player.leaderboard(player).find(:all, :order => "correct_count desc#{", players.id = #{player.id} desc" if player.present?}", :limit => 5, :offset => correct_start)
+
+%style
+  == .leaderboard { width: 100%; margin: 12px 0 30px 0; }
+  == .leaderboard th { text-align: left; padding: 6px 0; }
+  == .leaderboard th, .leaderboard td { padding: 3px 6px; }
+  == .leaderboard .alt_column { background-color: #ddd; }
+
+%h2
+  Matchmaking Leaderboard
+  - if player.present?
+    %span.explanation
+      &nbsp; &nbsp; &nbsp;
+      = link_to_if(params.include?(:top_leader), "Leaderboard Around Me", params.merge(:top_leader => nil))
+      &nbsp; | &nbsp;
+      = link_to_unless(params.include?(:top_leader), "Top of the Leaderboard", params.merge(:top_leader => 1))
+
+
+%table.leaderboard{:cellpadding => 0, :cellspacing => 0}
+  %th{:colspan => 2}
+    Matchmaker
+  %th.alt_column
+    Correct Matches
+  %th
+    \# Of Tries
+  %th.alt_column
+    Percent Accurate
+  - if player.present?
+    %th &nbsp;&nbsp
+    %th Your Stats
+    %th &nbsp;&nbsp;
+  - correct.length.times do |i|
+    %tr
+      %td= (correct_start + i + 1).ordinalize
+      %td{:style => "#{'font-weight: bold;' if correct[i] == player}"}= correct[i].visible_name(player) if correct[i].present?
+      %td.alt_column= correct[i].player_stat.correct_count if correct[i].present?
+      %td= correct[i].player_stat.correct_count + correct[i].player_stat.incorrect_count if correct[i].present?
+      %td.alt_column= number_to_percentage(100 * correct[i].player_stat.correct_count.to_f / (correct[i].player_stat.correct_count + correct[i].player_stat.incorrect_count).to_f) if correct[i].present?
+
+      - if player.present?
+        %td &nbsp;&nbsp;
+        - if i == 0
+          %td
+            - if player.games.length > 1 && player.anonymous?
+              %a.save_score Save Your Score
+            - else
+              %b= player.visible_name(player)
+        - if i == 1
+          %td= "#{player.correct_count} Correct"
+        - if i == 2
+          %td= "#{player.incorrect_count} Incorrect"
+        - if i == 3
+          %td= "#{player.accuracy}% Accurate"
+        - if i == 4
+          %td= "#{player.points} Points"
+        %td &nbsp;&nbsp;

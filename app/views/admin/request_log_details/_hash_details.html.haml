@@ -1,0 +1,13 @@
+- hash.keys.sort.each do |key|
+  - value = hash[key]
+  %tr
+    - if value.respond_to?(:keys)
+      %td &nbsp;
+      %td
+        %h3= key
+        %table{:cellpadding => 0, :cellspacing => 0}
+          %tr
+            %td= render :partial => "hash_details", :locals => {:hash => value}
+    - else
+      %td= key
+      %td= h value.inspect

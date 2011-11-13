@@ -1,0 +1,31 @@
+%style
+  == .bad { border: 3px solid red; }
+  == .good, .uninterested, .interested { border: 3px solid green; }
+  == .responses_container { overflow-x: auto; width: 400px; }
+  == .responses_photos { width: 10000px; }
+
+%h2 Responses Progress
+
+%br
+%br
+
+%h3
+
+  = "Total: #{@correct_responses} / #{@total_responses} = #{((@correct_responses.to_f / @total_responses.to_f) * 100).to_i}%" 
+
+%br
+%br
+
+%table
+  - @photo_responses.keys.sort { |a,b| b.id <=> a.id }.each do |photo|
+    %tr
+      %td
+        = image_tag(photo.image.url(:thumbnail))
+      %td
+        .responses_container
+          .responses_photos
+            - @photo_responses[photo].each do |other_photo_with_response|
+              = image_tag(other_photo_with_response[0].image.url(:preview), :class => other_photo_with_response[1], :title => other_photo_with_response[1])
+      %td
+        - correct_count = @photo_responses[photo].map(&:last).select{ |a| a != 'bad' }.length
+        = "#{correct_count} / #{@photo_responses[photo].length} = #{((correct_count.to_f / @photo_responses[photo].length.to_f) * 100).to_i}%"

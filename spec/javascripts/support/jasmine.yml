@@ -1,0 +1,19 @@
+#  Return an array of filepaths relative to src_dir to include before jasmine specs.
+src_files:
+  - public/javascripts/jquery-1.4.2.js
+  - public/javascripts/game.js
+  - public/javascripts/college_game.js
+
+#  Return an array of stylesheet filepaths relative to src_dir to include before jasmine specs.
+stylesheets:
+  - tmp/stylesheets/compiled/site.css
+
+#  Return an array of filepaths relative to spec_dir to include before jasmine specs.
+spec_files:
+  - **/*.js
+
+#  Source directory path. Your src_files must be returned relative to this path. Will use root if left blank.
+# src_dir: public
+
+#  Spec directory path. Your spec_files must be returned relative to this path.
+spec_dir: spec/javascripts

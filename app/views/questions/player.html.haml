@@ -1,0 +1,52 @@
+%style
+  == .highlighted_photo img { float: left; margin-right: 12px; }
+  == .highlighted_photo .profile { float: left; width: 150px; overflow: hidden; }
+  == .highlighted_photo .profile .interests { margin-top: 12px; overflow: auto; height: 210px; }
+  == .highlighted_photo .profile .interests ul { padding-left: 18px; }
+  == .section { clear: both; overflow: hidden; padding-top: 24px; }
+  == .meet { float: left; width: 200px; margin-left: 30px; }
+  == .right { float: right; margin-right: 12px; padding-top: 6px; }
+  == .answer .yes_button { background: url("/images/buttons.png") no-repeat scroll -194px -38px transparent; }
+  == .answer .no_button { background: url("/images/buttons.png") no-repeat scroll -20px -38px transparent; }
+
+.right
+  = link_to("Back to all questions >", questions_path)
+
+%h2= "All of #{@player.visible_name}'s Answers"
+.section
+  .highlighted_photo
+    - photo = @player.photos.approved_or_confirmed.first
+    = image_tag(photo.image.url)
+    .profile
+      %h3= @player.first_name
+      %p= @player.location_name
+      .interests
+        %b= "#{@player.his_her.capitalize} interests:"
+        %ul
+          - @player.interests.each do |interest|
+            %li= link_to_unless(interest.club.nil?, interest.title, club_path(interest.club))
+    .meet
+      %h3
+        A Good Match?
+
+      %div{:id => "photo_profile_#{photo.id}", :style => "display: none; width: 720px;"}
+        = render :partial => "photos/profile", :locals => {:photo => photo}
+      %p= link_to "Learn more about #{photo.visible_name}", "#photo_profile_#{photo.id}", :class => "more_info"
+
+      %p
+        Do you think you and
+        = @player.first_name.blank? ? (@player.him_her) : @player.first_name
+        might be a good match?
+      = render :partial => "profile_game/answer", :locals => {:game => "question", :highlighted_photo => photo, :photo_id => @current_player.photos.approved_or_confirmed.first.id, :next_message => "Now keep exploring."}
+
+
+.section
+  %h4
+    = @player.his_her.capitalize
+    Answers To Questions
+  - @player.question_answers.each do |answer|
+    %p
+      %b Question:
+      = link_to(answer.question.title, question_path(answer.question))
+    = simple_format(answer.answer)
+

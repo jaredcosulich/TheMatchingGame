@@ -1,0 +1,37 @@
+= link_to "back to photo", admin_photo_path(@photo)
+
+%div
+  = image_tag(@photo.image.url(:normal))
+  %p= @photo.player.geo_name
+  %p
+    = @photo.bucket
+    = @photo.player.connectable?
+    = @photo.player.age
+
+%hr
+
+%table{:style =>"width: 49%; float: left;"}
+  %tr
+    %th Photo
+    %th Location
+    %th Age
+    %th Score
+  - @candidates.each do |candidate|
+    %tr
+      %td
+        =render candidate.other_photo
+      %td
+        = number_with_precision(candidate.distance)
+        %br
+        = candidate.other_photo.player.geo_name
+        %br
+        = candidate.distance_score
+      %td
+        = candidate.other_photo.player.age
+        %br
+        score
+        = candidate.age_score
+      %td
+        = number_with_precision(candidate.score)
+
+

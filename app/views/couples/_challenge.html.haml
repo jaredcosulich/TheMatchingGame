@@ -1,0 +1,8 @@
+- if @current_player_page
+  .challenge_friends{:style => "#{"float: left" unless @couple_friends.empty?}"}
+    %h4 Challenge Friends
+    %p Challenge another couple you know to the see who the Internet thinks is a more perfect pair!
+    %p You can either email them this link:
+    %p.explanation= "#{couple_url(:cf => 1)} #{clippy(couple_url(:cf => 1))}".html_safe
+    %p or challenge your friends through Facebook:
+    = facebook_connect_button("Challenge your friends", "facebook_couples")

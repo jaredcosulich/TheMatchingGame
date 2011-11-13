@@ -1,0 +1,14 @@
+%p= "Hi#{", #{@creator.first_name}" unless @creator.first_name.blank?},"
+
+%p= "#{@challenge_player.name} has completed your challenge!"
+
+%p
+  You can see all of the challenge results from the
+  = link_to("challenge page", challenge_url(@challenge, :host => @host))
+  >
+
+
+%p
+  Thanks,
+  %br
+  The Matching Game Team

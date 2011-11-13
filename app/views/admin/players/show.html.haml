@@ -1,0 +1,151 @@
+-#
+  <script type='text/javascript' src='http://www.google.com/jsapi'></script>
+  %script{:type => "text/javascript"}
+    window.answerData = [
+    = @player.timeline_data.join(",")
+    ]
+
+  :javascript
+    google.load('visualization', '1', {'packages':['annotatedtimeline']});
+    google.setOnLoadCallback(drawChart);
+    function drawChart() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('date', 'Date');
+      data.addColumn('number', 'Score');
+      data.addRows(window.answerData);
+
+      var chart = new google.visualization.AnnotatedTimeLine(document.getElementById('chart_div'));
+      chart.draw(data, {displayAnnotations: true});
+    }
+
+
+
+
+%style{:type => "text/css"}
+  == td { border: 1px solid #ccc; padding: 6px; }
+
+%h3&= "Player #{@player.id} - #{@player.name_age_and_place}"
+
+%br
+  
+= render :partial => "photos/profile", :locals => {:photo => @player.photos.first} unless @player.photos.empty?
+
+- if deleted_user = User.unscoped.where("deleted_at is not null").find_by_player_id(@player.id)
+  .highlighted
+    %h4 DELETED
+    %p
+      = @player.created_at.strftime('%b %d, %Y, %T')
+      until
+      = deleted_user.deleted_at.strftime('%b %d, %Y, %T')
+    %p= simple_format(deleted_user.deleted_reason)
+    = "---------------------------------------------------------------"
+    %p
+      Member for
+      = (deleted_user.deleted_at - @player.created_at) / 60 / 60 / 24
+      days.
+    %p
+      = @player.pages_visited
+      pages visited
+
+.clear
+%br
+%br
+
+%h2 Answer Progress
+
+%br
+
+= render :partial => "shared/new_leaderboard", :locals => {:player => @player}
+
+= render :partial => "shared/ranking", :locals => {:player => @player}
+
+%br
+<div id='chart_div' style='width: 700px; height: 240px;'></div>
+
+%br
+%br
+
+%p
+  = link_to("Request Logs", admin_request_log_path(@player))
+%p
+  = link_to("Log in as #{h @player.first_name}", impersonate_admin_player_path(@player), :method => :post)
+- if Rails.env.development?
+  %p
+    = link_to("Auto login link for #{h @player.first_name}", edit_password_reset_url(:token => @player.user && @player.user.perishable_token))
+
+%br
+%br
+
+= "Referred by #{@player.referral.referrer.url}" unless @player.referral.nil?
+%br
+
+%table{:cellpadding => 0, :cellspacing => 0}
+  - [:gender, :created_at, :connectable, :preferred_profile_type, :geo_name].each do |field|
+    %tr
+      %td= field
+      %td= @player.send(field)
+&= @player.inspect
+
+%br
+%br
+%br
+
+- if @player.player_stat
+  %table{:cellpadding => 0, :cellspacing => 0}
+  
+    - [:answer_count, :yes_percent, :accuracy, :answer_weight].each do |field|
+      %tr
+        %td= field
+        %td= @player.player_stat.send(field)
+  &= @player.player_stat.inspect
+%br
+%br
+%br
+
+- if @player.profile
+  %table{:cellpadding => 0, :cellspacing => 0}
+
+    - [:first_name, :last_name, :location_name, :birthdate, :created_at].each do |field|
+      %tr
+        %td= field
+        %td= @player.profile.send(field)
+  &= @player.profile.inspect
+
+%br
+%br
+%br
+
+- if @player.user
+  %table{:cellpadding => 0, :cellspacing => 0}
+
+    - [:email, :awaiting_response, :prediction_progress, :created_at].each do |field|
+      %tr
+        %td= field
+        %td= @player.user.send(field)
+  &= @player.user.inspect
+
+%br
+
+%br
+
+= link_to("Emails", emails_admin_player_path(@player))
+
+
+%br
+
+
+%ul
+  - @player.photos.each do |photo|
+    %li
+      = link_to(image_tag(photo.image.url(:thumbnail)), admin_photo_path(photo))
+      &nbsp;
+      = link_to("Clusters", admin_cluster_path(photo))
+
+%br
+%h3 Removed Photos
+%ul
+  - @removed_photos.each do |photo|
+    %li
+      = link_to(image_tag(photo.image.url(:thumbnail)), admin_photo_path(photo))
+      &nbsp;
+      = link_to("Clusters", admin_cluster_path(photo))

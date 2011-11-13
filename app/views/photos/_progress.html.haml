@@ -1,0 +1,18 @@
+%h3 Matches Currently Being Voted On
+- if @matches.empty?
+  %p You aren't currently being matched.
+  %p If you'd like to continue being matched please see the options below.
+
+  %br
+
+  %h4 Priority Matching
+  %p
+    Get matched more with
+    = link_to("priority matching >", priorities_path)
+
+  %br
+
+  %h4 Have Your Friends Match You
+  %p
+    Your friends know you best.
+    = link_to("Have them match you up >", match_me_index_path)

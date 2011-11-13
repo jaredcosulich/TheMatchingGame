@@ -1,0 +1,80 @@
+%style
+  == .top_ad { padding-bottom: 24px; }
+  == .ad, .dating_photo { float: left; margin: 0 0 12px 12px; overflow: hidden; width: 218px; height: 200px; border: 1px solid #ccc; }
+  == .dating_photo h3 { display: none; }
+  == .ad { border: none; margin: 2px 11px 12px 21px; width: 200px }
+  == .revealed_profile { float: left; overflow: hidden; }
+  == .revealed_profile a { display: none; }
+  == .dating_photo .profile { padding: 12px 0 12px 12px; }
+  == .dating_photo .thumbnail { float: right; height: 91px; margin-left: 12px }
+  == .click { font-size: 8pt; margin-top: -10px; }
+  == .dating_photo .interests ul { margin: 6px 0 0 18px; padding: 0; }
+  == .revealed_photo { float: left; margin-right: 12px; }
+  == .revealed_profile .interests { overflow: hidden; margin-top: 12px; }
+  == .revealed_profile .interests ul { padding-left: 24px; }
+  == .right { float: right; margin-right: 12px; padding-top: 6px; }
+  == .meet { float: left; width: 200px; margin-left: 30px; }
+  == .answer .yes_button { background: url("/images/buttons.png") no-repeat scroll -194px -38px transparent; }
+  == .answer .no_button { background: url("/images/buttons.png") no-repeat scroll -20px -38px transparent; }
+  == .section { margin-top: 12px; }
+
+.right
+  - if @current_player.photos.empty?
+    = link_to("View interesting men >", profile_game_interests_path(:g => "m")) if @interesting_players.first.gender == "f"
+    = link_to("View interesting women >", profile_game_interests_path(:g => "f")) if @interesting_players.first.gender == "m"
+
+%h2 Interesting Interests
+
+%p
+  Click on a profile below that looks interesting to reveal the
+  = @interesting_players.first.gender == "f" ? "lovely lady" : "handsome gentleman"
+  behind the interests...
+
+- if @highlighted_player.present?
+  - highlighted_photo = @highlighted_player.photos.approved.sort_by(&:bucket).select{ |p| p.couple_combo_id.nil? }.last
+  - if highlighted_photo.present?
+    .revealed_photo
+      = image_tag(highlighted_photo.image.url)
+    .revealed_profile
+      .profile
+        %h3= @highlighted_player.first_name
+        .interests
+          %b My Interests:
+          %ul
+            - @highlighted_player.interests.sort_by { |interest| interest.title.split(/\s/).first.length }.each do |interest|
+              %li= interest.title.downcase
+    .meet
+      %h3
+        A Good Match?
+
+      %div{:id => "photo_profile_#{highlighted_photo.id}", :style => "display: none; width: 720px;"}
+        = render :partial => "photos/profile", :locals => {:photo => highlighted_photo}
+      %p= link_to "Learn more about #{highlighted_photo.visible_name}", "#photo_profile_#{highlighted_photo.id}", :class => "more_info"
+
+      %p
+        Do you think you and
+        = @highlighted_player.first_name.blank? ? (@highlighted_player.him_her) : @highlighted_player.first_name
+        might be a good match?
+      = render :partial => "profile_game/answer", :locals => {:game => "discover", :highlighted_photo => highlighted_photo, :photo_id => @current_player.photos.approved_or_confirmed.first.id, :next_message => "Now check out some more interesting interests below."}
+
+- else
+  .revealed_photo
+
+.clear
+%br
+%br
+
+- @interesting_players.each_with_index do |player, index|
+  .dating_photo
+    .profile
+      %h3= player.first_name
+      = link_to("#{image_tag("question_match.png", :style => "height: 82px; width: 77px; margin-top: -6px;")}<div class='click'>Click To Reveal</div>".html_safe, params.merge(:highlighted => player.id.to_obfuscated, :game_id => @game_id), :class => "thumbnail")
+      .interests
+        %b My Interests:
+        %ul
+          - player.interests.sort_by { |interest| interest.title.split(/\s/).first.length }.each do |interest|
+            %li= interest.title.downcase
+
+
+.clear
+

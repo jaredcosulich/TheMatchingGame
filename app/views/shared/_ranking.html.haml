@@ -1,0 +1,74 @@
+- return
+
+
+
+- correct_count = player.current_stat.correct_count
+- incorrect_count = player.current_stat.incorrect_count
+- percent_correct = player.current_stat.accuracy
+- if correct_count > 0
+  - similar = PlayerStat.where("correct_count BETWEEN ? AND ?", correct_count * 0.6, correct_count * 1.4)
+  - similar_count = similar.count
+  - less_accurate_count = similar.where("accuracy < ?", percent_correct).count
+  - same_accurate_count = similar.where("accuracy = ?", percent_correct).count
+
+%h2 Your Matchmaking Skills
+- if player.games.length < 3 || true
+  So far you've correctly identified
+  = correct_count
+  out of the
+  = correct_count + incorrect_count
+  verified matches we've shown to you.
+  %p
+    To see how you compare
+    with other matchmakers please identify
+    = pluralize(8 - (correct_count + incorrect_count), "more verified match", "more verified matches")
+    so that we can get a more accurate sense of your matchmaking skills.
+  %p
+    = link_to("Play again >", root_path)
+
+- else
+  %div{:style => "font-size: 16pt; margin-top: 12px;"}
+    = correct_count
+    \/
+    = correct_count + incorrect_count
+    = "= #{number_to_percentage(percent_correct, :precision => 1)}"
+
+  - if correct_count > 0
+    %p
+      You've correctly identified
+      = correct_count
+      good and bad matches
+      out of the
+      = correct_count + incorrect_count
+      we've shown to you. Giving you an accuracy of
+      = number_to_percentage(percent_correct, :precision => 0)
+
+    %div{:style => "font-size: 16pt;"}
+      = number_with_delimiter(similar_count)
+      &nbsp; | &nbsp;
+      You >
+      = number_with_delimiter(less_accurate_count)
+      = "(#{number_to_percentage(100 * less_accurate_count.to_f / similar_count.to_f, :precision => 1)})"
+    %p
+      = number_with_delimiter(similar_count)
+      other matchmakers have correctly identified a similar number of matches and
+      you've been more accurate than
+      = number_with_delimiter(less_accurate_count)
+      of them.
+      - if same_accurate_count > 0
+        You're as accurate as
+        = number_with_delimiter(same_accurate_count)
+        of them.
+      You're less accurate than
+      = number_with_delimiter(similar_count - less_accurate_count - same_accurate_count)
+      of them.
+  - else
+    %p You got 0 correct. You can do better than that...
+
+  %p
+    = link_to("Play again >", root_path)
+    - if @current_player.user.nil?
+      &nbsp; &nbsp;
+      = link_to("Register to save your score >", new_session_path)
+
+%br

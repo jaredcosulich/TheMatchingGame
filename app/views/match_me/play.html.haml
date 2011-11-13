@@ -1,0 +1,14 @@
+%script{:type => "text/javascript", :src => "http://www.google.com/jsapi?key=#{Geokit::Geocoders::google}"}
+:javascript
+  $(function(){
+    startGame(#{@game.id}, #{@combos.to_json}, false, pageTracker._trackPageview, 1000, false, true);
+  });
+
+%h2.welcome_message
+  = "Help find a great match for #{name_for(@target_photo)}!"
+
+#container
+
+= render :partial => "match_me/completed"
+
+

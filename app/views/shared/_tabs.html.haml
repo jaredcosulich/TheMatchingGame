@@ -1,0 +1,78 @@
+- return if user_not_ready
+
+%style
+  == .tabs { overflow: hidden; border-bottom: 3px solid black; }
+  == .tabs .play_again { font-weight: bold; float: right; padding-bottom: 3px; }
+  == .tabs .tab { float: left; padding: 3px 6px; margin-right: 12px; background-color: white; border-left: 1px solid black; border-right: 1px solid black; border-top: 1px solid black; }
+  == .tabs .selected { background-color: black; }
+  == .tabs .tab a { color: black; }
+  == .tabs .selected a { color: white; }
+  == .tabs .spacer, .subtabs .spacer { float: left; width: 90px; }
+  == .subtabs { overflow: hidden; border-left: 3px solid #888; border-bottom: 3px solid #888; border-top: 3px solid #888; background-color: #888; }
+  == .subtabs .tab { float: left; border-right: 1px solid black; padding: 3px 12px; background-color: #888; }
+  == .subtabs .tab a { color: black; }
+  == .subtabs .selected a { color: white; }
+  == .tab_buffer { clear: both; padding-bottom: 24px; }
+
+.tabs
+  .play_again
+    = link_to("Play Again >")
+
+  .tab{:class => @selected_tab == "matching" ? "selected" : ""}
+    = link_to("Matching", photos_path)
+  .tab{:class => @selected_tab == "connections" ? "selected" : ""}
+    = link_to("Connections", connections_path)
+  -#.tab{:class => @selected_tab == "priorities" ? "selected" : ""}
+    = link_to("Priority Matching", priorities_path)
+  .tab{:class => @selected_tab == "friends" ? "selected" : ""}
+    = link_to("Friends", match_me_index_path)
+
+
+  .spacer &nbsp;
+
+  .tab{:class => @selected_tab == "leaderboard" ? "selected" : ""}
+    = link_to("Leaderboard", leaderboard_games_path)
+  .tab{:class => @selected_tab == "labs" ? "selected" : ""}
+    = link_to("Labs", labs_path)
+
+  .spacer &nbsp;
+
+  .tab{:class => @selected_tab == "account" ? "selected" : ""}
+    = link_to("My Account", account_path)
+
+- if @selected_tab == "labs"
+  .subtabs
+    .tab{:class => @selected_subtab == "discover" ? "selected" : ""}
+      = link_to("Discover Who", profile_game_discover_path)
+    .tab{:class => @selected_subtab == "questions" ? "selected" : ""}
+      = link_to("Questions & Answers", questions_path)
+    .tab{:class => @selected_subtab == "map" ? "selected" : ""}
+      = link_to("The Map", map_path)
+    .tab{:class => @selected_subtab == "club" ? "selected" : ""}
+      = link_to("Go Clubbing", clubs_path)
+    .tab{:class => @selected_subtab == "interests" ? "selected" : ""}
+      = link_to("Interesting Interests", profile_game_interests_path)
+    .tab{:class => @selected_subtab == "discounts" ? "selected" : ""}
+      = link_to("Dating Discounts", dating_discounts_path)
+
+- elsif @selected_tab == "matching"
+  .subtabs
+    .tab{:class => controller.is_a?(PhotosController) && params[:t].blank? ? "selected" : ""}
+      = link_to("Awaiting Response", photos_path)
+    .tab{:class => params[:t] == "progress" ? "selected" : ""}
+      = link_to("In Progress", photos_path(:t => "progress"))
+    .tab{:class => params[:t] == "possible" ? "selected" : ""}
+      = link_to("Possible Matches", photos_path(:t => "possible"))
+    .tab{:class => params[:t] == "good" ? "selected" : ""}
+      = link_to("Good Matches", photos_path(:t => "good"))
+    .tab{:class => params[:t] == "bad" ? "selected" : ""}
+      = link_to("Bad Matches", photos_path(:t => "bad"))
+
+- elsif @selected_tab == "priorities"
+  .subtabs
+    .tab{:class => @selected_subtab == "apply" ? "selected" : ""}
+      = link_to("Apply Credits", priorities_path)
+    .tab{:class => @selected_subtab == "watch" ? "selected" : ""}
+      = link_to("Watch Videos", watch_credits_path)
+
+.tab_buffer

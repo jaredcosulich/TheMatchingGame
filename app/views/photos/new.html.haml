@@ -1,0 +1,12 @@
+%h2 Add Your Photo
+
+%br
+
+- if @current_player.photos.approved.count >= Features.max_photos_per_user
+  #flash
+    %p You've already uploaded the maximum number of photos.
+    %p Please "Stop Matching" one of your existing photos before adding another photo.
+- else
+  = render :partial => "form"
+
+  = conversion_script

@@ -1,0 +1,14 @@
+A new photo (
+= @photo.id
+) has been uploaded by
+= @photo.player.user ? @photo.player.user.email : 'Anonymous'
+(
+- if @photo.player.referrer
+  =@photo.player.referrer.url
+  &nbsp;
+  =@photo.player.referrer.title
+
+Environment:
+= Rails.env
+
+= "http://#{Rails.env.production? ? 'www' : Rails.env}.thematchinggame.com/admin/approvals"

@@ -1,0 +1,29 @@
+= @current_player.id
+= stylesheet_link_tag("compiled/college.css?#{Rails.application.cache_buster}")
+
+%style
+  == body { width: auto; }
+  == .select_photo img { padding-bottom: 12px; vertical-align: top; cursor: pointer; }
+
+%h2 Select A Photo To Match
+
+%p Please select a photo that shows only you. Otherwise people won't know who to match.
+
+.left{:style => "width: 300px;"}
+  %h4= @selected_album["name"]
+  %br
+  = form_for :photo, :url => college_photos_path do |f|
+    - @photos.each_with_index do |photo_srcs, index|
+      .select_photo
+        = radio_button_tag("selected_photo", photo_srcs.last, false, :id => "selected_photo_#{index}")
+        = label_tag("selected_photo", image_tag(photo_srcs.first), :for => "selected_photo_#{index}")
+    = f.submit("Use Selected Photo")
+
+
+- if @album_data.length > 1
+  .left{:style => "width: 270px; margin-left: 12px"}
+    %h4 Or select from a different album
+    - @album_data.each do |album|
+      - next if album == @selected_album
+      %p= link_to(album["name"], params.merge(:album_id => album["id"]))
+

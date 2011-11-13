@@ -1,0 +1,8 @@
+.photo_set
+  - photo_set.each_with_index do |photo,index|
+    = image_tag(photo.image.url, :id => dom_id(photo), :style => (index == 0 ? "" : "display: none;"), :class => "large_photo")
+  - if photo_set.length > 1
+    .thumbnails
+      - photo_set.each do |photo|
+        %a.thumbnail{:id => "#{dom_id(photo)}_thumbnail"}= image_tag(photo.image.url(:preview))
+

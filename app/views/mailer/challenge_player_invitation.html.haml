@@ -1,0 +1,3 @@
+= @challenge.invitation_text.gsub(/\n/, '<br/>')
+
+%p= "Accept the challenge, #{link_to("play #{@challenge.name}", accept_challenge_url(@challenge, :token => @challenge_player.token, :host => @host))} >".html_safe

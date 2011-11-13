@@ -1,0 +1,42 @@
+%style
+  == .challenges li { padding-bottom: 12px; }
+  == .challenge_info { color: #666; }
+
+= render :partial => "challenges/explanation"
+
+%h2 Your Matchmaking Challenges
+- if @challenges.empty?
+  %p You haven't yet participated in a challenge.
+  %p Challenge your friends to see who is the best Matchmaker!
+  %p.explanation{:style => "text-align: center; width: 300px;"}
+    = link_to(image_tag("challenge.jpg"), challenge_path("rGh", :demo => 1))
+    %br
+    = link_to("See a Sample Results Page >", challenge_path("rGh", :demo => 1))
+- else
+  %ul.challenges
+    - @challenges.each do |challenge|
+      %li
+        = link_to(h(challenge.name), challenge_path(challenge))
+        .challenge_info
+          .explanation
+            = challenge.challenge_players.map(&:name).join(', ')
+            - if challenge.completed?
+              %br
+              %b Challenge Completed!
+              = "(#{challenge.completed_at.strftime('%b %d, %Y')})"
+              %br
+              - winners = challenge.winners
+              %b= "Winner#{'s' if winners.length > 1}:"
+              = winners.map(&:name).join(', ')
+              %br
+              = link_to("I want a rematch >", new_challenge_path(:from => challenge.to_param))
+%br
+
+= link_to "Start a new Matchmaking Challenge >", new_challenge_path
+
+%div{:style => "clear:both;"}
+%br
+%br
+
+%br
+%br

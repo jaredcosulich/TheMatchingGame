@@ -1,0 +1,131 @@
+%style
+  == table .even { background-color: #eee; }
+  == table .even_td { background-color: #ddd; }
+  == .your_results  { float: right; width:438px; margin-left: 15px; }
+  == #your_results { margin-top: 6px; }
+  == #your_results th, #your_results td, #all_results th, #all_results td, #all_answers th, #all_answers td { text-align: center; padding: 6px; }
+  == .game_info { padding-left: 18px; color: #666; }
+  == #challenge_players { width: 258px; padding: 0; }
+  == #challenge_players li { padding: 6px; margin-bottom: 12px; list-style-position: inside;}
+  == li.active_player { background-color: #eee; }
+  == #all_results { width: 660px; overflow: auto; text-align: center; }
+  == #all_results th { text-align: center; padding: 0 6px; }
+  == #all_results td { padding: 12px 0; }
+  == .active_player .remove_challenge_player { display: none; }
+
+%br
+
+%h2
+  &= @challenge.name
+  &nbsp;
+  - if @challenge_player.present?
+    %span.explanation= "(#{link_to("view all your challenges", challenges_path)})".html_safe
+
+- if params.include?(:demo)
+  %br
+  .highlighted
+    Ready to challenge your friends?
+    = link_to("Create your challenge >", new_challenge_path)
+
+- if @challenge.completed? || @challenge_player.challenge_completed? || params.include?(:demo)
+  #all_answers{:style => "display: none;"}
+    %table
+      %th &nbsp;
+      - @challenge_combo_combos.each do |combo|
+        %th{:class => cycle("even_td", "odd_td", :name => "columns")}
+          = image_tag(combo.photo_one.image.url(:preview))
+          %br
+          = image_tag(combo.photo_two.image.url(:preview))
+      %tr{:class => cycle("even", "odd")}
+        %td
+          Correct&nbsp;Answer
+        - reset_cycle("columns")
+        - @challenge_combo_combos.each do |combo|
+          %td{:class => cycle("even_td", "odd_td", :name => "columns")}= combo.verified_good? ? "#{image_tag("green_circle.png")}<br/>Good<br/>Match".html_safe : "#{image_tag("red_circle.png")}<br/>Bad<br/>Match".html_safe
+      - @ranked_players.each do |challenge_player|
+        - reset_cycle("columns")
+        %tr{:class => cycle("even", "odd")}
+          %td= h(challenge_player.name).gsub(/\s/, '&nbsp;')
+          - @challenge_combo_combos.each do |combo|
+            - answer = challenge_player.answer_for(combo)
+            %td{:class => cycle("even_td", "odd_td", :name => "columns")}= (answer && answer.correct?) ? image_tag("check.png") : "&nbsp;".html_safe
+  .your_results
+    %br
+    - if @challenge_player.present? || params.include?(:demo)
+      %h3
+        Your Results
+        &nbsp;&nbsp;
+        = link_to("View Everyone's Results", "#all_answers", :class => "more_info explanation")
+      %table#your_results{:cellpadding => 0, :cellspacing => 0}
+        %th Correct?
+        %th{:colspan => 2} The Match
+        %th Your&nbsp;Answer
+        %th Correct&nbsp;Answer
+        - (@challenge_player || @ranked_players.first).challenge_answers.each do |answer|
+          %tr{:class => cycle("even", "odd")}
+            %td= answer.correct? ? image_tag("check.png") : "&nbsp;".html_safe
+            %td= image_tag(answer.combo.photo_one.image.url(:preview))
+            %td= image_tag(answer.combo.photo_two.image.url(:preview))
+            %td= answer.answer == 'y' ? "#{image_tag("green_circle.png")}<br/>Good Match".html_safe : "#{image_tag("red_circle.png")}<br/>Bad Match".html_safe
+            %td= answer.combo.verified_good? ? "#{image_tag("green_circle.png")}<br/>Good Match".html_safe : "#{image_tag("red_circle.png")}<br/>Bad Match".html_safe
+        - if @challenge_player.present?
+          %tr
+            %td{:colspan => 5}
+              %p
+                = @challenge_player.answers.count - @challenge_player.challenge_answers.count
+                of your answers were not scored.
+              %p Those answers were used to help find good matches for people who are looking for their match on this site.
+              %p
+                You can view and track these matches from
+                = link_to("your answers page", answers_path)
+                >
+    - else
+      %h3{:style => "padding: 60px;"}= link_to("< View Everyone's Results >", "#all_answers", :class => "more_info")
+- else
+  = render :partial => "challenges/instructions"
+
+
+%br
+
+%h3 The Challengers
+
+%ol#challenge_players
+  - @ranked_players.each do |challenge_player|
+    %li{:class => @current_player.id == challenge_player.player_id ? "active_player" : ""}
+      %b= challenge_player.name
+      - if @current_player == @challenge.creator && !challenge_player.challenge_completed?
+        &nbsp;
+        %span.explanation.remove_challenge_player
+          = "(#{link_to("delete", remove_challenger_challenge_path(@challenge, :challenge_player_id => challenge_player.id), :method => "POST", :confirm => "\nAre you sure you want to remove this challenger?\n\nThis person can not be re-added to the challenge.\n\n")})".html_safe
+      - if @challenge.winners.include?(challenge_player)
+        %div{:style => "float: right; margin-right: 24px;"}
+          = image_tag("first_place.png")    
+      .explanation
+        - if challenge_player.answers.empty?
+          - if @challenge_player == challenge_player && !challenge_player.challenge_completed?
+            = link_to("Play Game >", play_challenge_path(@challenge), :style => "float: right;")
+          .game_info Hasn't played yet.
+        - else
+          .game_info
+            = "Played: #{challenge_player.game.answers.last.created_at.strftime("%b %d, %Y")}"
+          .game_info
+            = challenge_player.challenge_completed? ? "Challenge Completed" : "#{challenge_player.game.answers.not_predicted.length} out of #{@challenge.challenge_combos.count} matches answered."
+          .game_info
+            = "Score: #{challenge_player.correct_count} / #{@challenge.challenge_combos.count} (#{100 * challenge_player.correct_count / @challenge.challenge_combos.count}%)"
+
+- if @challenge.completed? && @challenge_player.present?
+  %p= link_to("I want a rematch >", new_challenge_path(:from => @challenge.to_param))
+
+%br
+%br
+%h3 Scoring
+%p Your score is based on the number of good and bad matches that you correctly identify.
+%p A good match is where both people pictured thought the other person was a good match.
+%p A bad match is where either person pictured thought it was a bad match.
+
+
+%div{:style => "clear: both;"}
+%br
+%br
+%br
+

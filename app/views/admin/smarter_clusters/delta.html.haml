@@ -1,0 +1,14 @@
+- if params[:d] == "worse"
+  %h3 Weighted Score < Yes Percent
+  = link_to "(toggle)", delta_admin_smarter_clusters_path
+- else
+  %h3 Weighted Score > Yes Percent
+  = link_to "(toggle)", delta_admin_smarter_clusters_path(:d => "worse")
+
+
+
+
+- @delta_scores.each_with_index do |combo_score, index|
+  - next if index > 0 && @delta_scores[index].combo_id == @delta_scores[index-1].combo_id
+  = render :partial => "combo_score", :locals => {:combo => combo_score.combo, :combo_score => combo_score}
+

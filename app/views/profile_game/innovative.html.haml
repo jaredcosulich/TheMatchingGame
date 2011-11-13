@@ -1,0 +1,48 @@
+%style
+  == .site { overflow: hidden; margin-top: 12px; }
+  == .site img { float: left; margin-right: 12px; }
+  == .site .details { overflow: hidden; }
+
+.right
+  = link_to("Back to your matches/photos >", photo_path(@current_player.photos.approved_or_confirmed.first))
+
+%h2 Innovative Dating Sites
+%p
+  I built The Matching Game because I wanted to give people a new way
+  to meet other people. I was sick of seeing dozens of copy-cat dating sites
+  that added no new value to how people met each other.
+
+%p
+  There are other dating sites out there that are also trying to find
+  new ways for people to meet, though. And I'd like to try and support
+  them (usually the support is mutual).
+
+%p
+  So here are some sites that seem to be doing some fun/innovative things.
+  Check them out and let me know what you think.
+
+%p Also, if you know of another I'd love to hear about it.
+
+%br
+
+%h3 Innovative Dating Sites
+.site
+  = link_to(image_tag("partners/speeddate.jpg"), "http://www.speeddate.com/index.php?page=signup&action=join&afid=#{@current_player.id}&asid=&pid=8419", :target => "_blank")
+  %h4= link_to("SpeedDate.com", "http://www.speeddate.com/index.php?page=signup&action=join&afid=#{@current_player.id}&asid=&pid=8419", :target => "_blank")
+  .details
+    %p
+      I've spoken with these guys a few times and they seem like good guys. I like the way they're taking the whole
+      speed dating model online using video and chat. Seems like it could be a fun way to meet someone.
+    %p= link_to("Visit SpeedDate >", "http://www.speeddate.com/index.php?page=signup&action=join&afid=#{@current_player.id}&asid=&pid=8419", :target => "_blank")
+
+
+%p
+  Ok, that's the only one I've got right now. Please let me know about any other sites that
+  are doing some interesting / innovating things in online dating.
+
+
+%br
+%br
+%br
+%br
+= render "shared/labs"
